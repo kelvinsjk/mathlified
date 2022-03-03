@@ -8,9 +8,10 @@
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "prepublishOnly": "npm test && npm run lint",
-    "preversion": "npm run lint",
-    "version": "npm run format && git add -A src",
+    "prepare": "pnpm run build",
+    "prepublishOnly": "pnpm run lint",
+    "preversion": "pnpm run lint",
+    "version": "pnpm run format && git add -A src",
     "postversion": "git push && git push --tags",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint --ignore-path .gitignore",
