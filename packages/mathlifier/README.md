@@ -2,6 +2,9 @@
 
 A wrapper for KaTeX `renderToString` for inline and displayed math
 
+[![mathlifier npm version](https://img.shields.io/npm/v/mathlifier)](https://github.com/kelvinsjk/mathlified/tree/main/packages/mathlifier)
+[![mathlifier.min.js size](https://img.shields.io/bundlephobia/minzip/mathlifier)](https://github.com/kelvinsjk/mathlified/tree/main/packages/mathlifier)
+
 ---
 
 ## Why Mathlifier?
@@ -27,17 +30,17 @@ Mathlifier repackages these function calls as `math()` and `display()`, along wi
 > `overflow-x: auto`. We believe this modification makes the output more
 > mobile-friendly.
 
-## Installing Mathlified
+## Installing Mathlifier
 
 ```bash
-npm i mathlified
+npm i mathlifier
 ```
 
 ## Using Mathlified
 
 ```js
 // import functions
-import {math, display} from 'mathlified'
+import {math, display} from 'mathlifier'
 // example of using these functions
 const inlineMath = math('ax^2+bx+c=0');
 const displayedMath = display('x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}');
@@ -66,7 +69,7 @@ const noContainer = display('\\sum_{r=1}^n = \\frac{n(n+1)}{2}', {overflowAuto: 
 
 ## KaTeX options
 
-All KaTeX options are passed along.
+All [KaTeX options](https://katex.org/docs/options.html) are passed along.
 
 ```js
 // example of KaTeX options
