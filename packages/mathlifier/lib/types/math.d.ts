@@ -18,4 +18,3 @@ interface KatexOptionsInline extends katex.KatexOptions {
     wrap?: boolean;
 }
 export {};
-//# sourceMappingURL=math.d.ts.map

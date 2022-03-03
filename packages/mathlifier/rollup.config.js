@@ -1,6 +1,7 @@
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonJS from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
+import dts from 'rollup-plugin-dts';
 import pkg from './package.json';
 import {terser} from 'rollup-plugin-terser';
 
@@ -19,5 +20,10 @@ export default [
       file: pkg.main,
       format: 'es',
     }
+  },
+  {
+    input: 'lib/types/index.d.ts',
+    output: {file: 'lib/index.d.ts', format: 'es'},
+    plugins: [dts()]
   }
 ];

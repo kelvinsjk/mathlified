@@ -19,4 +19,3 @@ interface KatexOptionsDisplay extends katex.KatexOptions {
     overflowAuto?: boolean;
 }
 export {};
-//# sourceMappingURL=display.d.ts.map

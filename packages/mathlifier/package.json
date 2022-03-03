@@ -1,7 +1,7 @@
 {
   "name": "mathlifier",
   "version": "1.0.0",
-  "description": "A KaTeX renderToString Wrapper",
+  "description": "A KaTeX renderToString wrapper",
   "source": "src/index.ts",
   "type": "module",
   "main": "lib/index.js",
@@ -52,6 +52,7 @@
     "eslint": "^8.0.1",
     "prettier": "^2.4.1",
     "rollup": "^2.69.0",
+    "rollup-plugin-dts": "^4.2.0",
     "rollup-plugin-terser": "^7.0.2",
     "tslib": "^2.3.1",
     "typescript": "^4.4.4",

@@ -1,1 +1,0 @@
-{"version":3,"file":"math.d.ts","sourceRoot":"","sources":["src/math.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAC1B;;;;;;;;;;;;;GAaG;AACH,wBAAgB,IAAI,CAAC,CAAC,EAAE,MAAM,EAAE,OAAO,CAAC,EAAE,kBAAkB,UAI3D;AAED,UAAU,kBAAmB,SAAQ,KAAK,CAAC,YAAY;IACrD,IAAI,CAAC,EAAE,OAAO,CAAA;CACf"}
