@@ -21,7 +21,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kelvinsjk/mathlify.git"
+    "url": "git+https://github.com/kelvinsjk/mathlified.git",
+    "directory": "packages/mathlifier"
   },
   "files": [
     "lib/**/*"
@@ -39,9 +40,9 @@
   "author": "Kelvin Soh",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kelvinsjk/mathlify/issues"
+    "url": "https://github.com/kelvinsjk/mathlified/issues"
   },
-  "homepage": "https://github.com/kelvinsjk/mathlify#readme",
+  "homepage": "https://github.com/kelvinsjk/mathlified/blob/fce2b0eb417397719e1fe641912e7c5e59676289/packages/mathlifier/README.md",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.2",
     "@rollup/plugin-node-resolve": "^13.1.3",
