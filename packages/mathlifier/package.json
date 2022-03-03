@@ -14,7 +14,7 @@
     "version": "pnpm run format && git add -A src",
     "postversion": "git push && git push --tags",
     "format": "prettier --write \"src/**/*.ts\"",
-    "lint": "eslint --ignore-path .gitignore",
+    "lint": "eslint --ignore-path ../../.gitignore",
     "test": "uvu -r tsm src/__tests__",
     "test:coverage": "c8 --include=src npm test",
     "build": "rollup -c"
