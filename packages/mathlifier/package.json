@@ -9,14 +9,14 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "prepare": "pnpm run build",
-    "prepublishOnly": "pnpm run lint",
-    "preversion": "pnpm run lint",
-    "version": "pnpm run format && git add -A src",
+    "prepublishOnly": "pnpm test && pnpm lint",
+    "preversion": "pnpm lint",
+    "version": "pnpm format && git add -A src",
     "postversion": "git push && git push --tags",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint --ignore-path ../../.gitignore",
     "test": "uvu -r tsm src/__tests__",
-    "test:coverage": "c8 --include=src npm test",
+    "test:coverage": "c8 --include=src pnpm test",
     "build": "rollup -c"
   },
   "repository": {
