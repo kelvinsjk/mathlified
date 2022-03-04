@@ -1,4 +1,4 @@
-import katex from 'katex';
+import katex from "katex";
 /**
  * Renders displayed math
  *
@@ -15,12 +15,19 @@ import katex from 'katex';
  * and wrapping it in a container with `style="overflow-x:auto;"`
  */
 export function display(x: string, options?: KatexOptionsDisplay) {
-	options = { overflowAuto: true, throwOnError: false, displayMode: true, ...options };
-	let katexString = katex.renderToString(x, options);
-	katexString = options.overflowAuto ? `<div style="overflow-x:auto;">${katexString}</div>` : katexString;
-	return katexString;
+  options = {
+    overflowAuto: true,
+    throwOnError: false,
+    displayMode: true,
+    ...options,
+  };
+  let katexString = katex.renderToString(x, options);
+  katexString = options.overflowAuto
+    ? `<div style="overflow-x:auto;">${katexString}</div>`
+    : katexString;
+  return katexString;
 }
 
 interface KatexOptionsDisplay extends katex.KatexOptions {
-	overflowAuto?: boolean;
+  overflowAuto?: boolean;
 }

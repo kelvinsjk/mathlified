@@ -1,4 +1,4 @@
-import katex from 'katex';
+import katex from "katex";
 /**
  * Renders inline math
  *
@@ -14,11 +14,11 @@ import katex from 'katex';
  * With default options, is equivalent to calling `katex.renderToString('{'+x+'}', {throwOnError: false})
  */
 export function math(x: string, options?: KatexOptionsInline) {
-	options = { wrap: false, throwOnError: false, ...options };
-	const xString = options.wrap ? x : `{${x}}`;
-	return katex.renderToString(xString, options);
+  options = { wrap: false, throwOnError: false, ...options };
+  const xString = options.wrap ? x : `{${x}}`;
+  return katex.renderToString(xString, options);
 }
 
 interface KatexOptionsInline extends katex.KatexOptions {
-	wrap?: boolean;
+  wrap?: boolean;
 }

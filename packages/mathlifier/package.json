@@ -1,6 +1,6 @@
 {
   "name": "mathlifier",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A KaTeX renderToString wrapper",
   "source": "src/index.ts",
   "type": "module",
