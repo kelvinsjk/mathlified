@@ -1,12 +1,23 @@
-# create-svelte
+# mdsvex Math Starter
+
+This repo can get us started displaying math using mdsvex and SvelteKit.
 
 ## Getting started
 
-Clone this repo
+The fastest way to get started is to clone the repo with swy
 
-## Creating a project
+```bash
+npx degit https://github.com/kelvinsjk/mathlified/sites/mdsvex-math-starter myProject
+cd myProject
+npm i
+npm run dev
+```
 
-Steps to recreate this starter:
+## Recreating this starter yourself
+
+You can also recreate this starter yourself, either because
+the packages are out of date in the repo, or if you
+have different options (Typescript, ESLint Prettier, etc) in mind.
 
 ### Create SvelteKit app with mdsvex
 
@@ -17,7 +28,7 @@ Make sure you include mdsvex!
 # create a new project in the current directory
 npm init @svelte-add/kit@latest
 # enter and install dependencies
-cd myProjectName
+cd myProject
 npm i
 # install remark and rehype plugin
 npm i -D remark-math@2
@@ -50,3 +61,14 @@ the following into the head element.
 ```bash
 npm run dev
 ```
+
+## Credits
+
+- [SvelteKit](https://kit.svelte.dev/)
+- [mdsvex](https://github.com/pngwn/MDsveX)
+- [rehype-katex-svelte](https://github.com/kwshi/rehype-katex-svelte)
+- [katex](https://katex.org/)
+
+### Shameless plugs
+
+- [mathlifier](https://github.com/kelvinsjk/mathlified/tree/main/packages/mathlifier)
