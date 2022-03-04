@@ -7,7 +7,23 @@
 </script>
 
 <h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+{@html inlineX}
+<p class="prose">
+	Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the {@html inlineX} documentation Visit
+	<a href="https://kit.svelte.dev">kit.svelte.dev</a>
+	to read the {@html inlineX} documentation Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the {@html inlineX}
+	to read the {@html inlineX} documentation Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the {@html inlineX}
+	to read the {@html inlineX} documentation Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the {@html inlineX}
+	to read the {@html inlineX} documentation Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the {@html inlineX}
+</p>
+<p>
+	Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the {@html inlineX} documentation Visit
+	<a href="https://kit.svelte.dev">kit.svelte.dev</a>
+	to read the {@html inlineX} documentation Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the {@html inlineX}
+	to read the {@html inlineX} documentation Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the {@html inlineX}
+	to read the {@html inlineX} documentation Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the {@html inlineX}
+	to read the {@html inlineX} documentation Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the {@html inlineX}
+</p>
 
 <div>
 	{@html inlineX}
@@ -19,3 +35,6 @@
 {@html displayedX}
 
 {@html displayedY}
+
+<button class="btn btn-primary">Button</button>
+<button class="btn btn-secondary">Button</button>
