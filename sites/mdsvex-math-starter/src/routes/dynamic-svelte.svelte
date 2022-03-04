@@ -1,3 +1,7 @@
+<script context="module">
+	export const prerender = true;
+</script>
+
 <script>
 	import { math, display } from 'mathlifier';
 	import Counter from './Counter.svelte';

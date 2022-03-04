@@ -12,8 +12,6 @@
 		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "next",
-		"@sveltejs/adapter-netlify": "^1.0.0-next.49",
 		"@sveltejs/adapter-vercel": "^1.0.0-next.45",
 		"@sveltejs/kit": "next",
 		"@typescript-eslint/eslint-plugin": "^5.10.1",
@@ -22,10 +20,10 @@
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^3.2.1",
 		"mdsvex": "^0.10.5",
-		"pnpm": "^6.32.2",
 		"prettier": "^2.4.1",
 		"prettier-plugin-svelte": "^2.4.0",
 		"remark-math": "2",
+		"rehype-katex-svelte": "^1.0.3",
 		"svelte": "^3.44.0",
 		"svelte-check": "^2.2.6",
 		"svelte-preprocess": "^4.9.4",
@@ -34,7 +32,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"mathlifier": "workspace:^1.0.1",
-		"rehype-katex-svelte": "^1.0.3"
+		"mathlifier": "workspace:^1.0.2"
 	}
 }
