@@ -1,4 +1,4 @@
-import katex from 'katex';
+import katex from "katex";
 /**
  * Renders displayed math
  *

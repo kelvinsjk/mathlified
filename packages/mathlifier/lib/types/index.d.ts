@@ -1,2 +1,2 @@
-export { math } from './math';
-export { display } from './display';
+export { math } from "./math";
+export { display } from "./display";
