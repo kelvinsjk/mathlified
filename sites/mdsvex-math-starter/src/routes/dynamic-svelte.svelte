@@ -43,3 +43,12 @@
 	<button on:click={() => (i = 1)}>circumference</button>
 	<button on:click={() => (i = 2)}>diameter</button>
 </div>
+
+<h2>Source code</h2>
+
+View the source code on
+<a
+	rel="external"
+	href="https://github.com/kelvinsjk/mathlified/blob/main/sites/mdsvex-math-starter/src/routes/dynamic-svelte.svelte"
+	>GitHub</a
+>.
