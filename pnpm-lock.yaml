@@ -94,7 +94,7 @@ importers:
 
   sites/mdsvex-math-starter:
     specifiers:
-      '@sveltejs/adapter-vercel': ^1.0.0-next.45
+      '@sveltejs/adapter-vercel': ^1.0.0-next.0
       '@sveltejs/kit': next
       '@typescript-eslint/eslint-plugin': ^5.10.1
       '@typescript-eslint/parser': ^5.10.1
@@ -115,7 +115,7 @@ importers:
     dependencies:
       mathlifier: link:../../packages/mathlifier
     devDependencies:
-      '@sveltejs/adapter-vercel': registry.npmjs.org/@sveltejs/adapter-vercel/1.0.0-next.45
+      '@sveltejs/adapter-vercel': registry.npmjs.org/@sveltejs/adapter-vercel/1.0.0-next.46
       '@sveltejs/kit': registry.npmjs.org/@sveltejs/kit/1.0.0-next.294_svelte@3.46.4
       '@typescript-eslint/eslint-plugin': registry.npmjs.org/@typescript-eslint/eslint-plugin/5.13.0_3a0304e4216f58c7e1135459c8d18e32
       '@typescript-eslint/parser': registry.npmjs.org/@typescript-eslint/parser/5.13.0_eslint@7.32.0+typescript@4.6.2
@@ -443,14 +443,6 @@ packages:
       '@iarna/toml': registry.npmjs.org/@iarna/toml/2.2.5
       esbuild: registry.npmjs.org/esbuild/0.14.24
       tiny-glob: registry.npmjs.org/tiny-glob/0.2.9
-    dev: true
-
-  registry.npmjs.org/@sveltejs/adapter-vercel/1.0.0-next.45:
-    resolution: {integrity: sha512-WoOMu4FSWjVeRiPq2NKfdZhobfOLmDykObZmm8JHptMDb0/I5SB+6wstzAeaNtQr2ZbQkUy0k7EX95riJifEEQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@sveltejs/adapter-vercel/-/adapter-vercel-1.0.0-next.45.tgz}
-    name: '@sveltejs/adapter-vercel'
-    version: 1.0.0-next.45
-    dependencies:
-      esbuild: registry.npmjs.org/esbuild/0.14.24
     dev: true
 
   registry.npmjs.org/@sveltejs/adapter-vercel/1.0.0-next.46:
