@@ -8,7 +8,9 @@
   const displayedMath2 = display(`x^2 = ${x*x}`);
 </script>
 
-Coding dynamic mathematical content takes an extra step
+Coding dynamic mathematical content takes an extra step of calling the `math`
+and `display` functions from the
+[Mathlifier library](https://www.npmjs.com/package/mathlifier).
 
 ## Demo
 
@@ -35,9 +37,9 @@ This value {@html inlineMath} and the following are generated dynamically:
 Reload the page to see new values.
 ```
 
-## Dynamic math in svelte
+## Reactive math in svelte
 
-[Truly dynamic and reactive content are probably better served in a svelte file instead.](./dynamic-svelte)
+[Truly reactive content are probably better served in a svelte file instead.](./dynamic-svelte)
 
 ## KaTeX and mathlifier
 

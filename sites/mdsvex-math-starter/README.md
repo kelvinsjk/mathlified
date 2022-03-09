@@ -17,11 +17,12 @@ npm run dev
 
 You can also recreate this starter yourself, either because
 the packages are out of date in the repo, or if you
-have different options (Typescript, ESLint Prettier, etc) in mind.
+have different options (Typescript, ESLint, Prettier, etc) in mind.
 
 ### Create SvelteKit app with mdsvex
 
-Use svelte-add to easily set up a SvelteKit app with your own options (e.g. with or without Typescript, ESLint, Prettier, etc).
+Use [svelte-add](https://github.com/svelte-add/svelte-add)
+to easily set up a SvelteKit app with your own options (e.g. with or without Typescript, ESLint, Prettier, etc).
 Make sure you include mdsvex!
 
 ```bash
@@ -38,12 +39,12 @@ npm i -D rehype-katex-svelte
 ### Dynamic/reactive math?
 
 If you need dynamic and/or reactive mathematical content, install
-KaTeX or mathlifier (my own wrapper around KaTeX)
+[KaTeX](https://katex.org) or [mathlifier](https://github.com/kelvinsjk/mathlified/tree/main/packages/mathlifier)
+(my custom wrapper around KaTeX)
 
 ```bash
-# install either KaTeX or mathlifier
-npm i mathlifier
-# npm i katex
+# install either KaTeX (npm i katex) or mathlifier
+npm i mathlifier 
 ```
 
 ### Add KaTeX stylesheet
