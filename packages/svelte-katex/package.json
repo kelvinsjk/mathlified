@@ -5,6 +5,9 @@
   "devDependencies": {
     "svelte": "^3.44.0"
   },
+  "dependencies": {
+    "katex": "^0.15.2"
+  },
   "exports": {
     "./package.json": "./package.json",
     "./Katex.svelte": "./Katex.svelte",
@@ -14,9 +17,6 @@
   "module": "./src/lib/Katex.svelte",
   "types": "./src/lib/Katex.d.ts",
   "type": "module",
-  "dependencies": {
-    "katex": "^0.15.2"
-  },
   "svelte": "./src/lib/Katex.svelte",
   "repository": {
     "type": "git",
