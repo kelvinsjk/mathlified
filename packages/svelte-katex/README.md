@@ -33,7 +33,36 @@ the following into the head element.
 <Katex displayMode>ax^2+bx+c=0</Katex>
 ```
 
-## Maybe a component isn't necessary?
+### Curly braces
+
+Curly braces are used throughout Svelte as well as LaTeX markup.
+For numbers (e.g. `\sqrt{2}`) the svelte-katex component will still work.
+
+#### Dynamic behavior
+
+For letters, like `\sqrt{x}`, Svelte will try to find a definition for the
+variable `x`. For example,
+
+```svelte
+<script>
+  const x = 2;
+</script>
+<!--This will typeset $\sqrt{2}$-->
+<Katex>\sqrt{x}</Katex>
+```
+
+#### Static behavior
+
+An error will be thrown if `x` was not defined in the earlier example,  To typeset `\sqrt{x}`,
+we will have to use a workaround:
+
+```svelte
+<Katex>\sqrt{'{x}'}</Katex>
+```
+
+## Maybe a component isn't the best approach?
+
+### A functional approach
 
 > While we provide this component, we think using a function is
 > a better way to handle math in Svelte.

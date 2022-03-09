@@ -1,6 +1,6 @@
 {
   "name": "svelte-katex",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "devDependencies": {
     "svelte": "^3.44.0"
@@ -13,8 +13,8 @@
     "./Katex.svelte": "./Katex.svelte",
     ".": "./Katex.svelte"
   },
-  "main": "./Katex.svelte",
-  "module": "./Katex.svelte",
+  "main": "./index.js",
+  "module": "./index.js",
   "types": "./Katex.d.ts",
   "type": "module",
   "svelte": "./Katex.svelte",
