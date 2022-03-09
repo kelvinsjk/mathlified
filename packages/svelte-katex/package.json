@@ -1,0 +1,43 @@
+{
+  "name": "svelte-katex",
+  "version": "1.0.0",
+  "license": "MIT",
+  "devDependencies": {
+    "svelte": "^3.44.0"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./Katex.svelte": "./Katex.svelte",
+    ".": "./src/lib/Katex.svelte"
+  },
+  "main": "./src/lib/Katex.svelte",
+  "module": "./src/lib/Katex.svelte",
+  "types": "./src/lib/Katex.d.ts",
+  "type": "module",
+  "dependencies": {
+    "katex": "^0.15.2"
+  },
+  "svelte": "./src/lib/Katex.svelte",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kelvinsjk/mathlified.git",
+    "directory": "sites/svelte-math/package"
+  },
+  "keywords": [
+    "math",
+    "maths",
+    "mathematics",
+    "Svelte",
+    "SvelteKit",
+    "LaTeX",
+    "KaTeX",
+    "mathlify",
+    "mathlifier",
+    "mathlified"
+  ],
+  "author": "Kelvin Soh",
+  "bugs": {
+    "url": "https://github.com/kelvinsjk/mathlified/issues"
+  },
+  "homepage": "https://svelte-math.vercel.app"
+}

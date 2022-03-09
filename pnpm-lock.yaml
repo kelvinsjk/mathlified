@@ -39,6 +39,15 @@ importers:
       typescript: registry.npmjs.org/typescript/4.6.2
       uvu: registry.npmjs.org/uvu/0.5.3
 
+  packages/svelte-katex:
+    specifiers:
+      katex: ^0.15.2
+      svelte: ^3.44.0
+    dependencies:
+      katex: registry.npmjs.org/katex/0.15.2
+    devDependencies:
+      svelte: registry.npmjs.org/svelte/3.46.4
+
   sites/mathlified:
     specifiers:
       '@sveltejs/adapter-auto': next
