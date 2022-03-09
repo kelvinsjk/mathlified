@@ -135,7 +135,6 @@ importers:
 
   sites/svelte-math:
     specifiers:
-      '@sveltejs/adapter-auto': next
       '@sveltejs/adapter-vercel': ^1.0.0-next.45
       '@sveltejs/kit': next
       '@tailwindcss/typography': ^0.5.0
@@ -166,7 +165,6 @@ importers:
       katex: registry.npmjs.org/katex/0.15.2
       mathlifier: link:../../packages/mathlifier
     devDependencies:
-      '@sveltejs/adapter-auto': registry.npmjs.org/@sveltejs/adapter-auto/1.0.0-next.31
       '@sveltejs/adapter-vercel': registry.npmjs.org/@sveltejs/adapter-vercel/1.0.0-next.46
       '@sveltejs/kit': registry.npmjs.org/@sveltejs/kit/1.0.0-next.294_svelte@3.46.4
       '@tailwindcss/typography': registry.npmjs.org/@tailwindcss/typography/0.5.2_tailwindcss@3.0.23
