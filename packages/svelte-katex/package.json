@@ -1,6 +1,6 @@
 {
   "name": "svelte-katex",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "devDependencies": {
     "svelte": "^3.44.0"
@@ -11,13 +11,13 @@
   "exports": {
     "./package.json": "./package.json",
     "./Katex.svelte": "./Katex.svelte",
-    ".": "./src/lib/Katex.svelte"
+    ".": "./Katex.svelte"
   },
-  "main": "./src/lib/Katex.svelte",
-  "module": "./src/lib/Katex.svelte",
-  "types": "./src/lib/Katex.d.ts",
+  "main": "./Katex.svelte",
+  "module": "./Katex.svelte",
+  "types": "./Katex.d.ts",
   "type": "module",
-  "svelte": "./src/lib/Katex.svelte",
+  "svelte": "./Katex.svelte",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kelvinsjk/mathlified.git",
