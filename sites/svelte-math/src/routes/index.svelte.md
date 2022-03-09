@@ -10,7 +10,15 @@ $$
 
 ## Displaying mathematics in Svelte and SvelteKit
 
-We present 4 methods to display math in Svelte and SvelteKit using [KaTeX](https://katex.org/).
+For something simple and static like `$x=2$` in Svelte (but not SvelteKit),
+the [KaTeX auto-render extension](https://katex.org/docs/autorender.html)
+could work.
+
+However, it will not work for server side rendering in SvelteKit, and
+markup like `$\frac{1}{3}$` will fail
+due to Svelte's interpretation of curly braces.
+
+We explore 3 methods to get around this problem.
 
 <script>
   import Nav from './_Nav/index.svelte'
@@ -18,10 +26,10 @@ We present 4 methods to display math in Svelte and SvelteKit using [KaTeX](https
 
 <Nav />
 
-### Our recommendatations
+### Our recommendations
 
-If you are working with only static math, we recommend the KaTeX auto-render extension.
-MDsveX with plugins is useful if you are already working with MDsveX.
+Content-heavy sites will do best using MDsveX with plugins: markdown is a great for content,
+and we get to preserve the `$,$$` LaTeX syntax.
 
 If dynamic and reactive math is required, we personally prefer the function-based approach as opposed
 to using a component.
@@ -32,10 +40,9 @@ to using a component.
 
 ||`$,$$` syntax|<abbr title="server-side rendering">SSR</abbr>|Dynamic|Reactive|
 |---|:---:|:---:|:---:|:---:|
-|[KaTeX auto-render extension](./auto-render)|✅||||
-|[MDsveX with plugins](https://mdsvex-math-starter.vercel.app/)|✅|✅|||
-|[Component-based approach](./component-based)|||✅|✅|
 |[Functional-based approach](./function-based)||✅|✅|✅|
+|[Component-based approach](./component-based)|||✅|✅|
+|[MDsveX with plugins](https://mdsvex-math-starter.vercel.app/)|✅|✅|||
 
 ### `$,$$` syntax
 

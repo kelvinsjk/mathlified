@@ -54,6 +54,16 @@ npm i mathlifier
 {@html display('ax^2+bx+c=0')}
 ```
 
+#### Insert KaTeX Stylesheet
+
+Just like in KaTeX, we will need to add a stylesheet. Refer to the [KaTeX Documentation](https://katex.org/docs/browser.html) for more details, or add
+the following into the head element.
+
+```html
+<!--in the head element of app.html-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
+```
+
 ### Using KaTeX
 
 #### Install the KaTeX library
@@ -72,4 +82,11 @@ npm i katex
 {@html katex.renderToString('ax^2+bx+c=0')}
 <!--display math example-->
 {@html katex.renderToString('ax^2+bx+c=0', {displayMode: true})}
+```
+
+#### KaTeX Stylesheet
+
+```html
+<!--in the head element of app.html-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
 ```

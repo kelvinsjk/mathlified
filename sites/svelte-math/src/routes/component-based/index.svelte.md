@@ -53,6 +53,16 @@ npm i svelte-katex
 <Katex displayMode>ax^2+bx+c=0</Katex>
 ```
 
+### KaTeX Stylesheet
+
+Just like in KaTeX, we will need to add a stylesheet. Refer to the [KaTeX Documentation](https://katex.org/docs/browser.html) for more details, or add
+the following into the head element.
+
+```html
+<!--in the head element of app.html-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
+```
+
 ## Comparison with function-based approach
 
 We personally prefer the function-based approach due to two reasons:

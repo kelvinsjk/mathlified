@@ -4,15 +4,13 @@
 
 <nav class="flex gap-4 pl-2 py-4 mb-4 bg-zinc-100">
 	<a sveltekit:prefetch class="" class:selected={current === 'home'} href="/">home</a>
-	<a sveltekit:prefetch class="" class:selected={current === 'auto'} href="./auto-render"
-		>auto-render</a
+	<a sveltekit:prefetch class="" class:selected={current === 'function'} href="./function-based"
+		>function</a
 	>
 	<a sveltekit:prefetch class="" class:selected={current === 'component'} href="./component-based"
 		>component</a
 	>
-	<a sveltekit:prefetch class="" class:selected={current === 'function'} href="./function-based"
-		>function</a
-	>
+	<a class="" href="https://mdsvex-math-starter.vercel.app/">mdsvex (ext)</a>
 </nav>
 
 <style>

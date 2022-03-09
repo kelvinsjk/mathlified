@@ -1,1 +1,0 @@
-# KaTeX auto-render extension
