@@ -19,6 +19,9 @@ export function math(x: string, options?: KatexOptionsInline) {
   return katex.renderToString(xString, options);
 }
 
-interface KatexOptionsInline extends katex.KatexOptions {
+import { KatexOptions } from "./interface";
+
+interface KatexOptionsInline extends KatexOptions {
+  /** whether to wrap LaTeX markup with curly braces to prevent line-wrap */
   wrap?: boolean;
 }

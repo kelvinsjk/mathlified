@@ -1,4 +1,3 @@
-import katex from "katex";
 /**
  * Renders displayed math
  *
@@ -15,7 +14,9 @@ import katex from "katex";
  * and wrapping it in a container with `style="overflow-x:auto;"`
  */
 export declare function display(x: string, options?: KatexOptionsDisplay): string;
-interface KatexOptionsDisplay extends katex.KatexOptions {
+import { KatexOptions } from "./interface";
+interface KatexOptionsDisplay extends KatexOptions {
+    /** whether to wrap KaTeX output in a container with style="overflow-x: auto" */
     overflowAuto?: boolean;
 }
 export {};

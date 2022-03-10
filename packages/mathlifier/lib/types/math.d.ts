@@ -1,4 +1,3 @@
-import katex from "katex";
 /**
  * Renders inline math
  *
@@ -14,7 +13,9 @@ import katex from "katex";
  * With default options, is equivalent to calling `katex.renderToString('{'+x+'}', {throwOnError: false})
  */
 export declare function math(x: string, options?: KatexOptionsInline): string;
-interface KatexOptionsInline extends katex.KatexOptions {
+import { KatexOptions } from "./interface";
+interface KatexOptionsInline extends KatexOptions {
+    /** whether to wrap LaTeX markup with curly braces to prevent line-wrap */
     wrap?: boolean;
 }
 export {};
