@@ -40,6 +40,16 @@
 npm i svelte-katex
 ```
 
+### KaTeX Stylesheet
+
+Just like in KaTeX, we will need to add a stylesheet. Refer to the [KaTeX Documentation](https://katex.org/docs/browser.html) for more details, or add
+the following into the head element.
+
+```html
+<!--in the head element of app.html-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
+```
+
 ### Import and use
 
 ```svelte
@@ -53,14 +63,31 @@ npm i svelte-katex
 <Katex displayMode>ax^2+bx+c=0</Katex>
 ```
 
-### KaTeX Stylesheet
+### Curly braces
 
-Just like in KaTeX, we will need to add a stylesheet. Refer to the [KaTeX Documentation](https://katex.org/docs/browser.html) for more details, or add
-the following into the head element.
+Curly braces are used throughout Svelte as well as LaTeX markup.
+For numbers (e.g. `\sqrt{2}`) the svelte-katex component will still work.
 
-```html
-<!--in the head element of app.html-->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
+#### Dynamic behavior
+
+For letters, like `\sqrt{x}`, Svelte will try to find a definition for the
+variable `x`. For example,
+
+```svelte
+<script>
+  const x = 2;
+</script>
+<!--This will typeset $\sqrt{2}$-->
+<Katex>\sqrt{x}</Katex>
+```
+
+#### Static behavior
+
+An error will be thrown if `x` was not defined in the earlier example,  To typeset `\sqrt{x}`,
+we will have to use a workaround:
+
+```svelte
+<Katex>\sqrt{'{x}'}</Katex>
 ```
 
 ## Comparison with function-based approach
@@ -69,6 +96,16 @@ We personally prefer the function-based approach due to two reasons:
 
 - <abbr title="server side rendering">SSR</abbr> support
 - Verbosity
+
+## Gotchas: curly braces and escaping \
+
+When using a component-based approached, curly braces will have be thoughtfully handled as discussed above.
+This could be a pro or con depending on our desired outcome. The function-based approach avoids this problem
+as all LaTeX markup is already stored as a string rather than as Svelte markup.
+
+The one thing to be careful of when using the function-based approach is having to escape all forward slashes `\`.
+So we will have to use `{@html math('\\frac{1}{3}')}` instead of `<Katex>\frac{1}{3}</Katex>` for the
+component-based approach.
 
 ## SSR support
 

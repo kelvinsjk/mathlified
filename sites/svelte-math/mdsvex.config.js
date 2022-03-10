@@ -9,7 +9,7 @@ const config = defineConfig({
 		dashes: 'oldschool'
 	},
 
-	layout: "./src/routes/_mdLayout.svelte",
+	layout: "src/routes/_mdLayout.svelte",
 
 	remarkPlugins: [remarkMath],
 	rehypePlugins: [rehypeKatex],

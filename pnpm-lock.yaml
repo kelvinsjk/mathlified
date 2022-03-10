@@ -142,6 +142,29 @@ importers:
       tslib: registry.npmjs.org/tslib/2.3.1
       typescript: registry.npmjs.org/typescript/4.6.2
 
+  sites/svelte:
+    specifiers:
+      '@sveltejs/vite-plugin-svelte': ^1.0.0-next.30
+      '@tsconfig/svelte': ^2.0.1
+      svelte: ^3.44.0
+      svelte-check: ^2.2.7
+      svelte-katex: workspace:^0.1.1
+      svelte-preprocess: ^4.9.8
+      tslib: ^2.3.1
+      typescript: ^4.5.4
+      vite: ^2.8.0
+    dependencies:
+      svelte-katex: link:../../packages/svelte-katex
+    devDependencies:
+      '@sveltejs/vite-plugin-svelte': registry.npmjs.org/@sveltejs/vite-plugin-svelte/1.0.0-next.39_svelte@3.46.4+vite@2.8.6
+      '@tsconfig/svelte': registry.npmjs.org/@tsconfig/svelte/2.0.1
+      svelte: registry.npmjs.org/svelte/3.46.4
+      svelte-check: registry.npmjs.org/svelte-check/2.4.5_svelte@3.46.4
+      svelte-preprocess: registry.npmjs.org/svelte-preprocess/4.10.4_svelte@3.46.4+typescript@4.6.2
+      tslib: registry.npmjs.org/tslib/2.3.1
+      typescript: registry.npmjs.org/typescript/4.6.2
+      vite: registry.npmjs.org/vite/2.8.6
+
   sites/svelte-math:
     specifiers:
       '@sveltejs/adapter-vercel': ^1.0.0-next.0
@@ -521,6 +544,12 @@ packages:
       lodash.isplainobject: registry.npmjs.org/lodash.isplainobject/4.0.6
       lodash.merge: registry.npmjs.org/lodash.merge/4.6.2
       tailwindcss: registry.npmjs.org/tailwindcss/3.0.23_autoprefixer@10.4.2
+    dev: true
+
+  registry.npmjs.org/@tsconfig/svelte/2.0.1:
+    resolution: {integrity: sha512-aqkICXbM1oX5FfgZd2qSSAGdyo/NRxjWCamxoyi3T8iVQnzGge19HhDYzZ6NrVOW7bhcWNSq9XexWFtMzbB24A==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@tsconfig/svelte/-/svelte-2.0.1.tgz}
+    name: '@tsconfig/svelte'
+    version: 2.0.1
     dev: true
 
   registry.npmjs.org/@types/estree/0.0.39:
