@@ -51,7 +51,7 @@ our app makes inserting math easy.
 
 ### Server-side rendering (SSR)
 
-SSR, along with all its benefits, is a big part SvelteKit. Support for this feature
+SSR, along with all its benefits, is a big part of SvelteKit. Support for this feature
 means that the math we want to render is already sent to the client as HTML without
 having the client to render it again with JavaScript.
 
