@@ -1,12 +1,17 @@
 {
 	"name": "mathlifier",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "A KaTeX renderToString wrapper",
 	"source": "src/index.ts",
 	"type": "module",
 	"main": "lib/index.js",
 	"module": "lib/index.js",
 	"types": "lib/index.d.ts",
+	"exports": {
+		".": {
+			"import": "./lib/index.js"
+		}
+	},
 	"scripts": {
 		"prepare": "pnpm run build",
 		"prepublishOnly": "pnpm test && pnpm lint",
