@@ -1,3 +1,4 @@
+import type { KatexOptions } from "./math";
 /**
  * Renders displayed math
  *
@@ -14,7 +15,6 @@
  * and wrapping it in a container with `style="overflow-x:auto;"`
  */
 export declare function display(x: string, options?: KatexOptionsDisplay): string;
-import { KatexOptions } from "./interface";
 interface KatexOptionsDisplay extends KatexOptions {
     /** whether to wrap KaTeX output in a container with style="overflow-x: auto" */
     overflowAuto?: boolean;
