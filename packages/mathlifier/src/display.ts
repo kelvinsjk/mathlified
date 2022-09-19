@@ -29,7 +29,7 @@ export function display(x: string, options?: KatexOptionsDisplay) {
   return katexString;
 }
 
-interface KatexOptionsDisplay extends KatexOptions {
+export interface KatexOptionsDisplay extends KatexOptions {
   /** whether to wrap KaTeX output in a container with style="overflow-x: auto" */
   overflowAuto?: boolean;
 }
