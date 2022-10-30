@@ -20,19 +20,23 @@ We are in very early alpha, and will slowly build things out from here.
 
 ### Mathlifier
 
-A KaTeX wrapper library
+A KaTeX wrapper library. [Link to folder](https://github.com/kelvinsjk/mathlified/tree/main/packages/mathlifier)
 
 ### Mathlified main site
 
+Under construction
+
 ### Svelte math site
+
+A comparison of different ways to typeset mathematics in Svelte. [Link to site](https://svelte-math.vercel.app)
 
 ### Svelte KaTeX
 
-A Svelte component using KaTeX to typeset math
+A Svelte component using KaTeX to typeset math 
 
 ### MDsveX KaTeX starter
 
-A MDsveX SvelteKit starter that supports math
+A MDsveX SvelteKit starter that supports math [Link to site](https://mdsvex-math-starter.vercel.app)
 
 ## License
 
