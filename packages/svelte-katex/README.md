@@ -71,4 +71,4 @@ This can be done with the [mathlifier](https://www.npmjs.com/package/mathlifier)
 or with just the [KaTeX](https://katex.org) library itself with `katex.renderToString`.
 
 > See the two methods and a comparison at
-> [Svelte Math]('https://svelte-math.vercel.app')
+> [Svelte Math](https://svelte-math.vercel.app)
