@@ -31,7 +31,7 @@
 
 ## Implement this
 
-To implement this approach, either install the [KaTeX](https://katex.ord)
+To implement this approach, either install the [KaTeX](https://katex.org)
 library or our [Mathlifier](https://www.npmjs.com/package/mathlifier) wrapper.
 
 ### Using Mathlifier
