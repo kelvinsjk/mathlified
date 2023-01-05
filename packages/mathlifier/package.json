@@ -62,11 +62,11 @@
 		"rollup-plugin-dts": "^4.2.0",
 		"rollup-plugin-terser": "^7.0.2",
 		"tslib": "^2.3.1",
+		"tsm": "^2.2.2",
 		"typescript": "^4.4.4",
-		"uvu": "^0.5.2",
-		"tsm": "^2.2.2"
+		"uvu": "^0.5.2"
 	},
 	"dependencies": {
-		"katex": "^0.16.2"
+		"katex": "^0.16.4"
 	}
 }

@@ -40,7 +40,7 @@ npm i mathlifier
 
 ```js
 // import functions
-import {math, display} from 'mathlifier'
+import { math, display } from 'mathlifier';
 // example of using these functions
 const inlineMath = math('ax^2+bx+c=0');
 const displayedMath = display('x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}');
@@ -54,7 +54,12 @@ Just like in KaTeX, we will need to add a stylesheet. Refer to the [KaTeX Docume
 the following into the head element.
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
+<link
+	rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
+	integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"
+	crossorigin="anonymous"
+/>
 ```
 
 ## Custom Mathlified options
@@ -63,8 +68,8 @@ We can disable the default behavior (opinions 2 and 3 above) of Mathlified vs re
 
 ```js
 // example of Mathlified options
-const allowBreak =  math('e^{i\\pi} = -1', {wrap: true});
-const noContainer = display('\\sum_{r=1}^n = \\frac{n(n+1)}{2}', {overflowAuto: false});
+const allowBreak = math('e^{i\\pi} = -1', { wrap: true });
+const noContainer = display('\\sum_{r=1}^n = \\frac{n(n+1)}{2}', { overflowAuto: false });
 ```
 
 ## KaTeX options
@@ -73,8 +78,38 @@ All [KaTeX options](https://katex.org/docs/options.html) are passed along.
 
 ```js
 // example of KaTeX options
-const leftEqn = display('\\begin{equation} A = \\pi r^2', {leqno:true, fleqn: true});
+const leftEqn = display('\\begin{equation} A = \\pi r^2 \\end{equation}', {
+	leqno: true,
+	fleqn: true,
+});
 ```
+
+## Other features
+
+We also have quick wrappers for four of the commonly used display environments: `align`, `align*`, `gather`, `gather*`.
+
+```js
+// display environments
+import { align, alignStar, gather, gatherStar } from 'mathlifier';
+const gatherEnv = alignStar(`
+  x+3y &= 3 \\\\
+  2x-y &= -2
+`);
+// equivalent to
+// display(`\\begin{align*}
+//   x+3y &= 3 \\\\
+//   2x-y &= -2
+// \\end{align*}
+// `);
+```
+
+### Typesetting Utils
+
+We have also added `linebreak` (to add the html `<br>` tag) and the function `bold(x)`
+(to wrap `x` in the `<strong></strong>` environment).
+
+This is to facilitate using the same javascript code to generate both HTML (via KaTeX)
+and LaTeX by swapping out this library for an upcoming package (Mathlifier2?).
 
 ## Credits
 
