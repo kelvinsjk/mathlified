@@ -1,4 +1,4 @@
-import { display, type KatexOptionsDisplay } from "./display";
+import { display, type KatexOptionsDisplay } from './display';
 
 /**
  * Renders align environment in displayed mode
@@ -18,13 +18,13 @@ import { display, type KatexOptionsDisplay } from "./display";
  * and wrapping it in a container with `style="overflow-x:auto;"`
  */
 export function align(x: string, options?: KatexOptionsDisplay) {
-  options = {
-    overflowAuto: true,
-    throwOnError: false,
-    displayMode: true,
-    ...options,
-  };
-  return displayEnvironment("align", x, options);
+	options = {
+		overflowAuto: true,
+		throwOnError: false,
+		displayMode: true,
+		...options,
+	};
+	return displayEnvironment('align', x, options);
 }
 
 /**
@@ -45,13 +45,13 @@ export function align(x: string, options?: KatexOptionsDisplay) {
  * and wrapping it in a container with `style="overflow-x:auto;"`
  */
 export function alignStar(x: string, options?: KatexOptionsDisplay) {
-  options = {
-    overflowAuto: true,
-    throwOnError: false,
-    displayMode: true,
-    ...options,
-  };
-  return displayEnvironment("align*", x, options);
+	options = {
+		overflowAuto: true,
+		throwOnError: false,
+		displayMode: true,
+		...options,
+	};
+	return displayEnvironment('align*', x, options);
 }
 
 /**
@@ -72,13 +72,13 @@ export function alignStar(x: string, options?: KatexOptionsDisplay) {
  * and wrapping it in a container with `style="overflow-x:auto;"`
  */
 export function gather(x: string, options?: KatexOptionsDisplay) {
-  options = {
-    overflowAuto: true,
-    throwOnError: false,
-    displayMode: true,
-    ...options,
-  };
-  return displayEnvironment("gather", x, options);
+	options = {
+		overflowAuto: true,
+		throwOnError: false,
+		displayMode: true,
+		...options,
+	};
+	return displayEnvironment('gather', x, options);
 }
 
 /**
@@ -99,30 +99,26 @@ export function gather(x: string, options?: KatexOptionsDisplay) {
  * and wrapping it in a container with `style="overflow-x:auto;"`
  */
 export function gatherStar(x: string, options?: KatexOptionsDisplay) {
-  options = {
-    overflowAuto: true,
-    throwOnError: false,
-    displayMode: true,
-    ...options,
-  };
-  return displayEnvironment("gather*", x, options);
+	options = {
+		overflowAuto: true,
+		throwOnError: false,
+		displayMode: true,
+		...options,
+	};
+	return displayEnvironment('gather*', x, options);
 }
 
-function displayEnvironment(
-  env: string,
-  x: string,
-  options?: KatexOptionsDisplay
-) {
-  options = {
-    overflowAuto: true,
-    throwOnError: false,
-    displayMode: true,
-    ...options,
-  };
-  return display(
-    `\\begin{${env}}
+function displayEnvironment(env: string, x: string, options?: KatexOptionsDisplay) {
+	options = {
+		overflowAuto: true,
+		throwOnError: false,
+		displayMode: true,
+		...options,
+	};
+	return display(
+		`\\begin{${env}}
     ${x}
   \\end{${env}}`,
-    options
-  );
+		options,
+	);
 }
