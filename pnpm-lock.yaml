@@ -12,7 +12,7 @@ importers:
       '@typescript-eslint/parser': ^5.0.0
       c8: ^7.10.0
       eslint: ^8.0.1
-      katex: ^0.16.2
+      katex: ^0.16.4
       prettier: ^2.4.1
       rollup: ^2.69.0
       rollup-plugin-dts: ^4.2.0
@@ -22,7 +22,7 @@ importers:
       typescript: ^4.4.4
       uvu: ^0.5.2
     dependencies:
-      katex: registry.npmjs.org/katex/0.16.2
+      katex: registry.npmjs.org/katex/0.16.4
     devDependencies:
       '@rollup/plugin-commonjs': registry.npmjs.org/@rollup/plugin-commonjs/21.0.2_rollup@2.69.0
       '@rollup/plugin-node-resolve': registry.npmjs.org/@rollup/plugin-node-resolve/13.1.3_rollup@2.69.0
@@ -219,11 +219,29 @@ packages:
     dependencies:
       '@babel/highlight': registry.npmjs.org/@babel/highlight/7.16.10
 
+  registry.npmjs.org/@babel/code-frame/7.18.6:
+    resolution: {integrity: sha512-TDCmlK5eOvH+eH7cdAFlNXeVJqWIQ7gW9tY1GJIpUtFb6CmjVyq2VM3u71bOyR8CRihcCgMUYoDNyLXao3+70Q==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.18.6.tgz}
+    name: '@babel/code-frame'
+    version: 7.18.6
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      '@babel/highlight': registry.npmjs.org/@babel/highlight/7.18.6
+    dev: true
+    optional: true
+
   registry.npmjs.org/@babel/helper-validator-identifier/7.16.7:
     resolution: {integrity: sha512-hsEnFemeiW4D08A5gUAZxLBTXpZ39P+a+DGDsHw1yxqyQ/jzFEnxf5uTEGp+3bzAbNOxU1paTgYS4ECU/IgfDw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@babel/helper-validator-identifier/-/helper-validator-identifier-7.16.7.tgz}
     name: '@babel/helper-validator-identifier'
     version: 7.16.7
     engines: {node: '>=6.9.0'}
+
+  registry.npmjs.org/@babel/helper-validator-identifier/7.19.1:
+    resolution: {integrity: sha512-awrNfaMtnHUr653GgGEs++LlAvW6w+DcPrOliSMXWCKo597CwL5Acf/wWdNkf/tfEQE3mjkeD1YOVZOUV/od1w==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@babel/helper-validator-identifier/-/helper-validator-identifier-7.19.1.tgz}
+    name: '@babel/helper-validator-identifier'
+    version: 7.19.1
+    engines: {node: '>=6.9.0'}
+    dev: true
+    optional: true
 
   registry.npmjs.org/@babel/highlight/7.16.10:
     resolution: {integrity: sha512-5FnTQLSLswEj6IkgVw5KusNUUFY9ZGqe/TRFnP/BKYHYgfh7tc+C7mwiy95/yNP7Dh9x580Vv8r7u7ZfTBFxdw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@babel/highlight/-/highlight-7.16.10.tgz}
@@ -234,6 +252,18 @@ packages:
       '@babel/helper-validator-identifier': registry.npmjs.org/@babel/helper-validator-identifier/7.16.7
       chalk: registry.npmjs.org/chalk/2.4.2
       js-tokens: registry.npmjs.org/js-tokens/4.0.0
+
+  registry.npmjs.org/@babel/highlight/7.18.6:
+    resolution: {integrity: sha512-u7stbOuYjaPezCuLj29hNW1v64M2Md2qupEKP1fHc7WdOA3DgLh37suiSrZYY7haUB7iBeQZ9P1uiRF359do3g==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@babel/highlight/-/highlight-7.18.6.tgz}
+    name: '@babel/highlight'
+    version: 7.18.6
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      '@babel/helper-validator-identifier': registry.npmjs.org/@babel/helper-validator-identifier/7.19.1
+      chalk: registry.npmjs.org/chalk/2.4.2
+      js-tokens: registry.npmjs.org/js-tokens/4.0.0
+    dev: true
+    optional: true
 
   registry.npmjs.org/@bcoe/v8-coverage/0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz}
@@ -3051,10 +3081,10 @@ packages:
       commander: registry.npmjs.org/commander/8.3.0
     dev: false
 
-  registry.npmjs.org/katex/0.16.2:
-    resolution: {integrity: sha512-70DJdQAyh9EMsthw3AaQlDyFf54X7nWEUIa5W+rq8XOpEk//w5Th7/8SqFqpvi/KZ2t6MHUj4f9wLmztBmAYQA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/katex/-/katex-0.16.2.tgz}
+  registry.npmjs.org/katex/0.16.4:
+    resolution: {integrity: sha512-WudRKUj8yyBeVDI4aYMNxhx5Vhh2PjpzQw1GRu/LVGqL4m1AxwD1GcUp0IMbdJaf5zsjtj8ghP0DOQRYhroNkw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/katex/-/katex-0.16.4.tgz}
     name: katex
-    version: 0.16.2
+    version: 0.16.4
     hasBin: true
     dependencies:
       commander: registry.npmjs.org/commander/8.3.0
@@ -3806,7 +3836,7 @@ packages:
       rollup: registry.npmjs.org/rollup/2.69.0
       typescript: registry.npmjs.org/typescript/4.6.2
     optionalDependencies:
-      '@babel/code-frame': registry.npmjs.org/@babel/code-frame/7.16.7
+      '@babel/code-frame': registry.npmjs.org/@babel/code-frame/7.18.6
     dev: true
 
   registry.npmjs.org/rollup-plugin-terser/7.0.2_rollup@2.69.0:
