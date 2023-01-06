@@ -8549,8 +8549,7 @@ defineFunction({
   names: ["\\\\"],
   props: {
     numArgs: 0,
-    numOptionalArgs: 1,
-    argTypes: ["size"],
+    numOptionalArgs: 0,
     allowedInText: true
   },
 
@@ -8558,7 +8557,7 @@ defineFunction({
     var {
       parser
     } = _ref;
-    var size = optArgs[0];
+    var size = parser.gullet.future().text === "[" ? parser.parseSizeGroup(true) : null;
     var newLine = !parser.settings.displayMode || !parser.settings.useStrictBehavior("newLineInDisplayMode", "In LaTeX, \\\\ or \\newline " + "does nothing in display mode");
     return {
       type: "cr",
@@ -10298,6 +10297,13 @@ function getHLines(parser) {
   var hlineInfo = [];
   parser.consumeSpaces();
   var nxt = parser.fetch().text;
+
+  if (nxt === "\\relax") {
+    // \relax is an artifact of the \cr macro below
+    parser.consume();
+    parser.consumeSpaces();
+    nxt = parser.fetch().text;
+  }
 
   while (nxt === "\\hline" || nxt === "\\hdashline") {
     parser.consume();
@@ -18290,7 +18296,7 @@ var katex = {
   /**
    * Current KaTeX version
    */
-  version: "0.16.2",
+  version: "0.16.4",
 
   /**
    * Renders the given LaTeX into an HTML+MathML combination, and adds
@@ -18450,7 +18456,7 @@ function align(x, options) {
         displayMode: true,
         ...options,
     };
-    return displayEnvironment("align", x, options);
+    return displayEnvironment('align', x, options);
 }
 /**
  * Renders align* environment in displayed mode
@@ -18476,7 +18482,7 @@ function alignStar(x, options) {
         displayMode: true,
         ...options,
     };
-    return displayEnvironment("align*", x, options);
+    return displayEnvironment('align*', x, options);
 }
 /**
  * Renders gather environment in displayed mode
@@ -18502,7 +18508,7 @@ function gather(x, options) {
         displayMode: true,
         ...options,
     };
-    return displayEnvironment("gather", x, options);
+    return displayEnvironment('gather', x, options);
 }
 /**
  * Renders gather* environment in displayed mode
@@ -18528,7 +18534,7 @@ function gatherStar(x, options) {
         displayMode: true,
         ...options,
     };
-    return displayEnvironment("gather*", x, options);
+    return displayEnvironment('gather*', x, options);
 }
 function displayEnvironment(env, x, options) {
     options = {
@@ -18542,5 +18548,10 @@ function displayEnvironment(env, x, options) {
   \\end{${env}}`, options);
 }
 
-export { align, alignStar, display, gather, gatherStar, math };
+const linebreak = '<br>';
+function bold(x) {
+    return `<strong>${x}</strong>`;
+}
+
+export { align, alignStar, bold, display, gather, gatherStar, linebreak, math };
 //# sourceMappingURL=index.js.map

@@ -3,7 +3,7 @@
 A wrapper for KaTeX `renderToString` for inline and displayed math
 
 [![mathlifier npm version](https://img.shields.io/npm/v/mathlifier)](https://github.com/kelvinsjk/mathlified/tree/main/packages/mathlifier)
-[![mathlifier.min.js size](https://img.shields.io/bundlephobia/minzip/mathlifier)](https://github.com/kelvinsjk/mathlified/tree/main/packages/mathlifier)
+[![mathlifier minzip size](https://img.shields.io/bundlephobia/minzip/mathlifier)](https://github.com/kelvinsjk/mathlified/tree/main/packages/mathlifier)
 
 ---
 
@@ -18,11 +18,15 @@ Mathlifier repackages these function calls as `math()` and `display()`, along wi
 
 ### Opinion 1: throwOnError: false
 
-> While KaTeX sets throwOnError to `true` by default, we have opted to set it to false.
+> While KaTeX sets throwOnError to `true` by default, we have opted to set it to false
+
+We think that this facilitates quicker debugging (especially useful when hot module reloading (HMR) is active).
 
 ### Opinion 2: No line break in inline math
 
-> By default, we wrap all inputs with braces to prevent line-breaking.
+> By default, we wrap all inputs with braces to prevent automatic line-breaking.
+
+Disable this with an [option](#custom-mathlifier-options)
 
 ### Opinion 3: Displayed math with overflow-x: auto
 
@@ -30,13 +34,15 @@ Mathlifier repackages these function calls as `math()` and `display()`, along wi
 > `overflow-x: auto`. We believe this modification makes the output more
 > mobile-friendly.
 
+Disable this with an [option](#custom-mathlifier-options)
+
 ## Installing Mathlifier
 
 ```bash
 npm i mathlifier
 ```
 
-## Using Mathlified
+## Using Mathlifier
 
 ```js
 // import functions
@@ -56,18 +62,18 @@ the following into the head element.
 ```html
 <link
 	rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
-	integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"
+	href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css"
+	integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0"
 	crossorigin="anonymous"
 />
 ```
 
-## Custom Mathlified options
+## Custom Mathlifier options
 
-We can disable the default behavior (opinions 2 and 3 above) of Mathlified vs regular KaTeX
+We can disable the default behavior (opinions 2 and 3 above) of Mathlifier vs regular KaTeX
 
 ```js
-// example of Mathlified options
+// example of Mathlifier options
 const allowBreak = math('e^{i\\pi} = -1', { wrap: true });
 const noContainer = display('\\sum_{r=1}^n = \\frac{n(n+1)}{2}', { overflowAuto: false });
 ```
