@@ -1,4 +1,4 @@
-import type { KatexOptions } from "./math";
+import type { KatexOptions } from './math';
 /**
  * Renders displayed math
  *

@@ -3,7 +3,7 @@
 ## Demo
 
 <script>
-  import ComponentBased from './_ComponentBased.svelte';
+  import ComponentBased from './ComponentBased.svelte';
 </script>
 
 <ComponentBased />
@@ -47,7 +47,12 @@ the following into the head element.
 
 ```html
 <!--in the head element of app.html-->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
+<link
+	rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
+	integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"
+	crossorigin="anonymous"
+/>
 ```
 
 ### Import and use
@@ -83,7 +88,7 @@ variable `x`. For example,
 
 #### Static behavior
 
-An error will be thrown if `x` was not defined in the earlier example,  To typeset `\sqrt{x}`,
+An error will be thrown if `x` was not defined in the earlier example, To typeset `\sqrt{x}`,
 we will have to use a workaround:
 
 ```svelte

@@ -26,7 +26,9 @@
 <header>
 	<Nav {current} />
 </header>
-<slot />
+<main class="prose max-w-full m-2">
+	<slot />
+</main>
 <footer class="pl-2 py-4 mt-4 bg-zinc-100">
 	<a class="text-blue-500 underline" rel="external" href="https://github.com/kelvinsjk/mathlified"
 		>Mathlified Github</a

@@ -40,7 +40,7 @@ interface KatexOptions {
      *
      * @default 'htmlAndMathml'
      */
-    output?: "html" | "mathml" | "htmlAndMathml" | undefined;
+    output?: 'html' | 'mathml' | 'htmlAndMathml' | undefined;
     /**
      * If `true`, display math has \tags rendered on the left
      * instead of the right, like \usepackage[leqno]{amsmath} in LaTeX.
@@ -233,4 +233,7 @@ declare function gather(x: string, options?: KatexOptionsDisplay): string;
  */
 declare function gatherStar(x: string, options?: KatexOptionsDisplay): string;
 
-export { align, alignStar, display, gather, gatherStar, math };
+declare const linebreak = "<br>";
+declare function bold(x: string): string;
+
+export { align, alignStar, bold, display, gather, gatherStar, linebreak, math };

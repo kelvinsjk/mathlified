@@ -1,4 +1,4 @@
-import { type KatexOptionsDisplay } from "./display";
+import { type KatexOptionsDisplay } from './display';
 /**
  * Renders align environment in displayed mode
  *
