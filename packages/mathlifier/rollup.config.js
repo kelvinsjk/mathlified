@@ -1,29 +1,24 @@
-import nodeResolve from "@rollup/plugin-node-resolve";
-import commonJS from "@rollup/plugin-commonjs";
-import typescript from "@rollup/plugin-typescript";
-import dts from "rollup-plugin-dts";
-import pkg from "./package.json";
-import { terser } from "rollup-plugin-terser";
+import nodeResolve from '@rollup/plugin-node-resolve';
+import commonJS from '@rollup/plugin-commonjs';
+import typescript from '@rollup/plugin-typescript';
+import terser from '@rollup/plugin-terser';
+import dts from 'rollup-plugin-dts';
+import pkg from './package.json' assert { type: 'json' };
 
 export default [
 	{
-		input: "src/index.ts",
-		plugins: [
-			nodeResolve(),
-			commonJS(),
-			//terser(),
-			typescript({ tsconfig: "./tsconfig.json" }),
-		],
+		input: 'src/index.ts',
+		plugins: [nodeResolve(), commonJS(), terser(), typescript({ tsconfig: './tsconfig.json' })],
 		output: {
-			name: "mathlifier",
+			name: 'mathlifier',
 			sourcemap: true,
 			file: pkg.main,
-			format: "es",
+			format: 'es',
 		},
 	},
 	{
-		input: "lib/types/index.d.ts",
-		output: { file: "lib/index.d.ts", format: "es" },
+		input: 'lib/types/index.d.ts',
+		output: { file: 'lib/index.d.ts', format: 'es' },
 		plugins: [dts()],
 	},
 ];

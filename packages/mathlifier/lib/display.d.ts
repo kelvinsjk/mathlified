@@ -1,4 +1,3 @@
-import katex from 'katex';
 import type { KatexOptions } from './math';
 /**
  * Renders displayed math
@@ -15,21 +14,8 @@ import type { KatexOptions } from './math';
  * With default options, is equivalent to calling `katex.renderToString(x, {throwOnError: false, displayMode: true})
  * and wrapping it in a container with `style="overflow-x:auto;"`
  */
-export function display(x: string, options?: KatexOptionsDisplay) {
-	options = {
-		overflowAuto: true,
-		throwOnError: false,
-		displayMode: true,
-		...options,
-	};
-	let katexString = katex.renderToString(x, options);
-	katexString = options.overflowAuto
-		? `<div style="overflow-x:auto;" class="mathlifier-display">${katexString}</div>`
-		: katexString;
-	return katexString;
-}
-
+export declare function display(x: string, options?: KatexOptionsDisplay): string;
 export interface KatexOptionsDisplay extends KatexOptions {
-	/** whether to wrap KaTeX output in a container with style="overflow-x: auto" */
-	overflowAuto?: boolean;
+    /** whether to wrap KaTeX output in a container with style="overflow-x: auto" */
+    overflowAuto?: boolean;
 }
