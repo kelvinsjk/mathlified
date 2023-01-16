@@ -1,121 +1,66 @@
 # Mathlifier2
 
-A wrapper for KaTeX `renderToString` for inline and displayed math
+Mathlifier2, together with [Mathlifier](https://www.npmjs.com/package/mathlifier), provides
+a set of utilities to typeset Mathematics. Mathlifier converts code into HTML-ready
+KaTeX markup while Mathlifier2 converts code into LaTeX-ready markup ready to be
+inserted into a `.tex` document and compiled.
 
-[![mathlifier npm version](https://img.shields.io/npm/v/mathlifier)](https://github.com/kelvinsjk/mathlified/tree/main/packages/mathlifier)
-[![mathlifier minzip size](https://img.shields.io/bundlephobia/minzip/mathlifier)](https://github.com/kelvinsjk/mathlified/tree/main/packages/mathlifier)
+[![mathlifier2 npm version](https://img.shields.io/npm/v/mathlifier)](https://github.com/kelvinsjk/mathlified/tree/main/packages/mathlifier2)
+[![mathlifier2 minzip size](https://img.shields.io/bundlephobia/minzip/mathlifier)](https://github.com/kelvinsjk/mathlified/tree/main/packages/mathlifier2)
 
 ---
 
-## Why Mathlifier?
+## What are the features of Mathlifier2?
 
-Using KaTeX with dynamic/reactive mathematical content, or
-with server side rendering, typically mean calling
-`katex.renderToString()` many times.
+The following features are unified in Mathlifier and Mathlifier2.
 
-Mathlifier repackages these function calls as `math()` and `display()`, along with
-3 opinions:
+### Mathematical typesetting
 
-### Opinion 1: throwOnError: false
+- `math('x')` to produce `${x}$` and `math('x', {wrap: true})` to produce `$x$`
+- `display('x')` to produce `$x$`
 
-> While KaTeX sets throwOnError to `true` by default, we have opted to set it to false
+### Mathematical environments
 
-We think that this facilitates quicker debugging (especially useful when hot module reloading (HMR) is active).
+- `equation('x=3')` to produce `\begin{equation} x=3 \end{equation}`
+- `equationStar('')` for the `equation*` environment
+- `align()`
+- `alignStar()`
+- `alignat('x&=2& \quad 'y&=3', 2)`
+- `alignatStar()`
+- `gather()`
+- `gatherStar()`
 
-### Opinion 2: No line break in inline math
+### General typesetting
 
-> By default, we wrap all inputs with braces to prevent automatic line-breaking.
+- `linebreak`
+- `newline`
+- `bold()`, `strong()`
+- `emph()`, `em()`,
+- `newParagraph`
 
-Disable this with an [option](#custom-mathlifier-options)
-
-### Opinion 3: Displayed math with overflow-x: auto
-
-> By default, we place displayed math inside a container styled with
-> `overflow-x: auto`. We believe this modification makes the output more
-> mobile-friendly.
-
-Disable this with an [option](#custom-mathlifier-options)
-
-## Installing Mathlifier
+## Installing Mathlifier2
 
 ```bash
-npm i mathlifier
+npm i mathlifier2
 ```
 
-## Using Mathlifier
+## Using Mathlifier2
 
 ```js
 // import functions
-import { math, display } from 'mathlifier';
+import { math, display } from 'mathlifier2';
 // example of using these functions
 const inlineMath = math('ax^2+bx+c=0');
 const displayedMath = display('x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}');
 ```
 
-Subsequently, attach the HTML string(s) generated to the DOM.
+Subsequently, attach the string(s) to a TeX document.
 
-### KaTeX Stylesheet
+## Upcoming Mathlified framework
 
-Just like in KaTeX, we will need to add a stylesheet. Refer to the [KaTeX Documentation](https://katex.org/docs/browser.html) for more details, or add
-the following into the head element.
-
-```html
-<link
-	rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css"
-	integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0"
-	crossorigin="anonymous"
-/>
-```
-
-## Custom Mathlifier options
-
-We can disable the default behavior (opinions 2 and 3 above) of Mathlifier vs regular KaTeX
-
-```js
-// example of Mathlifier options
-const allowBreak = math('e^{i\\pi} = -1', { wrap: true });
-const noContainer = display('\\sum_{r=1}^n = \\frac{n(n+1)}{2}', { overflowAuto: false });
-```
-
-## KaTeX options
-
-All [KaTeX options](https://katex.org/docs/options.html) are passed along.
-
-```js
-// example of KaTeX options
-const leftEqn = display('\\begin{equation} A = \\pi r^2 \\end{equation}', {
-	leqno: true,
-	fleqn: true,
-});
-```
-
-## Other features
-
-We also have quick wrappers for four of the commonly used display environments: `align`, `align*`, `gather`, `gather*`.
-
-```js
-// display environments
-import { align, alignStar, gather, gatherStar } from 'mathlifier';
-const gatherEnv = alignStar(`
-  x+3y &= 3 \\\\
-  2x-y &= -2
-`);
-// equivalent to
-// display(`\\begin{align*}
-//   x+3y &= 3 \\\\
-//   2x-y &= -2
-// \\end{align*}
-// `);
-```
-
-### Typesetting Utils
-
-We have also added `linebreak` (to add the html `<br>` tag) and the function `bold(x)`
-(to wrap `x` in the `<strong></strong>` environment).
-
-This is to facilitate using the same javascript code to generate both HTML (via KaTeX)
-and LaTeX by swapping out this library for an upcoming package (Mathlifier2?).
+We are working on a SvelteKit + TeX framework (in the form of a Vite plugin)
+that uses Mathlifier and Mathlifier2 to generate a SvelteKit website/webapp
+along with TeX and pdf files all from the same codebase. Stay tuned.
 
 ## Credits
 
