@@ -11,16 +11,14 @@ const config = {
 		preprocess({
 			postcss: true
 		}),
-		mdsvex(mdsvexConfig),
+		mdsvex(mdsvexConfig)
 	],
 
 	kit: {
 		adapter: adapter()
 	},
 
-	extensions: ['.svelte', ...mdsvexConfig.extensions],
-
-	dir: 'svelte-katex'
+	extensions: ['.svelte', ...mdsvexConfig.extensions]
 };
 
 export default config;
