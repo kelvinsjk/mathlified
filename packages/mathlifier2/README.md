@@ -17,7 +17,7 @@ The following features are unified in Mathlifier and Mathlifier2.
 ### Mathematical typesetting
 
 - `math('x')` to produce `${x}$` and `math('x', {wrap: true})` to produce `$x$`
-- `display('x')` to produce `$x$`
+- `display('x')` to produce `$$x$$`
 
 ### Mathematical environments
 
