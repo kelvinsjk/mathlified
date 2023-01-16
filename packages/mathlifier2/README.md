@@ -5,8 +5,8 @@ a set of utilities to typeset Mathematics. Mathlifier converts code into HTML-re
 KaTeX markup while Mathlifier2 converts code into LaTeX-ready markup ready to be
 inserted into a `.tex` document and compiled.
 
-[![mathlifier2 npm version](https://img.shields.io/npm/v/mathlifier)](https://github.com/kelvinsjk/mathlified/tree/main/packages/mathlifier2)
-[![mathlifier2 minzip size](https://img.shields.io/bundlephobia/minzip/mathlifier)](https://github.com/kelvinsjk/mathlified/tree/main/packages/mathlifier2)
+[![mathlifier2 npm version](https://img.shields.io/npm/v/mathlifier2)](https://github.com/kelvinsjk/mathlified/tree/main/packages/mathlifier2)
+[![mathlifier2 minzip size](https://img.shields.io/bundlephobia/minzip/mathlifier2)](https://github.com/kelvinsjk/mathlified/tree/main/packages/mathlifier2)
 
 ---
 
