@@ -2,7 +2,7 @@ import nodeResolve from '@rollup/plugin-node-resolve';
 import commonJS from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import dts from 'rollup-plugin-dts';
-import pkg from './package.json';
+import pkg from './package.json' assert { type: 'json' };
 
 export default [
 	{
