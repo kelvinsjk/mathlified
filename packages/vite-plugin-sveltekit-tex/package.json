@@ -1,0 +1,42 @@
+{
+	"name": "vite-plugin-sveltekit-tex",
+	"version": "0.0.1",
+	"license": "MIT",
+	"author": "Kelvin Soh",
+	"main": "dist/index.js",
+	"module": "dist/index.mjs",
+	"types": "dist/index.d.ts",
+	"description": "Generate LaTeX tex/pdf while building in SvelteKit",
+	"homepage": "https://github.com/kelvinsjk/mathlified",
+	"keywords": [
+		"mathlified",
+		"sveltekit-tex"
+	],
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"dev": "tsup --watch",
+		"build": "tsup",
+		"lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
+		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
+	},
+	"devDependencies": {
+		"@types/fs-extra": "^11.0.1",
+		"@typescript-eslint/eslint-plugin": "^5.48.2",
+		"@typescript-eslint/parser": "^5.48.2",
+		"eslint": "^8.32.0",
+		"eslint-config-prettier": "^8.6.0",
+		"prettier": "^2.8.3",
+		"tsup": "^6.5.0",
+		"typescript": "^4.9.4",
+		"vite": "^4.0.4"
+	},
+	"dependencies": {
+		"fs-extra": "^11.1.0",
+		"mathlifier": "workspace:^1.3.0",
+		"mathlifier2": "workspace:^1.3.0",
+		"node-latex": "^3.1.0",
+		"outdent": "^0.8.0"
+	}
+}
