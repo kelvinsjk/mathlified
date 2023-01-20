@@ -1,5 +1,5 @@
-import { post } from '../../src/lib/mathlified/nest1/__src';
-import { contentHandler } from '../../src/lib/mathlified/content-handlers/post';
+import { post } from '../../../src/lib/mathlified/nest1/__p4-post-src.ts';
+import { contentHandler } from '../../../src/lib/mathlified/content-handlers/post';
 import fs from 'fs-extra';
 import path from 'path';
 

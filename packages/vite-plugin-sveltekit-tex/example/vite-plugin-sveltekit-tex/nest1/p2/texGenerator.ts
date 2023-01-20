@@ -1,5 +1,5 @@
-import { post } from '../../src/lib/mathlified/nest1/__src';
-import { contentHandler } from '../../src/lib/mathlified/content-handlers/post';
+import { post } from '../../../src/lib/mathlified/nest1/__p2-post-src.ts';
+import { contentHandler } from '../../../src/lib/mathlified/content-handlers/post';
 import fs from 'fs-extra';
 import path from 'path';
 
@@ -14,4 +14,4 @@ const postContent = `
 
 const tex = preContent + '\n' + content + '\n' + postContent;
 
-fs.outputFileSync(path.resolve('./output/tex/nest1/p4.tex'), tex);
+fs.outputFileSync(path.resolve('./output/tex/nest1/p2.tex'), tex);

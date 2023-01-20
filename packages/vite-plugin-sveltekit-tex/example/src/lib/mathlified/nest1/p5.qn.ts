@@ -1,5 +1,5 @@
 import { a } from './a';
 
-export const post = {
+export const qn = {
 	body: `hi${a}`
 };

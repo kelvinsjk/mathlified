@@ -1,3 +1,3 @@
 export const post = {
-	body: 'hihi'
+	body: 'hello2'
 };
