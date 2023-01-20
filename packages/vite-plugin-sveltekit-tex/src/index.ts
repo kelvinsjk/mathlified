@@ -5,7 +5,100 @@ import { createPdf } from './createPdf';
 import { createComponents } from './createComponents';
 import { defaultExts } from './defaultExts';
 
-export function sveltekitTex(options?: {
+export function sveltekitTex(options?: MathlifiedOptions): Plugin {
+	// handle options
+	const {
+		generateDefaultComponents,
+		cmd,
+		cls,
+		docOptions,
+		preDoc,
+		qnsPreDoc,
+		preContent,
+		postContent,
+		exts: customExts,
+	} = {
+		generateDefaultComponents: true,
+		cmd: 'xelatex',
+		cls: 'article',
+		docOptions: '',
+		preDoc: '\\\\usepackage{amsmath}\n',
+		qnsPreDoc: '\\\\usepackage{amsmath}\n\\\\pointsinrightmargin\n\\\\bracketedpoints',
+		preContent: '',
+		postContent: '',
+		exts: {},
+		...options,
+	};
+	const exts = {
+		...defaultExts,
+		...customExts,
+	};
+	const extList = Object.keys(exts);
+
+	return {
+		name: 'vite-plugin-sveltekit-tex',
+		async buildStart() {
+			if (generateDefaultComponents) {
+				createComponents();
+			}
+		},
+		async handleHotUpdate({ file, read }) {
+			// only handle
+			// src/lib/mathlified/[fileRoute].[ext].[t|j]s files
+			const [match, ext, fileRoute] = matchFile(file, extList);
+			if (match) {
+				console.log(`Mathlified HMR: Change detected at ${fileRoute}`);
+				// routes/.../+page.svelte
+				createPage(fileRoute, ext);
+				// tex
+				const collatedPreDoc = ext === 'qn' || ext === 'qns' ? qnsPreDoc : preDoc;
+				const collatedCls = ext === 'qn' || ext === 'qns' ? 'exam' : cls;
+				const collatedOptions = {
+					cmd,
+					cls: collatedCls,
+					docOptions,
+					preDoc: collatedPreDoc,
+					preContent,
+					postContent,
+					...exts[ext].latexOptions,
+				};
+				createPdf(fileRoute, ext, read, exts[ext].contentHandler, collatedOptions, true);
+			}
+		},
+	};
+}
+
+function mathlifiedDir(): string {
+	return path.resolve('./', '/src/lib/mathlified');
+}
+function matchFile(file: string, extList: string[]): [true, string, string] | [false] {
+	for (const extName of extList) {
+		const extMatch = file.match(new RegExp(`${mathlifiedDir()}(.+).${extName}.[t|j]s`));
+		if (extMatch) {
+			return [true, extName, extMatch[1]];
+		}
+	}
+	return [false];
+}
+
+export interface ExtensionOptions {
+	latexOptions?: LatexOptions;
+	contentHandler: (
+		// eslint-disable-next-line
+		extObject: any,
+	) => string;
+}
+
+export interface LatexOptions {
+	cmd?: string;
+	cls?: string;
+	docOptions?: string;
+	preDoc?: string;
+	preContent?: string;
+	postContent?: string;
+}
+
+export interface MathlifiedOptions {
 	/**
 	 * Generates Post/Qn/Qns.svelte on buildStart if they are absent
 	 * (default: true)
@@ -73,95 +166,4 @@ export function sveltekitTex(options?: {
 	 * component in 'src/lib/mathlified/[Extname].svelte'
 	 */
 	exts?: { [key: string]: ExtensionOptions };
-}): Plugin {
-	// handling options
-	const {
-		generateDefaultComponents,
-		cmd,
-		cls,
-		docOptions,
-		preDoc,
-		qnsPreDoc,
-		preContent,
-		postContent,
-		exts: customExts,
-	} = {
-		generateDefaultComponents: true,
-		cmd: 'xelatex',
-		cls: 'article',
-		docOptions: '',
-		preDoc: '\\\\usepackage{amsmath}\n',
-		qnsPreDoc: '\\\\usepackage{amsmath}\n\\\\pointsinrightmargin\n\\\\bracketedpoints',
-		preContent: '',
-		postContent: '',
-		exts: {},
-		...options,
-	};
-	const exts = {
-		...defaultExts,
-		...customExts,
-	};
-	const extList = Object.keys(exts);
-
-	return {
-		name: 'vite-plugin-sveltekit-tex',
-		async buildStart() {
-			if (generateDefaultComponents) {
-				createComponents('post', 'qn', 'qns');
-			}
-		},
-		async handleHotUpdate({ file, read }) {
-			// only handle
-			// src/lib/mathlified/[fileRoute].[ext].[t|j]s files
-			const [match, ext, fileRoute] = matchFile(file, extList);
-			if (match) {
-				console.log(`Mathlified HMR: Change detected at ${fileRoute}`);
-				// routes/.../+page.svelte
-				createPage(fileRoute, ext);
-				// tex
-				const collatedPreDoc = ext === 'qn' || ext === 'qns' ? qnsPreDoc : preDoc;
-				const collatedCls = ext === 'qn' || ext === 'qns' ? 'exam' : cls;
-				const collatedOptions = {
-					cmd,
-					cls: collatedCls,
-					docOptions,
-					preDoc: collatedPreDoc,
-					preContent,
-					postContent,
-					...exts[ext].latexOptions,
-				};
-				createPdf(fileRoute, ext, read, exts[ext].contentHandler, collatedOptions, true);
-			}
-		},
-	};
-}
-
-function mathlifiedDir(): string {
-	return path.resolve('./', '/src/lib/mathlified');
-}
-function matchFile(file: string, extList: string[]): [true, string, string] | [false] {
-	for (const extName of extList) {
-		const extMatch = file.match(new RegExp(`${mathlifiedDir()}(.+).${extName}.[t|j]s`));
-		if (extMatch) {
-			return [true, extName, extMatch[1]];
-		}
-	}
-	return [false];
-}
-
-export interface ExtensionOptions {
-	latexOptions?: LatexOptions;
-	contentHandler: (
-		// eslint-disable-next-line
-		extObject: any,
-	) => string;
-}
-
-export interface LatexOptions {
-	cmd?: string;
-	cls?: string;
-	docOptions?: string;
-	preDoc?: string;
-	preContent?: string;
-	postContent?: string;
 }

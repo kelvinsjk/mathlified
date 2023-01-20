@@ -1,3 +1,4 @@
-packages: 
-  - "packages/*"
-  - "sites/*"
+packages:
+  - 'packages/*'
+  - 'sites/*'
+  - 'packages/vite-plugin-sveltekit-tex/example'
