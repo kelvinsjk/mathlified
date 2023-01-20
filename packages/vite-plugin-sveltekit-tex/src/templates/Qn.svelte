@@ -1,19 +1,19 @@
 <script lang="ts" context="module">
 	interface SubPart {
 		body: string;
-		marks?: string;
+		marks?: number;
 		partNo?: number;
 	};
 	interface Part {
 		body?: string;
-		marks?: string;
+		marks?: number;
 		parts?: SubPart[];
 		partNo?: number;
 	};
 	export interface Question {
 		title?: string;
 		body?: string;
-		marks?: string;
+		marks?: number;
 		parts?: Part[];
 		partNo?: number;
 	}
