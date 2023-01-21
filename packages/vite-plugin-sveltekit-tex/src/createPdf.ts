@@ -4,6 +4,7 @@ import outdent from 'outdent';
 import { exec } from 'child_process';
 import latex from 'node-latex';
 import { green } from 'kleur';
+import { unSlash } from './transformTex';
 
 /**
  * create output/tex/[file].tex file
@@ -28,14 +29,40 @@ export async function createPdf(
 	// await promise to resolve
 	const [generatorPath] = await Promise.all([generatorPromise, duplicatePromise]);
 	// generate TeX and pdf
-	exec(`tsx ${generatorPath}`, (err) => {
-		if (err) {
-			console.log(`Mathlified: tex generation error: ${err}`);
-			return;
-		}
-		console.log(`Mathlified: output/tex${file}.tex created/updated`);
-		writePdf(file, options.cmd);
+	return new Promise((resolve, reject) => {
+		exec(`tsx ${generatorPath}`, (err) => {
+			if (err) {
+				console.log(`Mathlified: tex generation error: ${err}`);
+				return reject(err);
+			}
+			console.log(`Mathlified: output/tex${file}.tex created/updated`);
+			return resolve(writePdf(file, options.cmd));
+		});
 	});
+}
+
+export async function createTexPdf(
+	texRoute: string,
+	read: () => string | Promise<string>,
+	options: {
+		cmd: string;
+		cls: string;
+		docOptions: string;
+		preDoc: string;
+		preContent: string;
+		postContent: string;
+	},
+): Promise<void> {
+	const outputTexPath = path.resolve(`./output/tex${texRoute}.tex`);
+	const content = await read();
+	const data =
+		preContentTex(options, false) +
+		'\n' +
+		content +
+		'\n' +
+		postContentTex(options, false);
+	fs.outputFileSync(outputTexPath, data);
+	writePdf(texRoute, options.cmd);
 }
 
 /**
@@ -105,38 +132,60 @@ async function texFactory(
 /**
  * create output/pdf/[file].pdf file
  */
-function writePdf(file: string, cmd: string): void {
+async function writePdf(file: string, cmd: string): Promise<void> {
 	const input = fs.createReadStream(`./output/tex/${file}.tex`);
 	fs.outputFileSync(`./output/pdf/${file}.pdf`, '');
 	const output = fs.createWriteStream(`./output/pdf/${file}.pdf`);
 	const pdf = latex(input, { cmd });
 	pdf.pipe(output);
-	pdf.on('error', (err) => console.error(err));
-	pdf.on('finish', () =>
-		console.log(green(`Mathlified: output/pdf${file}.pdf generated!`)),
-	);
+	return new Promise((resolve, reject) => {
+		pdf.on('error', (err) => {
+			console.error(err);
+			return reject(err);
+		});
+		pdf.on('finish', () => {
+			console.log(green(`Mathlified: output/pdf${file}.pdf generated!`));
+			return resolve();
+		});
+	});
 }
 
-function preContentTex(options: {
-	cls: string;
-	docOptions: string;
-	preDoc: string;
-	preContent: string;
-}): string {
+function preContentTex(
+	options: {
+		cls: string;
+		docOptions: string;
+		preDoc: string;
+		preContent: string;
+	},
+	escapedSlash = true,
+): string {
 	// handling of options
-	const documentOptions = options.docOptions ? `[${options.docOptions}]` : '';
+	let documentOptions = options.docOptions ? `[${options.docOptions}]` : '';
+	let cls = options.cls;
+	let preDoc = options.preDoc;
+	let preContent = options.preContent;
+	let slash = '\\\\';
+	if (!escapedSlash) {
+		slash = '\\';
+		documentOptions = unSlash(documentOptions);
+		cls = unSlash(cls);
+		preDoc = unSlash(preDoc);
+		preContent = unSlash(preContent);
+	}
 
 	// tex data generation
 	return outdent`
-		\\\\documentclass${documentOptions}{${options.cls}}
-		${options.preDoc}
-		\\\\begin{document}
-		${options.preContent}
+		${slash}documentclass${documentOptions}{${cls}}
+		${preDoc}
+		${slash}begin{document}
+		${preContent}
 	`;
 }
-function postContentTex(options: { postContent: string }): string {
+function postContentTex(options: { postContent: string }, escapedSlash = true): string {
+	const slash = escapedSlash ? '\\\\' : '\\';
+	const postContent = escapedSlash ? options.postContent : unSlash(options.postContent);
 	return outdent`
-		${options.postContent}
-		\\\\end{document}
+		${postContent}
+		${slash}end{document}
 	`;
 }

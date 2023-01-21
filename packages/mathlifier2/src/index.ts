@@ -13,3 +13,4 @@ export {
 	alignatStar,
 } from './mathEnvironments';
 export { linebreak, newline, bold, strong, emph, em, newParagraph } from './typesettingUtils';
+export { html, tex, htmlTex } from './htmlTex';

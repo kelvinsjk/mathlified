@@ -23,6 +23,7 @@
 		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
 	},
 	"devDependencies": {
+		"@types/command-exists": "^1.2.0",
 		"@types/fs-extra": "^11.0.1",
 		"@types/glob": "^8.0.1",
 		"@typescript-eslint/eslint-plugin": "^5.48.2",
@@ -35,6 +36,7 @@
 		"vite": "^4.0.4"
 	},
 	"dependencies": {
+		"command-exists": "^1.2.9",
 		"dependency-tree": "^9.0.0",
 		"fs-extra": "^11.1.0",
 		"glob": "^8.1.0",

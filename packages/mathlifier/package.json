@@ -4,16 +4,18 @@
 	"description": "A KaTeX renderToString wrapper",
 	"source": "src/index.ts",
 	"type": "module",
-	"main": "lib/index.js",
-	"module": "lib/index.js",
-	"types": "lib/index.d.ts",
+	"main": "dist/index.cjs",
+	"module": "dist/index.js",
+	"types": "dist/index.d.ts",
 	"exports": {
 		".": {
-			"import": "./lib/index.js"
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs",
+			"types": "./dist/index.d.ts"
 		}
 	},
 	"scripts": {
-		"prepare": "pnpm run build",
+		"prepare": "tsup",
 		"prepublishOnly": "pnpm test && pnpm lint",
 		"preversion": "pnpm lint",
 		"version": "pnpm format && git add -A src",
@@ -22,7 +24,7 @@
 		"lint": "eslint --ignore-path ../../.gitignore",
 		"test": "uvu -r tsm src/__tests__",
 		"test:coverage": "c8 --include=src pnpm test",
-		"build": "rollup -c"
+		"build": "tsup"
 	},
 	"repository": {
 		"type": "git",
@@ -49,20 +51,15 @@
 	},
 	"homepage": "https://github.com/kelvinsjk/mathlified/blob/fce2b0eb417397719e1fe641912e7c5e59676289/packages/mathlifier/README.md",
 	"devDependencies": {
-		"@rollup/plugin-commonjs": "^24.0.0",
-		"@rollup/plugin-node-resolve": "^15.0.0",
-		"@rollup/plugin-terser": "^0.3.0",
-		"@rollup/plugin-typescript": "^11.0.0",
 		"@types/katex": "^0.14.0",
 		"@typescript-eslint/eslint-plugin": "^5.48.1",
 		"@typescript-eslint/parser": "^5.48.1",
 		"c8": "^7.12.0",
 		"eslint": "^8.32.0",
 		"prettier": "^2.8.3",
-		"rollup": "^3.10.0",
-		"rollup-plugin-dts": "^5.1.0",
 		"tslib": "^2.4.1",
 		"tsm": "^2.3.0",
+		"tsup": "^6.5.0",
 		"typescript": "^4.9.4",
 		"uvu": "^0.5.6"
 	},

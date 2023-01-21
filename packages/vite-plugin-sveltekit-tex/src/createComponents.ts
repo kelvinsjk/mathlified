@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs-extra';
+import { blue } from 'kleur/colors';
 
 export async function createComponents(): Promise<void> {
 	const exists: string[] = [];
@@ -11,7 +12,7 @@ export async function createComponents(): Promise<void> {
 			);
 			const copyPath = path.resolve(`./src/lib/mathlified/components/${name}.svelte`);
 			fs.copySync(sveltePath, copyPath, { overwrite: false, errorOnExist: true }),
-				console.log(`Mathlified: ${name} component generated`);
+				console.log(blue(`Mathlified: ${name} component generated`));
 		} catch (err) {
 			exists.push(name);
 		}

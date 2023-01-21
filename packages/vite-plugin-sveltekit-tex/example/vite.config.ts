@@ -3,7 +3,7 @@ import type { UserConfig } from 'vite';
 import { sveltekitTex } from 'vite-plugin-sveltekit-tex';
 
 const config: UserConfig = {
-	plugins: [sveltekit(), sveltekitTex()]
+	plugins: [sveltekit(), sveltekitTex({ generatePageOnBuild: true, generatePdfOnBuild: true })]
 };
 
 export default config;

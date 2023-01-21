@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs-extra';
+import { green } from 'kleur/colors';
 
 export async function createHandlers(): Promise<void> {
 	const exists: string[] = [];
@@ -10,7 +11,7 @@ export async function createHandlers(): Promise<void> {
 			);
 			const copyPath = path.resolve(`./src/lib/mathlified/content-handlers/${ext}.ts`);
 			fs.copySync(handlerPath, copyPath, { overwrite: false, errorOnExist: true }),
-				console.log(`Mathlified: ${ext} content handler generated`);
+				console.log(green(`Mathlified: ${ext} content handler generated`));
 		} catch (err) {
 			exists.push(ext);
 		}

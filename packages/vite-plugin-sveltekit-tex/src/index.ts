@@ -1,14 +1,16 @@
 import { type Plugin } from 'vite';
-import path from 'path';
-import { createPage } from './createPage';
-import { createPdf } from './createPdf';
+import { defaultExts } from './defaultExts';
 import { createComponents } from './createComponents';
 import { createHandlers } from './createHandlers';
-import { defaultExts } from './defaultExts';
-import dependencyTree from 'dependency-tree';
-import glob from 'glob';
+import { matchFile, matchTex, mathlifiedDir } from './matchFiles';
+import { createReverseDependencyTree, appendToTree } from './dependencyTree';
+import { createPage, createTexPage } from './createPage';
+import { createPdf, createTexPdf } from './createPdf';
 import fs from 'fs-extra';
-import { blue, yellow } from 'kleur/colors';
+import path from 'path';
+import glob from 'glob';
+import { yellow, red, green } from 'kleur/colors';
+import commandExists from 'command-exists';
 
 export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 	// handle options
@@ -22,6 +24,8 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 		preContent,
 		postContent,
 		exts: customExts,
+		generatePdfOnBuild,
+		generatePageOnBuild,
 	} = {
 		generateDefaultComponents: true,
 		cmd: 'xelatex',
@@ -32,16 +36,21 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 		preContent: '',
 		postContent: '',
 		exts: {},
+		generatePdfOnBuild: false,
+		generatePageOnBuild: false,
 		...options,
 	};
 	const exts = {
 		...defaultExts,
 		...customExts,
 	};
+	// track files with ext
 	const extList = Object.keys(exts);
-	const files = glob.sync(`./src/lib/mathlified/**/*.{${extList}}.{js,ts}`);
-	const tree = createReverseDependencyTree(files);
+	const tsFiles = glob.sync(`./src/lib/mathlified/**/*.{${extList}}.{js,ts}`);
+	const tree = createReverseDependencyTree(tsFiles);
+	let filesLength = tsFiles.length;
 	let filesTracked = Object.keys(tree);
+	const promises: Promise<void>[] = [];
 
 	return {
 		name: 'vite-plugin-sveltekit-tex',
@@ -51,30 +60,54 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 				createHandlers();
 				console.log(
 					yellow(
-						`Mathlified: Tracking ${files.length} files and their dependencies in src/lib/mathlified`,
+						`Mathlified: Tracking ${filesLength} files and their dependencies in src/lib/mathlified`,
 					),
 				);
 			}
 		},
 		async handleHotUpdate({ file, read }) {
-			// check if not dependency tree
+			const [isTex, texRoute] = matchTex(file);
+			if (isTex) {
+				// create page
+				createTexPage(texRoute, read);
+				// copy tex and create pdf
+				createTexPdf(texRoute, read, {
+					cmd,
+					cls,
+					docOptions,
+					preDoc,
+					preContent,
+					postContent,
+				});
+			}
 			let newFileMatch: [false] | [true, string, string] = [false];
+			// add to dependency tree if not already tracked
 			if (!filesTracked.includes(file)) {
 				newFileMatch = matchFile(file, extList);
 				if (newFileMatch[0]) {
-					console.log(blue(`Mathlified: New file detected at ${newFileMatch[1]}`));
-					appendToTree(tree, file);
+					console.log(
+						yellow(
+							`Mathlified: New file detected at ${newFileMatch[1]}.` +
+								'\nUpdating dependencies...',
+						),
+					);
+					filesLength += 1;
+					await appendToTree(tree, file, read);
 					filesTracked = Object.keys(tree);
 					console.log(
-						blue(`Mathlified: Now tracking ${files.length} files and their dependencies`),
+						yellow(
+							`Mathlified: Now tracking ${filesLength} files and their dependencies`,
+						),
 					);
 				}
 			}
 			if (filesTracked.includes(file)) {
 				if (!newFileMatch[0]) {
 					console.log(
-						blue(
-							`Mathlified HMR: Change detected for ${file.slice(mathlifiedDir().length)}`,
+						yellow(
+							`Mathlified HMR: Change detected for ${file.slice(
+								mathlifiedDir().length,
+							)}.` + '\nIf dependencies have changed, consider restarting server',
 						),
 					);
 				}
@@ -110,66 +143,74 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 				});
 			}
 		},
-	};
-}
-
-function mathlifiedDir(): string {
-	return path.resolve('./src/lib/mathlified');
-}
-function matchFile(file: string, extList: string[]): [true, string, string] | [false] {
-	for (const extName of extList) {
-		const extMatch = file.match(new RegExp(`${mathlifiedDir()}(.+).${extName}.[t|j]s`));
-		if (extMatch) {
-			return [true, extMatch[1], extName];
-		}
-	}
-	return [false];
-}
-
-/**
- * create a reverse dependency tree
- * to facilitate HMR
- */
-function createReverseDependencyTree(files: string[]): Tree {
-	const tree: Tree = {};
-	files.forEach((file) => {
-		file = path.resolve(file);
-		const dependencyList = dependencyTree.toList({
-			filename: file,
-			directory: path.resolve('./src/lib/mathlified'),
-		});
-		dependencyList.forEach((dep) => {
-			if (tree[dep] === undefined) {
-				tree[dep] = [file];
-			} else {
-				if (!tree[dep].includes(file)) {
-					tree[dep].push(file);
+		async generateBundle() {
+			if (generatePdfOnBuild || generatePageOnBuild) {
+				let willBuildPdf = false;
+				if (generatePdfOnBuild) {
+					if (commandExists.sync('xelatex')) {
+						willBuildPdf = true;
+					} else {
+						console.log(
+							red(
+								'Mathlified PDF generation failed: check if latex in installed on your machine',
+							),
+						);
+					}
 				}
+				tsFiles.forEach((file) => {
+					const filePath = path.resolve(file);
+					const [match, fileRoute, ext] = matchFile(filePath, extList);
+					if (match) {
+						if (generatePageOnBuild) {
+							createPage(fileRoute, ext);
+						}
+						if (willBuildPdf) {
+							// tex and pdf
+							const collatedPreDoc = ext === 'qn' || ext === 'qns' ? qnsPreDoc : preDoc;
+							const collatedCls = ext === 'qn' || ext === 'qns' ? 'exam' : cls;
+							const collatedOptions = {
+								cmd,
+								cls: collatedCls,
+								docOptions,
+								preDoc: collatedPreDoc,
+								preContent,
+								postContent,
+								...exts[ext].latexOptions,
+							};
+							promises.push(
+								createPdf(
+									fileRoute,
+									ext,
+									async () => {
+										const data = await fs.readFile(filePath);
+										return data.toString();
+									},
+									collatedOptions,
+								),
+							);
+						}
+					}
+				});
 			}
-		});
-	});
-	return tree;
-}
-
-function appendToTree(tree: Tree, file: string): Tree {
-	const dependencyList = dependencyTree.toList({
-		filename: file,
-		directory: path.resolve('./src/lib/mathlified'),
-	});
-	dependencyList.forEach((dep) => {
-		if (tree[dep] === undefined) {
-			tree[dep] = [file];
-		} else {
-			if (!tree[dep].includes(file)) {
-				tree[dep].push(file);
+			// clean up
+		},
+		async closeBundle() {
+			await Promise.all(promises);
+			if (promises.length !== 0) {
+				console.log(yellow('Mathlified: All pdfs generated.\n'));
 			}
-		}
-	});
-	return tree;
-}
-
-interface Tree {
-	[key: string]: string[];
+			console.log(yellow(`Mathlified: Removing Temp files...`));
+			fs.remove(path.resolve('./vite-plugin-sveltekit-tex'));
+			const tempFiles = glob.sync(`./src/lib/mathlified/**/__*-{${extList}}-src.ts`);
+			const removePromises: Promise<void>[] = [];
+			tempFiles.forEach((file) => {
+				removePromises.push(fs.remove(path.resolve(file)));
+			});
+			Promise.all(removePromises).then(() => {
+				console.log(green('Mathlified: All temp files removed!'));
+			});
+		},
+	};
 }
 
 export interface ExtensionOptions {
@@ -253,4 +294,14 @@ export interface MathlifiedOptions {
 	 * component in 'src/lib/mathlified/[Extname].svelte'
 	 */
 	exts?: { [key: string]: ExtensionOptions };
+	/**
+	 * Whether to generate pdfs on build
+	 * (default: false)
+	 */
+	generatePdfOnBuild?: boolean;
+	/**
+	 * Whether to generate pages on build
+	 * (default: false)
+	 */
+	generatePageOnBuild?: boolean;
 }
