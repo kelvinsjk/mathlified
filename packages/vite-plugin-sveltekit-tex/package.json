@@ -19,8 +19,6 @@
 		"dev": "tsup --watch",
 		"build": "tsup",
 		"prepare": "tsup",
-		"prepublishOnly": "pnpm lint",
-		"preversion": "pnpm lint",
 		"version": "pnpm format && git add -A src",
 		"postversion": "git push && git push --tags",
 		"lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint .",
