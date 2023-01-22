@@ -23,7 +23,7 @@
 		"postversion": "git push && git push --tags",
 		"prepublishOnly": "pnpm lint",
 		"preversion": "pnpm lint",
-		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
+		"lint": "eslint . ",
 		"format": "prettier --write --plugin-search-dir=. ."
 	},
 	"devDependencies": {

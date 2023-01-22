@@ -14,3 +14,4 @@ yarn.lock
 
 src/templates/texGenerator.ts
 dist/texGenerator.ts
+dist/index.js
