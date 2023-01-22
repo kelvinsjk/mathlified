@@ -7,46 +7,43 @@ export function texToHtml(tex: string): [string, Set<string>] {
 		.replaceAll('\n\n', '\n\n<p>\n')
 		.replace(/(?<![\\])(?<![$])\$(?!\$)(.+)(?<![\\])(?<![$])\$(?!\$)/g, (_, text) => {
 			environments.add('math');
-			return `{@html math(\`${text.replaceAll('\\\\', '\\\\\\\\')}\`)}`;
+			return `{@html math(\`${text.replaceAll('\\', '\\\\')}\`)}`;
 		})
 		.replace(/(?<!\\)\$\$(.+)(?<!\\)\$\$/g, (_, text) => {
 			environments.add('display');
-			return `{@html display(\`${text.replaceAll('\\\\', '\\\\\\\\')}\`)}\n\n<p>`;
+			return `{@html display(\`${text.replaceAll('\\', '\\\\')}\`)}\n\n<p>`;
 		})
 		.replace(/\\begin{align}(.+?)\\end{align}/gs, (_, env) => {
 			environments.add('align');
-			return `{@html align(\`${env.replaceAll('\\\\', '\\\\\\\\')}\`)}\n\n<p>`;
+			return `{@html align(\`${env.replaceAll('\\', '\\\\')}\`)}\n\n<p>`;
 		})
 		.replace(/\\begin{align\*}(.+?)\\end{align\*}/gs, (_, env) => {
 			environments.add('alignStar');
-			return `{@html alignStar(\`${env.replaceAll('\\\\', '\\\\\\\\')}\`)}\n\n<p>`;
+			return `{@html alignStar(\`${env.replaceAll('\\', '\\\\')}\`)}\n\n<p>`;
 		})
 		.replace(/\\begin{alignat}{(.+?)}(.+)\\end{alignat}{(.+)}/gs, (_, no, env) => {
 			environments.add('alignat');
-			return `{@html alignat(\`${env.replaceAll('\\\\', '\\\\\\\\')}\`, ${no})}\n\n<p>`;
+			return `{@html alignat(\`${env.replaceAll('\\', '\\\\')}\`, ${no})}\n\n<p>`;
 		})
 		.replace(/\\begin{alignat\*}{(.+?)}(.+)\\end{alignat\*}/gs, (_, no, env) => {
-			environments.add('alignAtStar');
-			return `{@html alignAtStar(\`${env.replaceAll(
-				'\\\\',
-				'\\\\\\\\',
-			)}\`, ${no})}\n\n<p>`;
+			environments.add('alignatStar');
+			return `{@html alignatStar(\`${env.replaceAll('\\', '\\\\')}\`, ${no})}\n\n<p>`;
 		})
 		.replace(/\\begin{equation}(.+?)\\end{equation}/gs, (_, env) => {
 			environments.add('equation');
-			return `{@html equation(\`${env.replaceAll('\\\\', '\\\\\\\\')}\`)}\n\n<p>`;
+			return `{@html equation(\`${env.replaceAll('\\', '\\\\')}\`)}\n\n<p>`;
 		})
 		.replace(/\\begin{equation\*}(.+?)\\end{equation\*}/gs, (_, env) => {
 			environments.add('equationStar');
-			return `{@html equationStar(\`${env.replaceAll('\\\\', '\\\\\\\\')}\`)}\n\n<p>`;
+			return `{@html equationStar(\`${env.replaceAll('\\', '\\\\')}\`)}\n\n<p>`;
 		})
 		.replace(/\\begin{gather}(.+?)\\end{gather}/gs, (_, env) => {
 			environments.add('gather');
-			return `{@html gather(\`${env.replace('\\\\', '\\\\\\\\')}\`)}\n\n<p>`;
+			return `{@html gather(\`${env.replace('\\', '\\\\')}\`)}\n\n<p>`;
 		})
 		.replace(/\\begin{gather\*}(.+?)\\end{gather\*}/gs, (_, env) => {
 			environments.add('gatherStar');
-			return `{@html gatherStar(\`${env.replace('\\\\', '\\\\\\\\')}\`)}\n\n<p>`;
+			return `{@html gatherStar(\`${env.replace('\\', '\\\\')}\`)}\n\n<p>`;
 		})
 		.replaceAll(/\\newline\s{0,}/g, '\n<br>')
 		.replaceAll(/\\linebreak\s{0,}/g, '\n<br>')
