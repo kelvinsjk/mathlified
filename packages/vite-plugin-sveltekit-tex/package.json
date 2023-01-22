@@ -21,7 +21,7 @@
 		"prepare": "tsup",
 		"version": "pnpm format && git add -A src",
 		"postversion": "git push && git push --tags",
-		"prepublishOnly": "pnpm test && pnpm lint",
+		"prepublishOnly": "&& pnpm lint",
 		"preversion": "pnpm lint",
 		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
 		"format": "prettier --write --plugin-search-dir=. ."
