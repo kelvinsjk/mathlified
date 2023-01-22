@@ -102,9 +102,7 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 						),
 					);
 					filesLength += 1;
-					console.log(red('pre-append'), tree);
 					await appendToTree(tree, file, read);
-					console.log(red('post-append'), tree);
 					filesTracked = Object.keys(tree);
 					console.log(
 						yellow(
@@ -113,7 +111,6 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 					);
 				}
 			}
-			console.log(red('filesTracked'), filesTracked);
 			if (filesTracked.includes(file)) {
 				if (!newFileMatch[0]) {
 					console.log(
@@ -124,7 +121,6 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 						),
 					);
 				}
-				console.log(red('filesTracked inside'));
 				tree[file].forEach((f) => {
 					const [match, fileRoute, ext] = matchFile(f, extList);
 					if (match) {
