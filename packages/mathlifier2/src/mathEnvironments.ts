@@ -1,5 +1,3 @@
-import outdent from 'outdent';
-
 /**
  * Renders align environment
  *
@@ -98,8 +96,5 @@ function displayEnvironment(
 		postBegin?: string;
 	},
 ) {
-	return outdent`
-	\\begin{${env}}${options?.postBegin ?? ''}
-		${x}
-	\\end{${env}}`;
+	return `\\begin{${env}}${options?.postBegin ?? ''}` + '\n\t' + x + `\n\\end{${env}}`;
 }
