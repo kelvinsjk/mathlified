@@ -10,7 +10,13 @@
 	import Qn from './Qn.svelte';
 	export let qns: { title?: string, qns: Question[] };
 </script>
-			
+
+<svelte:head>
+	{#if "title" in qns}
+		<title>{qns.title}</title>
+	{/if}
+</svelte:head>
+
 {#if "title" in qns}
 	<h1>{@html qns.title}</h1>
 {/if}

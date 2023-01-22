@@ -40,6 +40,9 @@ export async function appendToTree(
 		directory: path.resolve('./src/lib/mathlified'),
 	});
 	dependencyList.forEach((dep) => {
+		if (dep === duplicatePath) {
+			dep = file;
+		}
 		if (tree[dep] === undefined) {
 			tree[dep] = [file];
 		} else {

@@ -21,6 +21,7 @@
 
 <script lang="ts">
 	export let qn: Question;
+	// for Qns.svelte, we do not want the title to be used
 	export let hasTitle = true;
 
 	const hasMarks = "marks" in qn || (qn.parts && partsHaveMarks(qn.parts))
@@ -43,6 +44,12 @@
 		return `${tens[tensDigit]}${digits[digit]}`;
 	}
 </script>
+
+<svelte:head>
+	{#if hasTitle && "title" in qn}
+		<title>{qn.title}</title>
+	{/if}
+</svelte:head>
 			
 {#if (hasTitle && "title" in qn)}
 	<h1>{@html qn.title}</h1>
