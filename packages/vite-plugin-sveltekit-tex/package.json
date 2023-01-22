@@ -1,6 +1,6 @@
 {
 	"name": "vite-plugin-sveltekit-tex",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"license": "MIT",
 	"author": "Kelvin Soh",
 	"main": "dist/index.js",
@@ -21,8 +21,10 @@
 		"prepare": "tsup",
 		"version": "pnpm format && git add -A src",
 		"postversion": "git push && git push --tags",
-		"lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint .",
-		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
+		"prepublishOnly": "pnpm test && pnpm lint",
+		"preversion": "pnpm lint",
+		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
+		"format": "prettier --write --plugin-search-dir=. ."
 	},
 	"devDependencies": {
 		"@types/command-exists": "^1.2.0",
