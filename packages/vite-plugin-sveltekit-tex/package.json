@@ -1,6 +1,6 @@
 {
 	"name": "vite-plugin-sveltekit-tex",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"license": "MIT",
 	"author": "Kelvin Soh",
 	"main": "dist/index.js",
@@ -19,7 +19,7 @@
 		"dev": "tsup --watch",
 		"build": "tsup",
 		"prepare": "tsup",
-		"version": "pnpm format && git add -A src",
+		"version": "pnpm format && git add . && git commit -m 'new version'",
 		"postversion": "git push && git push --tags",
 		"prepublishOnly": "pnpm lint",
 		"preversion": "pnpm lint",
