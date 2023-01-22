@@ -1,6 +1,6 @@
 {
 	"name": "mathlifier",
-	"version": "1.3.2",
+	"version": "1.3.3",
 	"description": "A KaTeX renderToString wrapper",
 	"source": "src/index.ts",
 	"type": "module",
@@ -14,8 +14,8 @@
 		"prepare": "tsup",
 		"prepublishOnly": "pnpm test && pnpm lint",
 		"preversion": "pnpm lint",
-		"version": "pnpm format && git add -A src",
-		"postversion": "git push && git push --tags",
+		"version": "pnpm format",
+		"postversion": "git add . && git commit -m 'new version' && git push --tags",
 		"format": "prettier --write \"src/**/*.ts\"",
 		"lint": "eslint --ignore-path ../../.gitignore",
 		"test": "uvu -r tsm src/__tests__",
