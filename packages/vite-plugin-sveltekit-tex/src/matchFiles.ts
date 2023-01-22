@@ -17,7 +17,7 @@ export function matchFile(
 }
 
 export function matchTex(file: string): [true, string] | [false] {
-	const extMatch = file.match(new RegExp(`${mathlifiedDir()}(.+).mathlify.tex`));
+	const extMatch = file.match(new RegExp(`${mathlifiedDir()}(.+).mathlified.tex`));
 	if (extMatch) {
 		return [true, extMatch[1]];
 	}

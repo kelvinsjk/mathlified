@@ -14,6 +14,7 @@ export async function createPdf(
 	ext: string,
 	read: () => string | Promise<string>,
 	options: {
+		tsxCmd: string;
 		cmd: string;
 		cls: string;
 		docOptions: string;
@@ -30,7 +31,7 @@ export async function createPdf(
 	const [generatorPath] = await Promise.all([generatorPromise, duplicatePromise]);
 	// generate TeX and pdf
 	return new Promise((resolve, reject) => {
-		exec(`tsx ${generatorPath}`, (err) => {
+		exec(`${options.tsxCmd} ${generatorPath}`, (err) => {
 			if (err) {
 				console.log(`Mathlified: tex generation error: ${err}`);
 				return reject(err);
@@ -44,6 +45,7 @@ export async function createPdf(
 export async function createTexPdf(
 	texRoute: string,
 	read: () => string | Promise<string>,
+	texToTex: (x: string) => string,
 	options: {
 		cmd: string;
 		cls: string;
@@ -58,7 +60,7 @@ export async function createTexPdf(
 	const data =
 		preContentTex(options, false) +
 		'\n' +
-		content +
+		texToTex(content) +
 		'\n' +
 		postContentTex(options, false);
 	fs.outputFileSync(outputTexPath, data);
@@ -77,7 +79,7 @@ async function duplicateSrc(
 ): Promise<string> {
 	const duplicatePath = path.resolve(
 		`./src/lib/mathlified/${file}`,
-		`../__${path.parse(file).name}-${ext}-src.ts`,
+		`../__${path.parse(file).name}.${ext}-src.ts`,
 	);
 	const srcData = (await read())
 		.replaceAll("'mathlifier'", "'mathlifier2'")
@@ -109,7 +111,7 @@ async function texFactory(
 		path.resolve(generatorPath, '../'),
 		path.resolve(
 			`./src/lib/mathlified/${file}`,
-			`../__${path.parse(file).name}-${ext}-src.ts`,
+			`../__${path.parse(file).name}.${ext}-src`,
 		),
 	);
 	const handlerLocation = path.relative(

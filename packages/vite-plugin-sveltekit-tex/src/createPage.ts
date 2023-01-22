@@ -1,7 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { outdent } from 'outdent';
-import { transformTex } from './transformTex';
 import { blue } from 'kleur/colors';
 
 /**
@@ -37,10 +36,11 @@ function svelteData(file: string, ext: string): string {
 export async function createTexPage(
 	route: string,
 	read: () => string | Promise<string>,
+	texToHtml: (x: string) => [string, Set<string>],
 ): Promise<void> {
 	const data = await read();
 	const pathName = path.resolve(`./src/routes/${route}/+page.svelte`);
-	const [texData, envs] = transformTex(data);
+	const [texData, envs] = texToHtml(data);
 	const importStatement =
 		envs.size === 0
 			? ''

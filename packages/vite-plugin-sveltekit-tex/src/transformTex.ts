@@ -1,8 +1,11 @@
-export function transformTex(tex: string): [string, Set<string>] {
+export function texToHtml(tex: string): [string, Set<string>] {
 	const environments: Set<string> = new Set();
 	const data =
 		'<p>' +
 		tex
+			.replace(/(?<!\\)%(.*)/gm, () => {
+				return ``;
+			})
 			.replaceAll('\n\n', '\n\n<p>\n')
 			.replace(/(?<![\\])(?<![$])\$(?!\$)(.+)(?<![\\])(?<![$])\$(?!\$)/g, (_, text) => {
 				environments.add('math');
@@ -20,13 +23,16 @@ export function transformTex(tex: string): [string, Set<string>] {
 				environments.add('alignStar');
 				return `{@html alignStar(\`${env.replace('\\\\', '\\\\\\\\')}\`)}\n\n<p>`;
 			})
-			.replace(/\\begin{alignat}(.+)\\end{alignat}/gs, (_, env) => {
+			.replace(/\\begin{alignat}{(.+)}(.+)\\end{alignat}{(.+)}/gs, (_, no, env) => {
 				environments.add('alignat');
-				return `{@html alignat(\`${env.replace('\\\\', '\\\\\\\\')}\`)}\n\n<p>`;
+				return `{@html alignat(\`${env.replace('\\\\', '\\\\\\\\')}\`, ${no})}\n\n<p>`;
 			})
-			.replace(/\\begin{alignat\*}(.+)\\end{alignat\*}/gs, (_, env) => {
+			.replace(/\\begin{alignat\*}{(.+)}(.+)\\end{alignat\*}/gs, (_, no, env) => {
 				environments.add('alignAtStar');
-				return `{@html alignAtStar(\`${env.replace('\\\\', '\\\\\\\\')}\`)}\n\n<p>`;
+				return `{@html alignAtStar(\`${env.replace(
+					'\\\\',
+					'\\\\\\\\',
+				)}\`, ${no})}\n\n<p>`;
 			})
 			.replace(/\\begin{equation}(.+)\\end{equation}/gs, (_, env) => {
 				environments.add('equation');
@@ -51,8 +57,31 @@ export function transformTex(tex: string): [string, Set<string>] {
 			})
 			.replace(/\\textbf{(.+?)}/g, (_, text) => {
 				return `<b>${text}</b>`;
+			})
+			.replace(/^# (.+)\n/gm, (_, text) => {
+				return `\\section{${text}}\n`;
+			})
+			.replace(/^## (.+)\n/gm, (_, text) => {
+				return `\\subsection{${text}}\n`;
+			})
+			.replace(/^### (.+)\n/gm, (_, text) => {
+				return `\\subsubsection{${text}}\n`;
 			});
 	return [data, environments];
+}
+
+export function texToTex(tex: string): string {
+	const data = tex
+		.replace(/# (.+)\n^/gm, (_, text) => {
+			return `\\section{${text}}\n`;
+		})
+		.replace(/## (.+)\n^/gm, (_, text) => {
+			return `\\subsection{${text}}\n`;
+		})
+		.replace(/## (.+)\n^/gm, (_, text) => {
+			return `\\subsubsection{${text}}\n`;
+		});
+	return data;
 }
 
 export function unSlash(text: string): string {

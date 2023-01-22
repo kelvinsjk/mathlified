@@ -6,6 +6,10 @@ import { matchFile, matchTex, mathlifiedDir } from './matchFiles';
 import { createReverseDependencyTree, appendToTree } from './dependencyTree';
 import { createPage, createTexPage } from './createPage';
 import { createPdf, createTexPdf } from './createPdf';
+import {
+	texToHtml as defaultTexToHtml,
+	texToTex as defaultTexToTex,
+} from './transformTex';
 import fs from 'fs-extra';
 import path from 'path';
 import glob from 'glob';
@@ -15,6 +19,7 @@ import commandExists from 'command-exists';
 export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 	// handle options
 	const {
+		tsxCmd,
 		generateDefaultComponents,
 		cmd,
 		cls,
@@ -24,9 +29,12 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 		preContent,
 		postContent,
 		exts: customExts,
+		texToHtml,
+		texToTex,
 		generatePdfOnBuild,
 		generatePageOnBuild,
 	} = {
+		tsxCmd: 'tsx',
 		generateDefaultComponents: true,
 		cmd: 'xelatex',
 		cls: 'article',
@@ -36,6 +44,8 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 		preContent: '',
 		postContent: '',
 		exts: {},
+		texToHtml: defaultTexToHtml,
+		texToTex: defaultTexToTex,
 		generatePdfOnBuild: false,
 		generatePageOnBuild: false,
 		...options,
@@ -69,9 +79,9 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 			const [isTex, texRoute] = matchTex(file);
 			if (isTex) {
 				// create page
-				createTexPage(texRoute, read);
+				createTexPage(texRoute, read, texToHtml);
 				// copy tex and create pdf
-				createTexPdf(texRoute, read, {
+				createTexPdf(texRoute, read, texToTex, {
 					cmd,
 					cls,
 					docOptions,
@@ -87,7 +97,7 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 				if (newFileMatch[0]) {
 					console.log(
 						yellow(
-							`Mathlified: New file detected at ${newFileMatch[1]}.` +
+							`Mathlified: New file detected at ${newFileMatch[1]}` +
 								'\nUpdating dependencies...',
 						),
 					);
@@ -120,6 +130,7 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 						const collatedPreDoc = ext === 'qn' || ext === 'qns' ? qnsPreDoc : preDoc;
 						const collatedCls = ext === 'qn' || ext === 'qns' ? 'exam' : cls;
 						const collatedOptions = {
+							tsxCmd,
 							cmd,
 							cls: collatedCls,
 							docOptions,
@@ -169,6 +180,7 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 							const collatedPreDoc = ext === 'qn' || ext === 'qns' ? qnsPreDoc : preDoc;
 							const collatedCls = ext === 'qn' || ext === 'qns' ? 'exam' : cls;
 							const collatedOptions = {
+								tsxCmd,
 								cmd,
 								cls: collatedCls,
 								docOptions,
@@ -192,13 +204,14 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 					}
 				});
 			}
-			// clean up
 		},
 		async closeBundle() {
+			// ensure all pdf files generated
 			await Promise.all(promises);
 			if (promises.length !== 0) {
 				console.log(yellow('Mathlified: All pdfs generated.\n'));
 			}
+			// clean up
 			console.log(yellow(`Mathlified: Removing Temp files...`));
 			fs.remove(path.resolve('./vite-plugin-sveltekit-tex'));
 			const tempFiles = glob.sync(`./src/lib/mathlified/**/__*-{${extList}}-src.ts`);
@@ -227,6 +240,15 @@ export interface LatexOptions {
 }
 
 export interface MathlifiedOptions {
+	/**
+	 * tsx command.
+	 * by default, we have tsx installed globally on the machine
+	 *
+	 * should be changed to "npx tsx" or "pnpm dlx tsx" or "pnpm tsx", etc
+	 * if tsx not installed globally
+	 * (default "pnpm dlx")
+	 */
+	tsxCmd?: string;
 	/**
 	 * Generates Post/Qn/Qns.svelte on buildStart if they are absent
 	 * (default: true)
@@ -294,6 +316,22 @@ export interface MathlifiedOptions {
 	 * component in 'src/lib/mathlified/[Extname].svelte'
 	 */
 	exts?: { [key: string]: ExtensionOptions };
+	/**
+	 * a function that takes in a string
+	 * (which will be read from 'xxx.mathlified.tex')
+	 * and returns [html, envs]
+	 * where html is a string to be injected into the DOM
+	 * and envs is an array of modules to be imported from the 'mathlifier'
+	 * package
+	 */
+	texToHtml?: (texString: string) => [string, Set<string>];
+	/**
+	 * a function that takes in a string
+	 * (which will be read from 'xxx.mathlified.tex')
+	 * and returns a tex string to be injected
+	 * as content between \begin{document} and \end{document}
+	 */
+	texToTex?: (texString: string) => string;
 	/**
 	 * Whether to generate pdfs on build
 	 * (default: false)
