@@ -80,8 +80,8 @@ importers:
       fs-extra: ^11.1.0
       glob: ^8.1.0
       kleur: ^4.1.5
-      mathlifier: workspace:^1.3.2
-      mathlifier2: workspace:^1.3.2
+      mathlifier: workspace:^1.3.3
+      mathlifier2: workspace:^1.3.3
       node-latex: ^3.1.0
       outdent: ^0.8.0
       prettier: ^2.8.3
@@ -130,7 +130,7 @@ importers:
       tslib: ^2.4.1
       typescript: ^4.9.4
       vite: ^4.0.4
-      vite-plugin-sveltekit-tex: workspace:^0.0.4
+      vite-plugin-sveltekit-tex: workspace:^0.0.6
     dependencies:
       mathlifier: link:../../mathlifier
       mathlifier2: link:../../mathlifier2
