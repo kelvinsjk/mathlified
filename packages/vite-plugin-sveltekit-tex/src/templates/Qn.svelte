@@ -3,12 +3,14 @@
 		body: string;
 		marks?: number;
 		partNo?: number;
+		uplevel?: string;
 	};
 	interface Part {
 		body?: string;
 		marks?: number;
 		parts?: SubPart[];
 		partNo?: number;
+		uplevel?: string;
 	};
 	export interface Question {
 		title?: string;
@@ -22,7 +24,7 @@
 <script lang="ts">
 	export let qn: Question;
 	// for Qns.svelte, we do not want the title to be used
-	export let hasTitle = true;
+	export let showTitle = true;
 
 	const hasMarks = "marks" in qn || (qn.parts && partsHaveMarks(qn.parts))
 	function partsHaveMarks(parts: Part[]|SubPart[]): boolean {
@@ -46,12 +48,12 @@
 </script>
 
 <svelte:head>
-	{#if hasTitle && "title" in qn}
+	{#if showTitle && "title" in qn}
 		<title>{qn.title}</title>
 	{/if}
 </svelte:head>
 			
-{#if (hasTitle && "title" in qn)}
+{#if (showTitle && "title" in qn)}
 	<h1>{@html qn.title}</h1>
 {/if}
 	
@@ -61,7 +63,7 @@
 >
 	<!--qn.body-->
 	{#if qn.body !== undefined}
-		<div class="qn-body qn-bottom-padding">
+		<div class="qn-body">
 			{@html qn.body}
 		</div>
 		{#if qn.marks !== undefined}
@@ -71,11 +73,19 @@
 	<!--qn.parts-->
 	{#if qn.parts !== undefined}
 	{#each qn.parts as part,i}
+		{#if part.uplevel !== undefined}
+			<div class="uplevel qn-body">{@html part.uplevel}</div>
+		{/if}
 		{@const label = String.fromCharCode(64+(part.partNo ?? i+1)).toLowerCase()}
-		<div class="part-label">({label})</div>
+		<div 
+			class="part-label"
+			class:label-right-margin={part.parts === undefined}
+		>
+			({label})
+		</div>
 		<!--qn.part.body-->
 		{#if part["body"]!== undefined}
-			<div class="part-body qn-bottom-padding">
+			<div class="part-body">
 				{@html part.body}
 			</div>
 			{#if part.marks !== undefined}
@@ -85,11 +95,16 @@
 		<!--qn.subparts-->
 		{#if part.parts !== undefined}
 		{#each part.parts as subpart,j}
+			{#if subpart.uplevel !== undefined}
+				<div class="uplevel part-body">{@html subpart.uplevel}</div>
+			{/if}
 			{@const label = romanize(subpart.partNo ?? j+1)}
-			<div class="subpart-label">{label}.</div>
+			<div class="subpart-label label-right-margin">
+				{label}.
+			</div>
 			<!--qn.subpart.body-->
 			{#if subpart["body"]!== undefined}
-				<div class="subpart-body qn-bottom-padding">
+				<div class="subpart-body">
 					{@html subpart.body}
 				</div>
 				{#if subpart.marks !== undefined}
@@ -105,23 +120,40 @@
 <style>
 	.qn-grid {
 		display: grid;
-		max-width: 70ch;
-		grid-template-columns: 3ch 3ch calc(100% - 6ch);
+		--qn-grid-space: min(100%, 71ch);
+		--qn-padding: 0.5rem;
+		--part-label-width: 3ch;
+		--subpart-label-width: 3ch;
+		--marks-width: 0;
+		grid-template-columns: var(--part-label-width) var(--subpart-label-width) calc(var(--qn-grid-space) - var(--part-label-width) - var(--subpart-label-width));
 		padding: 0rem;
 	}
-	.qn-grid-with-marks {
-		max-width: 75ch;
-		grid-template-columns: 3ch 3ch calc(100% - 9.5ch) 3.5ch;
+	.qn-grid.qn-grid-with-marks {
+		--qn-grid-space: min(100%, 74.5ch);
+		grid-template-columns: var(--part-label-width) var(--subpart-label-width) calc(var(--qn-grid-space) - var(--part-label-width) - var(--subpart-label-width) - var(--marks-width)) var(--marks-width);
+		--marks-width: 3.5ch;
 	}
 	.qn-body {
-		padding-top: 0.5rem;
 		grid-column: 1 / span 3;
+		padding-bottom: var(--qn-padding);
 	}
 	.part-body {
 		grid-column: 2 / span 2;
+		padding-bottom: var(--qn-padding);
+	}
+	.subpart-body {
+		padding-bottom: var(--qn-padding);
+	}
+	:global(.qn-body > p:last-child,
+	.part-body > p:last-child,
+	.subpart-body > p:last-child) {
+		margin-bottom: 0;
 	}
 	:global(.qn-bottom-padding) {
-		padding-bottom: 0.5rem;
+		padding-bottom: var(--qn-padding);
+	}
+	.label-right-margin {
+		margin-right: var(--qn-padding);
 	}
 	.part-label {
 		grid-column: 1;
@@ -133,9 +165,10 @@
 		align-self: flex-start;
 		justify-self: flex-end;
 	}
-	.marks {
+	.marks {		
 		grid-column: 4;
 		align-self: flex-end;
 		justify-self: flex-end;
+		padding-bottom: var(--qn-padding);
 	}
 </style>

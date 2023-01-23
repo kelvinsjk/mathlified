@@ -33,7 +33,7 @@ export async function handleTex(
 
 function matchTex(file: string, texExts: string[]): [true, string, string] | [false] {
 	const mathlifiedDir = path.resolve('./src/lib/mathlified');
-	for (const ext in texExts) {
+	for (const ext of texExts) {
 		const extMatch = file.match(new RegExp(`${mathlifiedDir}(.+)\\.${ext}\\.tex`));
 		if (extMatch) {
 			return [true, extMatch[1], ext];

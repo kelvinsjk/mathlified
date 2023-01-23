@@ -4,7 +4,10 @@ import { createPage } from './createPage';
 import { createPdf } from './createPdf';
 import path from 'path';
 import fs from 'fs-extra';
-import { yellow } from 'kleur/colors';
+import {
+	yellow,
+	// red
+} from 'kleur/colors';
 import { matchFile } from '../utils';
 
 export async function handleTs(
@@ -16,6 +19,7 @@ export async function handleTs(
 	options: {
 		tsxCmd: string;
 		latexCmd: string;
+		emitSnippets: boolean;
 		cls: string;
 		docOptions: string;
 		qnsPreDoc: string;
@@ -33,6 +37,8 @@ export async function handleTs(
 					'\nIf dependencies have changed, consider restarting server',
 			),
 		);
+	}
+	if (depTree[file]) {
 		depTree[file].forEach((f) => {
 			const [match, fileRoute, ext] = matchFile(f, extList);
 			if (match) {

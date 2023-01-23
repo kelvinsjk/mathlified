@@ -1,9 +1,7 @@
 import { type Plugin } from 'vite';
-import { defaultExts } from './defaultExts';
 import { matchFile } from './utils';
 import { createPage } from './03b-handleTs/createPage';
 import { createPdf } from './03b-handleTs/createPdf';
-import { texToHtml, texToTex } from './transformTex';
 import fs from 'fs-extra';
 import path from 'path';
 import glob from 'glob';
@@ -14,6 +12,7 @@ import { trackFiles } from './01-dependencyTracking';
 import { createDefaults } from './02-buildStart';
 import { handleTex } from './03a-handleTex';
 import { handleTs } from './03b-handleTs';
+import { defaultExts, defaultTexExts } from './defaultExts';
 
 export function mathlified(options?: MathlifiedOptions): Plugin {
 	// handle options
@@ -23,6 +22,7 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 		texExts,
 		tsxCmd,
 		latexCmd,
+		emitSnippets,
 		cls,
 		docOptions,
 		preDoc,
@@ -34,16 +34,10 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 	} = {
 		generateDefaults: true,
 		exts: {},
-		texExts: {
-			mathlified: {
-				texToHtml,
-				texToTex,
-				latexOptions: {},
-				sveltePreContent: `<svelte:head>+\n\t<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">\n</svelte:head>`,
-			},
-		},
+		texExts: defaultTexExts,
 		tsxCmd: 'tsx',
 		latexCmd: 'xelatex',
+		emitSnippets: true,
 		cls: 'article',
 		docOptions: '',
 		preDoc: '\\\\usepackage{amsmath}\n',
@@ -87,6 +81,7 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 				postContent,
 			});
 			handleTs(file, read, extList, depTree, exts, {
+				emitSnippets,
 				tsxCmd,
 				latexCmd,
 				cls,
@@ -123,6 +118,7 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 							const collatedPreDoc = ext === 'qn' || ext === 'qns' ? qnsPreDoc : preDoc;
 							const collatedCls = ext === 'qn' || ext === 'qns' ? 'exam' : cls;
 							const collatedOptions = {
+								emitSnippets,
 								tsxCmd,
 								latexCmd,
 								cls: collatedCls,
@@ -213,6 +209,17 @@ export interface MathlifiedOptions {
 	 * (default: 'xelatex')
 	 */
 	latexCmd?: string;
+	/**
+	 * In addition to tex and pdf files, we can also emit
+	 * tex snippets of just the content (without the begin document commands, etc)
+	 * in the output/snippets folder.
+	 *
+	 * This can help facilitate combining multiple files into a larger
+	 * single document at a later date
+	 *
+	 * (default: true)
+	 */
+	emitSnippets?: boolean;
 	/**
 	 * Default latex document class for "post" and custom extensions
 	 * (can be overridden by custom extension options)

@@ -68,7 +68,7 @@ export async function appendToTree(
  */
 function addBranch(tree: Tree, dep: string, file: string): void {
 	if (tree[dep] === undefined) {
-		tree[dep] = new Set(file);
+		tree[dep] = new Set([file]);
 	} else {
 		tree[dep].add(file);
 	}
