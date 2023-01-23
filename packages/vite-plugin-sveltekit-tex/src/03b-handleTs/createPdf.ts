@@ -1,10 +1,7 @@
 import path from 'path';
 import fs from 'fs-extra';
-import outdent from 'outdent';
 import { exec } from 'child_process';
-import latex from 'node-latex';
-import { green } from 'kleur';
-import { unSlash } from './transformTex';
+import { preContentTex, postContentTex, writePdf } from '../utils';
 
 /**
  * create output/tex/[file].tex file
@@ -15,7 +12,7 @@ export async function createPdf(
 	read: () => string | Promise<string>,
 	options: {
 		tsxCmd: string;
-		cmd: string;
+		latexCmd: string;
 		cls: string;
 		docOptions: string;
 		preDoc: string;
@@ -37,34 +34,9 @@ export async function createPdf(
 				return reject(err);
 			}
 			console.log(`Mathlified: output/tex${file}.tex created/updated`);
-			return resolve(writePdf(file, options.cmd));
+			return resolve(writePdf(file, options.latexCmd));
 		});
 	});
-}
-
-export async function createTexPdf(
-	texRoute: string,
-	read: () => string | Promise<string>,
-	texToTex: (x: string) => string,
-	options: {
-		cmd: string;
-		cls: string;
-		docOptions: string;
-		preDoc: string;
-		preContent: string;
-		postContent: string;
-	},
-): Promise<void> {
-	const outputTexPath = path.resolve(`./output/tex${texRoute}.tex`);
-	const content = await read();
-	const data =
-		preContentTex(options, false) +
-		'\n' +
-		texToTex(content) +
-		'\n' +
-		postContentTex(options, false);
-	fs.outputFileSync(outputTexPath, data);
-	writePdf(texRoute, options.cmd);
 }
 
 /**
@@ -95,7 +67,7 @@ async function texFactory(
 	file: string,
 	ext: string,
 	options: {
-		cmd: string;
+		latexCmd: string;
 		cls: string;
 		docOptions: string;
 		preDoc: string;
@@ -129,65 +101,4 @@ async function texFactory(
 		.replaceAll('%postContent%', postContentTex(options));
 	fs.outputFileSync(generatorPath, generatorData);
 	return generatorPath;
-}
-
-/**
- * create output/pdf/[file].pdf file
- */
-async function writePdf(file: string, cmd: string): Promise<void> {
-	const input = fs.createReadStream(`./output/tex/${file}.tex`);
-	fs.outputFileSync(`./output/pdf/${file}.pdf`, '');
-	const output = fs.createWriteStream(`./output/pdf/${file}.pdf`);
-	const pdf = latex(input, { cmd });
-	pdf.pipe(output);
-	return new Promise((resolve, reject) => {
-		pdf.on('error', (err) => {
-			console.error(err);
-			return reject(err);
-		});
-		pdf.on('finish', () => {
-			console.log(green(`Mathlified: output/pdf${file}.pdf generated!`));
-			return resolve();
-		});
-	});
-}
-
-function preContentTex(
-	options: {
-		cls: string;
-		docOptions: string;
-		preDoc: string;
-		preContent: string;
-	},
-	escapedSlash = true,
-): string {
-	// handling of options
-	let documentOptions = options.docOptions ? `[${options.docOptions}]` : '';
-	let cls = options.cls;
-	let preDoc = options.preDoc;
-	let preContent = options.preContent;
-	let slash = '\\\\';
-	if (!escapedSlash) {
-		slash = '\\';
-		documentOptions = unSlash(documentOptions);
-		cls = unSlash(cls);
-		preDoc = unSlash(preDoc);
-		preContent = unSlash(preContent);
-	}
-
-	// tex data generation
-	return outdent`
-		${slash}documentclass${documentOptions}{${cls}}
-		${preDoc}
-		${slash}begin{document}
-		${preContent}
-	`;
-}
-function postContentTex(options: { postContent: string }, escapedSlash = true): string {
-	const slash = escapedSlash ? '\\\\' : '\\';
-	const postContent = escapedSlash ? options.postContent : unSlash(options.postContent);
-	return outdent`
-		${postContent}
-		${slash}end{document}
-	`;
 }

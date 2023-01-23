@@ -38,7 +38,7 @@
 		padding: 0rem;
 	}
 	.qn-label {
-		padding: 1rem 0 0;
+		padding-top: 0.5rem;
 		grid-column: 1;
 		align-self: flex-start;
 		justify-self: flex-start;

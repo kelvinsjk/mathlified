@@ -1,51 +1,55 @@
 import { type Plugin } from 'vite';
 import { defaultExts } from './defaultExts';
-import { createComponents } from './createComponents';
-import { createHandlers } from './createHandlers';
-import { matchFile, matchTex, mathlifiedDir } from './matchFiles';
-import { createReverseDependencyTree, appendToTree } from './dependencyTree';
-import { createPage, createTexPage } from './createPage';
-import { createPdf, createTexPdf } from './createPdf';
-import {
-	texToHtml as defaultTexToHtml,
-	texToTex as defaultTexToTex,
-} from './transformTex';
+import { matchFile } from './utils';
+import { createPage } from './03b-handleTs/createPage';
+import { createPdf } from './03b-handleTs/createPdf';
+import { texToHtml, texToTex } from './transformTex';
 import fs from 'fs-extra';
 import path from 'path';
 import glob from 'glob';
 import { yellow, red, green } from 'kleur/colors';
 import commandExists from 'command-exists';
 
-export function sveltekitTex(options?: MathlifiedOptions): Plugin {
+import { trackFiles } from './01-dependencyTracking';
+import { createDefaults } from './02-buildStart';
+import { handleTex } from './03a-handleTex';
+import { handleTs } from './03b-handleTs';
+
+export function mathlified(options?: MathlifiedOptions): Plugin {
 	// handle options
 	const {
+		generateDefaults,
+		exts: customExts,
+		texExts,
 		tsxCmd,
-		generateDefaultComponents,
-		cmd,
+		latexCmd,
 		cls,
 		docOptions,
 		preDoc,
 		qnsPreDoc,
 		preContent,
 		postContent,
-		exts: customExts,
-		texToHtml,
-		texToTex,
 		generatePdfOnBuild,
 		generatePageOnBuild,
 	} = {
+		generateDefaults: true,
+		exts: {},
+		texExts: {
+			mathlified: {
+				texToHtml,
+				texToTex,
+				latexOptions: {},
+				sveltePreContent: `<svelte:head>+\n\t<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">\n</svelte:head>`,
+			},
+		},
 		tsxCmd: 'tsx',
-		generateDefaultComponents: true,
-		cmd: 'xelatex',
+		latexCmd: 'xelatex',
 		cls: 'article',
 		docOptions: '',
 		preDoc: '\\\\usepackage{amsmath}\n',
 		qnsPreDoc: '\\\\usepackage{amsmath}\n\\\\pointsinrightmargin\n\\\\bracketedpoints',
 		preContent: '',
 		postContent: '',
-		exts: {},
-		texToHtml: defaultTexToHtml,
-		texToTex: defaultTexToTex,
 		generatePdfOnBuild: false,
 		generatePageOnBuild: false,
 		...options,
@@ -55,104 +59,43 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 		...customExts,
 	};
 	// track files with ext
-	const extList = Object.keys(exts);
-	const tsFiles = glob.sync(`./src/lib/mathlified/**/*.{${extList}}.{js,ts}`);
-	const tree = createReverseDependencyTree(tsFiles);
-	let filesLength = tsFiles.length;
-	let filesTracked = Object.keys(tree);
+	const { extList, srcFiles, depTree } = trackFiles(exts);
+	// promises to be used in generateBundle
 	const promises: Promise<void>[] = [];
 
 	return {
 		name: 'vite-plugin-sveltekit-tex',
 		async buildStart() {
-			if (generateDefaultComponents) {
-				createComponents();
-				createHandlers();
-				console.log(
-					yellow(
-						`Mathlified: Tracking ${filesLength} files and their dependencies in src/lib/mathlified`,
-					),
-				);
+			if (generateDefaults) {
+				createDefaults();
 			}
+			console.log(
+				yellow(
+					`Mathlified: Tracking ${
+						Object.keys(depTree).length
+					} files and their dependencies in src/lib/mathlified`,
+				),
+			);
 		},
 		async handleHotUpdate({ file, read }) {
-			const [isTex, texRoute] = matchTex(file);
-			if (isTex) {
-				// create page
-				createTexPage(texRoute, read, texToHtml);
-				// copy tex and create pdf
-				createTexPdf(texRoute, read, texToTex, {
-					cmd,
-					cls,
-					docOptions,
-					preDoc,
-					preContent,
-					postContent,
-				});
-			}
-			let newFileMatch: [false] | [true, string, string] = [false];
-			// add to dependency tree if not already tracked
-			if (!filesTracked.includes(file)) {
-				newFileMatch = matchFile(file, extList);
-				if (newFileMatch[0]) {
-					console.log(
-						yellow(
-							`Mathlified: New file detected at ${newFileMatch[1]}` +
-								'\nUpdating dependencies...',
-						),
-					);
-					filesLength += 1;
-					await appendToTree(tree, file, read);
-					filesTracked = Object.keys(tree);
-					console.log(
-						yellow(
-							`Mathlified: Now tracking ${filesLength} files and their dependencies`,
-						),
-					);
-				}
-			}
-			if (filesTracked.includes(file)) {
-				if (!newFileMatch[0]) {
-					console.log(
-						yellow(
-							`Mathlified HMR: Change detected for ${file.slice(
-								mathlifiedDir().length,
-							)}.` + '\nIf dependencies have changed, consider restarting server',
-						),
-					);
-				}
-				tree[file].forEach((f) => {
-					const [match, fileRoute, ext] = matchFile(f, extList);
-					if (match) {
-						// routes/.../+page.svelte
-						createPage(fileRoute, ext);
-						// tex and pdf
-						const collatedPreDoc = ext === 'qn' || ext === 'qns' ? qnsPreDoc : preDoc;
-						const collatedCls = ext === 'qn' || ext === 'qns' ? 'exam' : cls;
-						const collatedOptions = {
-							tsxCmd,
-							cmd,
-							cls: collatedCls,
-							docOptions,
-							preDoc: collatedPreDoc,
-							preContent,
-							postContent,
-							...exts[ext].latexOptions,
-						};
-						createPdf(
-							fileRoute,
-							ext,
-							f === file
-								? read
-								: async () => {
-										const data = await fs.readFile(f);
-										return data.toString();
-								  },
-							collatedOptions,
-						);
-					}
-				});
-			}
+			handleTex(file, read, texExts, {
+				latexCmd,
+				cls,
+				docOptions,
+				preDoc,
+				preContent,
+				postContent,
+			});
+			handleTs(file, read, extList, depTree, exts, {
+				tsxCmd,
+				latexCmd,
+				cls,
+				docOptions,
+				preDoc,
+				preContent,
+				postContent,
+				qnsPreDoc,
+			});
 		},
 		async generateBundle() {
 			if (generatePdfOnBuild || generatePageOnBuild) {
@@ -168,7 +111,7 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 						);
 					}
 				}
-				tsFiles.forEach((file) => {
+				srcFiles.forEach((file) => {
 					const filePath = path.resolve(file);
 					const [match, fileRoute, ext] = matchFile(filePath, extList);
 					if (match) {
@@ -181,7 +124,7 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 							const collatedCls = ext === 'qn' || ext === 'qns' ? 'exam' : cls;
 							const collatedOptions = {
 								tsxCmd,
-								cmd,
+								latexCmd,
 								cls: collatedCls,
 								docOptions,
 								preDoc: collatedPreDoc,
@@ -214,7 +157,7 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 			// clean up
 			console.log(yellow(`Mathlified: Removing Temp files...`));
 			fs.remove(path.resolve('./vite-plugin-sveltekit-tex'));
-			const tempFiles = glob.sync(`./src/lib/mathlified/**/__*-{${extList}}-src.ts`);
+			const tempFiles = glob.sync(`./src/lib/mathlified/**/__*.{${extList}}-src.ts`);
 			const removePromises: Promise<void>[] = [];
 			tempFiles.forEach((file) => {
 				removePromises.push(fs.remove(path.resolve(file)));
@@ -229,9 +172,17 @@ export function sveltekitTex(options?: MathlifiedOptions): Plugin {
 export interface ExtensionOptions {
 	latexOptions?: LatexOptions;
 }
+export interface TexExtensionOptions {
+	latexOptions?: LatexOptions;
+	texToHtml: (x: string) => [string, Set<string>?];
+	texToTex: (x: string) => string;
+	svelteScripts?: string;
+	sveltePreContent?: string;
+	sveltePostContent?: string;
+}
 
 export interface LatexOptions {
-	cmd?: string;
+	latexCmd?: string;
 	cls?: string;
 	docOptions?: string;
 	preDoc?: string;
@@ -240,6 +191,13 @@ export interface LatexOptions {
 }
 
 export interface MathlifiedOptions {
+	/**
+	 * Generates default post/qn/qns
+	 * Svelte Components and content handlers
+	 * on buildStart if they are absent
+	 * (default: true)
+	 * */
+	generateDefaults?: boolean;
 	/**
 	 * tsx command.
 	 * by default, we have tsx installed globally on the machine
@@ -250,16 +208,11 @@ export interface MathlifiedOptions {
 	 */
 	tsxCmd?: string;
 	/**
-	 * Generates Post/Qn/Qns.svelte on buildStart if they are absent
-	 * (default: true)
-	 * */
-	generateDefaultComponents?: boolean;
-	/**
 	 * Default command to use when running node-latex
 	 * (can be overridden by custom extension options)
 	 * (default: 'xelatex')
 	 */
-	cmd?: string;
+	latexCmd?: string;
 	/**
 	 * Default latex document class for "post" and custom extensions
 	 * (can be overridden by custom extension options)
@@ -307,15 +260,73 @@ export interface MathlifiedOptions {
 	 * An object of the form `{
 	 * 	extName: {
 	 * 		latexOptions?: LatexOptions;
-	 * 		contentHandler(extObject: object): string
 	 * 	}
 	 * }`
 	 * to add custom extensions for the plugin to handle
-	 * contentHandler is called to produce the latex content while
-	 * SvelteKit side handling should be done by adding a
-	 * component in 'src/lib/mathlified/[Extname].svelte'
+	 *
+	 * (default: {})
+	 *
+	 * For example, say we create a new extension 'article'
+	 * so that our plugin tracks `src/lib/mathlified/[xxx].article.ts` (or js)
+	 *
+	 * These ts/js files (which we will call the source files)
+	 * need to export an object named "article",
+	 *
+	 * We then have to create component at
+	 * `src/lib/mathlified/components/Article.svelte`
+	 * that takes in a prop named "article".
+	 *
+	 * We also have to create a content handler at
+	 * `src/lib/mathlified/content-handlers/article.ts` (or js)
+	 * which will export a function contentHandler(article)
+	 * which takes in the article object exported by the source
+	 * files and produces a texString (remember to escape backslashes!)
+	 * which will be used as "content" in generating
+	 * the TeX and pdf files.
+	 *
 	 */
 	exts?: { [key: string]: ExtensionOptions };
+	/**
+	 * An object of the form `{
+	 * 	texExtName: {
+	 * 		texToHtml: (x: string)=>[string, Set<string>],
+	 * 		texToTex: (x: string)=>string,
+	 * 		latexOptions?: LatexOptions;
+	 * 		svelteScripts?: string;
+	 * 		sveltePreContent?: string;	 *
+	 * 		sveltePostContent?: string;	 *
+	 * 	}
+	 * }`
+	 * to add custom tex extensions for the plugin to handle
+	 *
+	 * (default: {'mathlified': ...} inspect our source code to find out more)
+	 *
+	 * For example, say we create a new extension 'article'
+	 * so that our plugin tracks `src/lib/mathlified/[xxx].article.tex`,
+	 * which we will call the source file
+	 *
+	 * The texToTex function will take the source file and return
+	 * a string of valid TeX markup to be used as "content" in generating
+	 * the TeX and pdf files. This facilitates us to use non-standard markup
+	 * in our article.tex extension
+	 *
+	 * The texToHtml function will take the source file and return
+	 * [html, mathlifierFns?]. In the generated `+page.svelte` file, we have
+	 * the structure
+	 * `
+	 * <script lang="ts">
+	 * 	import { [mathlifierFns] } from 'mathlifier' // if the set is non-empty
+	 * 	[svelteScripts]
+	 * </script>
+	 *
+	 * [sveltePreContent]
+	 * <div>
+	 * 	[html]
+	 * </div>
+	 * [sveltePostContent]
+	 *
+	 */
+	texExts?: { [key: string]: TexExtensionOptions };
 	/**
 	 * a function that takes in a string
 	 * (which will be read from 'xxx.mathlified.tex')

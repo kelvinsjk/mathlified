@@ -61,7 +61,7 @@
 >
 	<!--qn.body-->
 	{#if qn.body !== undefined}
-		<div class="qn-body">
+		<div class="qn-body qn-bottom-padding">
 			{@html qn.body}
 		</div>
 		{#if qn.marks !== undefined}
@@ -75,7 +75,7 @@
 		<div class="part-label">({label})</div>
 		<!--qn.part.body-->
 		{#if part["body"]!== undefined}
-			<div class="part-body">
+			<div class="part-body qn-bottom-padding">
 				{@html part.body}
 			</div>
 			{#if part.marks !== undefined}
@@ -89,7 +89,7 @@
 			<div class="subpart-label">{label}.</div>
 			<!--qn.subpart.body-->
 			{#if subpart["body"]!== undefined}
-				<div>
+				<div class="subpart-body qn-bottom-padding">
 					{@html subpart.body}
 				</div>
 				{#if subpart.marks !== undefined}
@@ -103,9 +103,6 @@
 </div>
 
 <style>
-	div {
-		padding: 1rem;
-	}
 	.qn-grid {
 		display: grid;
 		max-width: 70ch;
@@ -117,26 +114,26 @@
 		grid-template-columns: 3ch 3ch calc(100% - 9.5ch) 3.5ch;
 	}
 	.qn-body {
-		padding: 1rem 1rem 1rem 0;
+		padding-top: 0.5rem;
 		grid-column: 1 / span 3;
 	}
 	.part-body {
 		grid-column: 2 / span 2;
 	}
+	:global(.qn-bottom-padding) {
+		padding-bottom: 0.5rem;
+	}
 	.part-label {
-		padding: 1rem 0 0;
 		grid-column: 1;
 		align-self: flex-start;
 		justify-self: center;
 	}
 	.subpart-label {
-		padding: 1rem 0 0;
 		grid-column: 2;
 		align-self: flex-start;
 		justify-self: flex-end;
 	}
 	.marks {
-		padding: 0 0 1rem;
 		grid-column: 4;
 		align-self: flex-end;
 		justify-self: flex-end;
