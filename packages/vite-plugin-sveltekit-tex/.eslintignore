@@ -13,5 +13,7 @@ package-lock.json
 yarn.lock
 
 src/templates/texGenerator.ts
+src/templates/snippetGenerator.ts
 dist/texGenerator.ts
+dist/snippetGenerator.ts
 dist/index.js
