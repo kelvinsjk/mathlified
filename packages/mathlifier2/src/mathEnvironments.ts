@@ -96,5 +96,7 @@ function displayEnvironment(
 		postBegin?: string;
 	},
 ) {
-	return `\\begin{${env}}${options?.postBegin ?? ''}` + '\n\t' + x + `\n\\end{${env}}`;
+	return (
+		`\\begin{${env}}${options?.postBegin ?? ''}` + '\n\t' + x.replace(/\n$/, '') + `\n\\end{${env}}`
+	);
 }
