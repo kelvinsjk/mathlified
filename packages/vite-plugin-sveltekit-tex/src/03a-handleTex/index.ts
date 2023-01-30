@@ -3,7 +3,7 @@ import path from 'path';
 import outdent from 'outdent';
 import fs from 'fs-extra';
 import { blue } from 'kleur/colors';
-import { preContentTex, postContentTex, writePdf } from '../utils';
+import { preContentTex, postContentTex, writePdf, normalizePath } from '../utils';
 
 export async function handleTex(
 	file: string,
@@ -32,7 +32,7 @@ export async function handleTex(
 }
 
 function matchTex(file: string, texExts: string[]): [true, string, string] | [false] {
-	const mathlifiedDir = path.resolve('./src/lib/mathlified');
+	const mathlifiedDir = normalizePath(path.resolve('./src/lib/mathlified'));
 	for (const ext of texExts) {
 		const extMatch = file.match(new RegExp(`${mathlifiedDir}(.+)\\.${ext}\\.tex`));
 		if (extMatch) {
@@ -98,5 +98,9 @@ export async function createTexPdf(
 		'\n' +
 		postContentTex(options, false);
 	fs.outputFileSync(outputTexPath, data);
-	writePdf(texRoute, options.latexCmd);
+	try {
+		await writePdf(texRoute, options.latexCmd);
+	} catch (err) {
+		console.error(err);
+	}
 }

@@ -1,10 +1,5 @@
 <script lang="ts" context="module">
-	import type { Question } from './Qn.svelte';
-	export interface Questions {
-		title?: string;
-		qns: Question[];
-		ans?: Question[];
-	}
+	import type { Questions } from '../content-handlers/qns';
 </script>
 
 <script lang="ts">
@@ -54,6 +49,7 @@
 	.qns-grid {
 		display: grid;
 		--qns-grid-space: min(100%, 77ch);
+		width: var(--qns-grid-space);
 		grid-template-columns: 2.5ch calc(var(--qns-grid-space) - 2.5ch);
 		padding: 0rem;
 	}

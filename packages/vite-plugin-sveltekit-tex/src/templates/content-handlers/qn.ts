@@ -1,10 +1,10 @@
-interface SubPart {
+export interface SubPart {
 	body: string;
 	marks?: number;
 	partNo?: number;
 	uplevel?: string;
 }
-interface Part {
+export interface Part {
 	body?: string;
 	marks?: number;
 	parts?: SubPart[];

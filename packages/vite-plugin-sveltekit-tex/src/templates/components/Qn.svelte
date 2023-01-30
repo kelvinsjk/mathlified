@@ -1,23 +1,11 @@
 <script lang="ts" context="module">
-	interface SubPart {
-		body: string;
-		marks?: number;
-		partNo?: number;
-		uplevel?: string;
-	};
-	interface Part {
-		body?: string;
-		marks?: number;
-		parts?: SubPart[];
-		partNo?: number;
-		uplevel?: string;
-	};
-	export interface Question {
-		title?: string;
-		body?: string;
-		marks?: number;
-		parts?: Part[];
-		partNo?: number;
+	import type { Question, Part, SubPart } from '../content-handlers/qn';
+	export function romanize(x: number): string {
+		const tensDigit = Math.floor(x/10);
+		const digit = x%10;
+		const digits = ['', 'i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix'];
+		const tens = ['', 'x', 'xx', 'xxx'];
+		return `${tens[tensDigit]}${digits[digit]}`;
 	}
 </script>
 
@@ -37,13 +25,6 @@
 			}
 			return false;
 		})
-	}
-	function romanize(x: number): string {
-		const tensDigit = Math.floor(x/10);
-		const digit = x%10;
-		const digits = ['', 'i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix'];
-		const tens = ['', 'x', 'xx', 'xxx'];
-		return `${tens[tensDigit]}${digits[digit]}`;
 	}
 </script>
 
@@ -76,7 +57,7 @@
 		{#if part.uplevel !== undefined}
 			<div class="uplevel qn-body">{@html part.uplevel}</div>
 		{/if}
-		{@const label = String.fromCharCode(64+(part.partNo ?? i+1)).toLowerCase()}
+		{@const label = String.fromCharCode(96+(part.partNo ?? i+1))}
 		<div 
 			class="part-label"
 			class:label-right-margin={part.parts === undefined}

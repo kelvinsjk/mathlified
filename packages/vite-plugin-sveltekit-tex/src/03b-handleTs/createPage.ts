@@ -11,10 +11,11 @@ export async function createPage(file: string, ext: string): Promise<void> {
 	const pathName = path.resolve(`./src/routes/${file}/+page.svelte`);
 	try {
 		fs.outputFileSync(pathName, data, { flag: 'wx' });
-		console.log(blue(`Mathlified: SvelteKit Route ${file} created`));
+		console.log(blue(`Mathlified: src/routes${file}/+page.svelte created`));
 	} catch (err) {
-		console.log(`Mathlified: routes${file} detected and is unchanged`);
+		console.log(`Mathlified: src/routes${file}/+page.svelte detected and is unchanged`);
 	}
+	console.log(blue(`Mathlified: current route at http://localhost:5173${file}`));
 }
 
 function svelteData(file: string, ext: string): string {

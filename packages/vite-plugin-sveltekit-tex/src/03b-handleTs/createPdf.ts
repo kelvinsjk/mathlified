@@ -1,7 +1,8 @@
 import path from 'path';
 import fs from 'fs-extra';
 import { exec } from 'child_process';
-import { preContentTex, postContentTex, writePdf } from '../utils';
+import { preContentTex, postContentTex, writePdf, normalizePath } from '../utils';
+import { red } from 'kleur/colors';
 
 /**
  * create output/tex/[file].tex file
@@ -32,24 +33,72 @@ export async function createPdf(
 		snippetPromise,
 		duplicatePromise,
 	]);
-	// generate TeX and pdf
+	// generate snippet
+	if (options.emitSnippets) {
+		generateSnippet(file, snippetPath, options);
+	}
+	// generate tex
+	await generateTex(file, generatorPath, options);
+	try {
+		await writePdf(file, options.latexCmd);
+	} catch (err) {
+		console.log(err);
+	}
+}
+
+async function generateSnippet(
+	file: string,
+	snippetPath: string,
+	options: { tsxCmd: string },
+): Promise<void> {
+	try {
+		await execSnippet(file, snippetPath, options);
+	} catch (err) {
+		console.log(err);
+	}
+}
+
+async function execSnippet(
+	file: string,
+	snippetPath: string,
+	options: { tsxCmd: string },
+): Promise<void> {
 	return new Promise((resolve, reject) => {
-		if (options.emitSnippets) {
-			exec(`${options.tsxCmd} ${snippetPath}`, (err) => {
-				if (err) {
-					console.log(`Mathlified: snippet generation error: ${err}`);
-					return reject(err);
-				}
-				console.log(`Mathlified: output/snippets${file}.snippet.tex created/updated`);
-			});
-		}
-		exec(`${options.tsxCmd} ${generatorPath}`, (err) => {
+		exec(`${options.tsxCmd} ${snippetPath}`, (err) => {
 			if (err) {
-				console.log(`Mathlified: tex generation error: ${err}`);
+				console.log(red(`Mathlified: snippet generation error`));
+				return reject(err);
+			}
+			console.log(`Mathlified: output/snippets${file}.snippet.tex created/updated`);
+			return resolve();
+		});
+	});
+}
+async function generateTex(
+	file: string,
+	texPath: string,
+	options: { tsxCmd: string },
+): Promise<void> {
+	try {
+		await execTex(file, texPath, options);
+	} catch (err) {
+		console.log(err);
+	}
+}
+
+async function execTex(
+	file: string,
+	texPath: string,
+	options: { tsxCmd: string },
+): Promise<void> {
+	return new Promise((resolve, reject) => {
+		exec(`${options.tsxCmd} ${texPath}`, (err) => {
+			if (err) {
+				console.log(red(`Mathlified: tex generation error`));
 				return reject(err);
 			}
 			console.log(`Mathlified: output/tex${file}.tex created/updated`);
-			return resolve(writePdf(file, options.latexCmd));
+			return resolve();
 		});
 	});
 }
@@ -94,16 +143,20 @@ async function texFactory(
 		`./vite-plugin-sveltekit-tex/${file}/`,
 		'./texGenerator.ts',
 	);
-	const srcLocation = path.relative(
-		path.resolve(generatorPath, '../'),
-		path.resolve(
-			`./src/lib/mathlified/${file}`,
-			`../__${path.parse(file).name}.${ext}-src`,
+	const srcLocation = normalizePath(
+		path.relative(
+			path.resolve(generatorPath, '../'),
+			path.resolve(
+				`./src/lib/mathlified/${file}`,
+				`../__${path.parse(file).name}.${ext}-src`,
+			),
 		),
 	);
-	const handlerLocation = path.relative(
-		path.resolve(generatorPath, '../'),
-		path.resolve(`./src/lib/mathlified/content-handlers/${ext}`),
+	const handlerLocation = normalizePath(
+		path.relative(
+			path.resolve(generatorPath, '../'),
+			path.resolve(`./src/lib/mathlified/content-handlers/${ext}`),
+		),
 	);
 	const generatorData = fs
 		.readFileSync('./node_modules/vite-plugin-sveltekit-tex/dist/texGenerator.ts')
@@ -133,16 +186,20 @@ async function snippetFactory(
 			`./vite-plugin-sveltekit-tex/${file}/`,
 			'./snippetGenerator.ts',
 		);
-		const srcLocation = path.relative(
-			path.resolve(generatorPath, '../'),
-			path.resolve(
-				`./src/lib/mathlified/${file}`,
-				`../__${path.parse(file).name}.${ext}-src`,
+		const srcLocation = normalizePath(
+			path.relative(
+				path.resolve(generatorPath, '../'),
+				path.resolve(
+					`./src/lib/mathlified/${file}`,
+					`../__${path.parse(file).name}.${ext}-src`,
+				),
 			),
 		);
-		const handlerLocation = path.relative(
-			path.resolve(generatorPath, '../'),
-			path.resolve(`./src/lib/mathlified/content-handlers/${ext}`),
+		const handlerLocation = normalizePath(
+			path.relative(
+				path.resolve(generatorPath, '../'),
+				path.resolve(`./src/lib/mathlified/content-handlers/${ext}`),
+			),
 		);
 		const generatorData = fs
 			.readFileSync('./node_modules/vite-plugin-sveltekit-tex/dist/snippetGenerator.ts')

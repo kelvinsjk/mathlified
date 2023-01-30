@@ -1,8 +1,5 @@
 <script lang="ts" context="module">
-	export interface Post {
-		title?: string;
-		body: string;
-	}
+	import type { Post } from '../content-handlers/post';
 </script>
 
 <script lang="ts">

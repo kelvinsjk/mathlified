@@ -13,7 +13,7 @@ export async function createComponents(): Promise<void> {
 		const name = ext[0].toUpperCase() + ext.slice(1);
 		try {
 			const sveltePath = path.resolve(
-				`./node_modules/vite-plugin-sveltekit-tex/dist/${name}.svelte`,
+				`./node_modules/vite-plugin-sveltekit-tex/dist/components/${name}.svelte`,
 			);
 			const copyPath = path.resolve(`./src/lib/mathlified/components/${name}.svelte`);
 			fs.copySync(sveltePath, copyPath, { overwrite: false, errorOnExist: true });
@@ -32,7 +32,7 @@ export async function createHandlers(): Promise<void> {
 	['post', 'qn', 'qns'].forEach((ext) => {
 		try {
 			const handlerPath = path.resolve(
-				`./node_modules/vite-plugin-sveltekit-tex/dist/${ext}.ts`,
+				`./node_modules/vite-plugin-sveltekit-tex/dist/content-handlers/${ext}.ts`,
 			);
 			const copyPath = path.resolve(`./src/lib/mathlified/content-handlers/${ext}.ts`);
 			fs.copySync(handlerPath, copyPath, { overwrite: false, errorOnExist: true });

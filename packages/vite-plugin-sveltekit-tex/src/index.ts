@@ -151,16 +151,19 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 				console.log(yellow('Mathlified: All pdfs generated.\n'));
 			}
 			// clean up
-			console.log(yellow(`Mathlified: Removing Temp files...`));
-			fs.remove(path.resolve('./vite-plugin-sveltekit-tex'));
-			const tempFiles = glob.sync(`./src/lib/mathlified/**/__*.{${extList}}-src.ts`);
 			const removePromises: Promise<void>[] = [];
-			tempFiles.forEach((file) => {
+			// ./vite-plugin-sveltekit-tex folder
+			removePromises.push(fs.remove(path.resolve('./vite-plugin-sveltekit-tex')));
+			// alternate source files (with mathlifier2)
+			const tempFiles = glob.sync(`./src/lib/mathlified/**/__*.{${extList}}-src.ts`);
+			tempFiles.forEach((file, i) => {
+				if (i === 0) {
+					console.log(yellow(`Mathlified: Removing Temp files...`));
+				}
 				removePromises.push(fs.remove(path.resolve(file)));
 			});
-			Promise.all(removePromises).then(() => {
-				console.log(green('Mathlified: All temp files removed!'));
-			});
+			await Promise.all(removePromises);
+			console.log(green('Mathlified: All temp files removed!'));
 		},
 	};
 }
