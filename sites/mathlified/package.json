@@ -1,0 +1,21 @@
+{
+	"name": "mathlified-docs",
+	"version": "1.0.0",
+	"description": "Documentation for Mathlified framework",
+	"main": "index.js",
+	"scripts": {
+		"dev": "vitepress dev docs",
+		"build": "vitepress build docs",
+		"preview": "vitepress preview docs"
+	},
+	"keywords": [
+		"mathlified",
+		"mathlifier"
+	],
+	"author": "Kelvin Soh",
+	"license": "MIT",
+	"devDependencies": {
+		"vitepress": "1.0.0-alpha.40",
+		"vue": "^3.2.45"
+	}
+}
