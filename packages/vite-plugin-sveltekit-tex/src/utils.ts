@@ -30,7 +30,7 @@ export function preContentTex(
 	options: {
 		cls: string;
 		docOptions: string;
-		preDoc: string;
+		preamble: string;
 		preContent: string;
 	},
 	escapedSlash = true,
@@ -38,7 +38,7 @@ export function preContentTex(
 	// handling of options
 	let documentOptions = options.docOptions ? `[${options.docOptions}]` : '';
 	let cls = options.cls;
-	let preDoc = options.preDoc;
+	let preDoc = options.preamble;
 	let preContent = options.preContent;
 	let slash = '\\\\';
 	if (!escapedSlash) {

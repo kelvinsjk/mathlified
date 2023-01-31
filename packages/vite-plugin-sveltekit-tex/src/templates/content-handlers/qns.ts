@@ -1,4 +1,7 @@
-import { type Question, formatQn } from './qn';
+import { type Question as Qn, formatQn } from './qn';
+interface Question extends Qn {
+	newpage?: boolean;
+}
 
 export interface Questions {
 	title?: string;
@@ -12,6 +15,9 @@ export function contentHandler(qns: Questions): string {
 		if (qn.partNo) {
 			str += `\n\\setcounter{question}{${qn.partNo - 1}}`;
 		}
+		if (qn.newpage) {
+			str += `\n\\newpage\n\n`;
+		}
 		str += formatQn(qn);
 		str += '\n\n';
 	});
@@ -22,7 +28,7 @@ export function contentHandler(qns: Questions): string {
 		str += '\\begin{enumerate}\n';
 		qns.ans.forEach((ans) => {
 			if (ans.partNo) {
-				str += `\n\\setcounter{enumi}{${ans.partNo - 1}}`;
+				str += `\n\t\\setcounter{enumi}{${ans.partNo - 1}}`;
 			}
 			str += formatAns(ans);
 			str += '\n\n';
@@ -42,7 +48,7 @@ function formatAns(ans: Question) {
 		str += '\n\t\\begin{enumerate}';
 		ans.parts.forEach((part) => {
 			if (part.partNo) {
-				str += `\n\t\\setcounter{enumii}{${part.partNo - 1}}`;
+				str += `\n\t\t\\setcounter{enumii}{${part.partNo - 1}}`;
 			}
 			str += '\n\t\t\\item';
 			str += '\n\t\t';

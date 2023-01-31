@@ -25,8 +25,7 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 		emitSnippets,
 		cls,
 		docOptions,
-		preDoc,
-		qnsPreDoc,
+		preamble,
 		preContent,
 		postContent,
 		generatePdfOnBuild,
@@ -40,8 +39,7 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 		emitSnippets: true,
 		cls: 'article',
 		docOptions: '',
-		preDoc: '\\\\usepackage{amsmath}\n',
-		qnsPreDoc: '\\\\usepackage{amsmath}\n\\\\pointsinrightmargin\n\\\\bracketedpoints',
+		preamble: '\\\\usepackage{amsmath}\n',
 		preContent: '',
 		postContent: '',
 		generatePdfOnBuild: false,
@@ -76,7 +74,7 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 				latexCmd,
 				cls,
 				docOptions,
-				preDoc,
+				preamble,
 				preContent,
 				postContent,
 			});
@@ -86,10 +84,9 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 				latexCmd,
 				cls,
 				docOptions,
-				preDoc,
+				preamble: preamble,
 				preContent,
 				postContent,
-				qnsPreDoc,
 			});
 		},
 		async generateBundle() {
@@ -115,15 +112,13 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 						}
 						if (willBuildPdf) {
 							// tex and pdf
-							const collatedPreDoc = ext === 'qn' || ext === 'qns' ? qnsPreDoc : preDoc;
-							const collatedCls = ext === 'qn' || ext === 'qns' ? 'exam' : cls;
 							const collatedOptions = {
 								emitSnippets,
 								tsxCmd,
 								latexCmd,
-								cls: collatedCls,
+								cls,
 								docOptions,
-								preDoc: collatedPreDoc,
+								preamble,
 								preContent,
 								postContent,
 								...exts[ext].latexOptions,
@@ -184,7 +179,7 @@ export interface LatexOptions {
 	latexCmd?: string;
 	cls?: string;
 	docOptions?: string;
-	preDoc?: string;
+	preamble?: string;
 	preContent?: string;
 	postContent?: string;
 }
@@ -246,14 +241,7 @@ export interface MathlifiedOptions {
 	 *
 	 * Note that the "qn" and "qns" extension use qnsPreDoc option instead
 	 */
-	preDoc?: string;
-	/**
-	 * Default content to be placed before the `\begin{document}` command
-	 * for "qn" and "qns" extensions
-	 * (can be overridden by customizing those extensions)
-	 * (default: `\usepackage{amsmath}\n\bracketedpoints\pointsinrightmargin`)
-	 */
-	qnsPreDoc?: string;
+	preamble?: string;
 	/**
 	 * Default content to be placed after the `\begin{document}` command
 	 * and before the content body

@@ -13,7 +13,7 @@ export async function handleTex(
 		latexCmd: string;
 		cls: string;
 		docOptions: string;
-		preDoc: string;
+		preamble: string;
 		preContent: string;
 		postContent: string;
 	},
@@ -84,7 +84,7 @@ export async function createTexPdf(
 		latexCmd: string;
 		cls: string;
 		docOptions: string;
-		preDoc: string;
+		preamble: string;
 		preContent: string;
 		postContent: string;
 	},

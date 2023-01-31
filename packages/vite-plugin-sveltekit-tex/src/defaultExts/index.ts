@@ -3,8 +3,18 @@ import { texToHtml, texToTex } from './transformTex';
 
 export const defaultExts: { [key: string]: ExtensionOptions } = {
 	post: {},
-	qn: {},
-	qns: {},
+	qn: {
+		latexOptions: {
+			cls: 'exam',
+			preamble: '\\\\usepackage{amsmath}\n\\\\pointsinrightmargin\n\\\\bracketedpoints\n',
+		},
+	},
+	qns: {
+		latexOptions: {
+			cls: 'exam',
+			preamble: '\\\\usepackage{amsmath}\n\\\\pointsinrightmargin\n\\\\bracketedpoints\n',
+		},
+	},
 };
 
 export const defaultTexExts = {

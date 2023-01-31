@@ -56,27 +56,23 @@ export function sidebarGuide() {
 					text: "The Mathlified.tex Template",
 					link: "/extensions/mathlified-tex",
 				},
-				{
-					text: "Simple customizations",
-					link: "/extensions/customizations",
-				},
 			],
 		},
 		{
-			text: "Customization",
+			text: "Customizations",
 			collapsible: true,
 			items: [
 				{
-					text: "Customizing Svelte Output",
-					link: "/guide/svelte-components",
+					text: "Customizing SvelteKit Output",
+					link: "/customizations/sveltekit",
 				},
 				{
-					text: "Customizing TeX Output",
-					link: "/guide/content-handlers",
+					text: "Customizing LaTeX Output",
+					link: "/customizations/tex",
 				},
 				{
 					text: "Config Options",
-					link: "/guide/custom-extensions",
+					link: "/customizations/config",
 				},
 			],
 		},
@@ -84,14 +80,6 @@ export function sidebarGuide() {
 			text: "Custom Extensions",
 			collapsible: true,
 			items: [
-				{
-					text: "Svelte components",
-					link: "/guide/svelte-components",
-				},
-				{
-					text: "Content handlers",
-					link: "/guide/content-handlers",
-				},
 				{
 					text: "Custom JS/TS extensions",
 					link: "/guide/custom-extensions",

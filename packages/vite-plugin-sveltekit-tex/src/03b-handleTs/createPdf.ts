@@ -17,7 +17,7 @@ export async function createPdf(
 		emitSnippets: boolean;
 		cls: string;
 		docOptions: string;
-		preDoc: string;
+		preamble: string;
 		preContent: string;
 		postContent: string;
 	},
@@ -134,7 +134,7 @@ async function texFactory(
 		latexCmd: string;
 		cls: string;
 		docOptions: string;
-		preDoc: string;
+		preamble: string;
 		preContent: string;
 		postContent: string;
 	},

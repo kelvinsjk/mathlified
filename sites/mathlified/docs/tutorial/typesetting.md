@@ -67,6 +67,6 @@ Note the escaping of the backslashes for the LaTeX markup. Also don't forget
 to add imports like `\usepackage{tikz}` in the `preDoc` options that can
 be fed into the Mathlified plugin.
 
-For common use-cases (I'm thinking images and lists off the top of my head),
+For common use-cases (I'm thinking images, lists and links off the top of my head),
 I'm be more than happy to receive PRs to the `mathlifier` and `mathlifier2`
 libraries!

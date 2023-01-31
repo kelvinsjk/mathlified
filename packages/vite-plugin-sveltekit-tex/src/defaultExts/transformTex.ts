@@ -5,13 +5,13 @@ export function texToHtml(tex: string): [string, Set<string>] {
 			return ``;
 		})
 		.replaceAll('\n\n', '\n\n<p>\n')
-		.replace(/(?<![\\])(?<![$])\$(?!\$)(.+)(?<![\\])(?<![$])\$(?!\$)/g, (_, text) => {
-			environments.add('math');
-			return `{@html math(\`${text.replaceAll('\\', '\\\\')}\`)}`;
-		})
 		.replace(/(?<!\\)\$\$(.+)(?<!\\)\$\$/g, (_, text) => {
 			environments.add('display');
 			return `<div>{@html display(\`${text.replaceAll('\\', '\\\\')}\`)}\n</div>\n\n<p>`;
+		})
+		.replace(/(?<![\\])(?<![$])\$(?!\$)(.+)(?<![\\])(?<![$])\$(?!\$)/g, (_, text) => {
+			environments.add('math');
+			return `{@html math(\`${text.replaceAll('\\', '\\\\')}\`)}`;
 		})
 		.replace(/\\begin{align}(.+?)\\end{align}/gs, (_, env) => {
 			environments.add('align');

@@ -70,19 +70,19 @@ export function formatQn(qn: Question) {
 						str += '\t' + subpart.body;
 					}
 					if (subpart.marks) {
-						str += '\n\t\t\\droppoints\n';
+						str = str.replace(/(\s)+$/, '') + '\n\t\t\t\\droppoints\n';
 					}
 				});
 				str += '\n\t\t\\end{subparts}';
 			}
 			if (part.marks) {
-				str += '\n\t\\droppoints\n';
+				str = str.replace(/(\s)+$/, '') + '\n\t\t\\droppoints\n';
 			}
 		});
 		str += '\n\t\\end{parts}';
 	}
 	if (qn.marks) {
-		str += '\\droppoints\n';
+		str = str.replace(/(\s)+$/, '') + '\n\\droppoints\n';
 	}
 	return str;
 }

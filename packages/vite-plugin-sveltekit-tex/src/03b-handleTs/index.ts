@@ -8,7 +8,7 @@ import {
 	yellow,
 	// red
 } from 'kleur/colors';
-import { matchFile } from '../utils';
+import { matchFile, normalizePath } from '../utils';
 
 export async function handleTs(
 	file: string,
@@ -22,8 +22,7 @@ export async function handleTs(
 		emitSnippets: boolean;
 		cls: string;
 		docOptions: string;
-		qnsPreDoc: string;
-		preDoc: string;
+		preamble: string;
 		preContent: string;
 		postContent: string;
 	},
@@ -38,20 +37,15 @@ export async function handleTs(
 			),
 		);
 	}
-	if (depTree[file]) {
+	if (depTree[normalizePath(file)]) {
 		depTree[file].forEach((f) => {
 			const [match, fileRoute, ext] = matchFile(f, extList);
 			if (match) {
 				// routes/.../+page.svelte
 				createPage(fileRoute, ext);
 				// tex and pdf
-				const collatedPreDoc =
-					ext === 'qn' || ext === 'qns' ? options.qnsPreDoc : options.preDoc;
-				const collatedCls = ext === 'qn' || ext === 'qns' ? 'exam' : options.cls;
 				const collatedOptions = {
 					...options,
-					cls: collatedCls,
-					preDoc: collatedPreDoc,
 					...exts[ext].latexOptions,
 				};
 				createPdf(

@@ -31,20 +31,20 @@ Place all your relevant source files here for Mathlified to do its magic.
 
 ```
 .
-├── src
-│   ├── mathlified
-│   |   ├── components
-|   |   ├── content-handlers
-│   │   ├── **/*.post.ts
-│   │   ├── **/*.qn.ts
-│   │   ├── **/*.qns.ts
-│   │   └── **/*.mathlified.tex
-├── routes
-├── output
-│   ├── tex
-│   ├── pdf
-│   └── snippets
-...
+└── src
+    ├── lib
+		│   ├── mathlified
+		│   |   ├── components
+		|   |   ├── content-handlers
+		│   │   ├── **/*.post.ts
+		│   │   ├── **/*.qn.ts
+		│   │   ├── **/*.qns.ts
+		│   │   └── **/*.mathlified.tex
+		├── routes
+		└── output
+				├── tex
+				├── pdf
+				└── snippets
 ```
 
 <!-- markdownlint-restore -->
