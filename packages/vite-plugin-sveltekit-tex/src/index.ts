@@ -193,6 +193,27 @@ export interface MathlifiedOptions {
 	 * */
 	generateDefaults?: boolean;
 	/**
+	 * In addition to tex and pdf files, we can also emit
+	 * tex snippets of just the content (without the begin document commands, etc)
+	 * in the output/snippets folder.
+	 *
+	 * This can help facilitate combining multiple files into a larger
+	 * single document at a later date
+	 *
+	 * (default: true)
+	 */
+	emitSnippets?: boolean;
+	/**
+	 * Whether to generate pdfs on build
+	 * (default: false)
+	 */
+	generatePdfOnBuild?: boolean;
+	/**
+	 * Whether to generate pages on build
+	 * (default: false)
+	 */
+	generatePageOnBuild?: boolean;
+	/**
 	 * tsx command.
 	 * by default, we have tsx installed globally on the machine
 	 *
@@ -207,17 +228,7 @@ export interface MathlifiedOptions {
 	 * (default: 'xelatex')
 	 */
 	latexCmd?: string;
-	/**
-	 * In addition to tex and pdf files, we can also emit
-	 * tex snippets of just the content (without the begin document commands, etc)
-	 * in the output/snippets folder.
-	 *
-	 * This can help facilitate combining multiple files into a larger
-	 * single document at a later date
-	 *
-	 * (default: true)
-	 */
-	emitSnippets?: boolean;
+
 	/**
 	 * Default latex document class for "post" and custom extensions
 	 * (can be overridden by custom extension options)
@@ -325,30 +336,4 @@ export interface MathlifiedOptions {
 	 *
 	 */
 	texExts?: { [key: string]: TexExtensionOptions };
-	/**
-	 * a function that takes in a string
-	 * (which will be read from 'xxx.mathlified.tex')
-	 * and returns [html, envs]
-	 * where html is a string to be injected into the DOM
-	 * and envs is an array of modules to be imported from the 'mathlifier'
-	 * package
-	 */
-	texToHtml?: (texString: string) => [string, Set<string>];
-	/**
-	 * a function that takes in a string
-	 * (which will be read from 'xxx.mathlified.tex')
-	 * and returns a tex string to be injected
-	 * as content between \begin{document} and \end{document}
-	 */
-	texToTex?: (texString: string) => string;
-	/**
-	 * Whether to generate pdfs on build
-	 * (default: false)
-	 */
-	generatePdfOnBuild?: boolean;
-	/**
-	 * Whether to generate pages on build
-	 * (default: false)
-	 */
-	generatePageOnBuild?: boolean;
 }

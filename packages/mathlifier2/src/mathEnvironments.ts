@@ -97,6 +97,9 @@ function displayEnvironment(
 	},
 ) {
 	return (
-		`\\begin{${env}}${options?.postBegin ?? ''}` + '\n\t' + x.replace(/\n$/, '') + `\n\\end{${env}}`
+		`\\begin{${env}}${options?.postBegin ?? ''}` +
+		'\n\t' +
+		x.replace(/(\s)+$/, '') +
+		`\n\\end{${env}}`
 	);
 }
