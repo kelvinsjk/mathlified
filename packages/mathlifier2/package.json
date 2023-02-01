@@ -1,6 +1,6 @@
 {
 	"name": "mathlifier2",
-	"version": "1.3.3",
+	"version": "1.3.4",
 	"description": "Enabling 'write once, run anywhere' for web + LaTeX documents",
 	"source": "src/index.ts",
 	"type": "module",
