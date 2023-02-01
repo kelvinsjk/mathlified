@@ -82,11 +82,29 @@ export function sidebarGuide() {
 			items: [
 				{
 					text: "Custom JS/TS extensions",
-					link: "/guide/custom-extensions",
+					link: "/extensions/js-ts",
 				},
 				{
 					text: "Custom TeX extensions",
-					link: "/guide/custom-extensions",
+					link: "/extensions/tex",
+				},
+			],
+		},
+		{
+			text: "Contribute",
+			collapsible: true,
+			items: [
+				{
+					text: "General guidelines",
+					link: "/contribute/general",
+				},
+				{
+					text: "Possible areas of improvement",
+					link: "/contribute/custom-extensions",
+				},
+				{
+					text: "Contributing extensions",
+					link: "/contribute/extensions",
 				},
 			],
 		},

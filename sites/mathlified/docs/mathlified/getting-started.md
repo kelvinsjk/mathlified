@@ -48,7 +48,7 @@ so this will ideally be installed globally on your machine.
 npm install --global tsx
 ```
 
-Alternatively, you can also change the config option `tsxCommand`
+Alternatively, you can also change the config option `tsxCmd`
 to commands like `npx tsx` or `pnpm dlx` to avoid global installation.
 
 <details>
