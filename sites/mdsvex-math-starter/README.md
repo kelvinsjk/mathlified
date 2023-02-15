@@ -4,7 +4,7 @@ This repo can get us started displaying math using mdsvex and SvelteKit.
 
 ## Getting started
 
-The fastest way to get started is to clone the repo with swy
+The fastest way to get started is to clone the repo with degit
 
 ```bash
 npx degit https://github.com/kelvinsjk/mathlified/sites/mdsvex-math-starter myProject
@@ -44,7 +44,7 @@ If you need dynamic and/or reactive mathematical content, install
 
 ```bash
 # install either KaTeX (npm i katex) or mathlifier
-npm i mathlifier 
+npm i mathlifier
 ```
 
 ### Add KaTeX stylesheet
@@ -54,7 +54,12 @@ the following into the head element.
 
 ```html
 <!--in the head element of app.html-->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
+<link
+	rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
+	integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"
+	crossorigin="anonymous"
+/>
 ```
 
 ### Start developing
