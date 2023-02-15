@@ -4,6 +4,7 @@ import { exec } from 'child_process';
 import { preContentTex, postContentTex, writePdf, normalizePath } from '../utils';
 import { red } from 'kleur/colors';
 import { MathlifiedTsOptions } from '..';
+import { build } from 'esbuild';
 
 /**
  * create output/tex/[file].tex file
@@ -27,10 +28,10 @@ export async function createPdf(
 	]);
 	// generate snippet
 	if (options.emitSnippets) {
-		generateSnippet(file, snippetPath, options);
+		generateSnippet(file, snippetPath);
 	}
 	// generate tex
-	await generateTex(file, generatorPath, options);
+	await generateTex(file, generatorPath);
 	try {
 		await writePdf(file, options.latexCmd);
 	} catch (err) {
@@ -41,10 +42,14 @@ export async function createPdf(
 async function generateSnippet(
 	file: string,
 	snippetPath: string,
-	options: { tsxCmd: string },
+	//options: { tsxCmd: string },
 ): Promise<void> {
 	try {
-		await execSnippet(file, snippetPath, options);
+		await execSnippet(
+			file,
+			snippetPath,
+			//options
+		);
 	} catch (err) {
 		console.log(err);
 	}
@@ -53,10 +58,17 @@ async function generateSnippet(
 async function execSnippet(
 	file: string,
 	snippetPath: string,
-	options: { tsxCmd: string },
+	//options: { tsxCmd: string },
 ): Promise<void> {
+	const snippetGenPath = path.resolve('./vite-plugin-sveltekit-tex/snippetGenerator.cjs');
+	await build({
+		bundle: true,
+		entryPoints: [snippetPath],
+		outfile: snippetGenPath,
+		platform: 'node',
+	});
 	return new Promise((resolve, reject) => {
-		exec(`${options.tsxCmd} ${snippetPath}`, (err) => {
+		exec(`node ${snippetGenPath}`, (err) => {
 			if (err) {
 				console.log(red(`Mathlified: snippet generation error`));
 				return reject(err);
@@ -68,30 +80,35 @@ async function execSnippet(
 		});
 	});
 }
-async function generateTex(
-	file: string,
-	texPath: string,
-	options: { tsxCmd: string },
-): Promise<void> {
+async function generateTex(file: string, texPath: string): Promise<void> {
 	try {
-		await execTex(file, texPath, options);
+		await execTex(
+			file,
+			texPath,
+			//options
+		);
 	} catch (err) {
 		console.log(err);
 	}
 }
 
-async function execTex(
-	file: string,
-	texPath: string,
-	options: { tsxCmd: string },
-): Promise<void> {
+async function execTex(file: string, texPath: string): Promise<void> {
+	const texGenPath = path.resolve('./vite-plugin-sveltekit-tex/texGenerator.cjs');
+	await build({
+		bundle: true,
+		entryPoints: [texPath],
+		outfile: texGenPath,
+		platform: 'node',
+	});
 	return new Promise((resolve, reject) => {
-		exec(`${options.tsxCmd} ${texPath}`, (err) => {
+		exec(`node ${texGenPath}`, (err) => {
 			if (err) {
-				console.log(red(`Mathlified: tex generation error`));
+				console.log(red(`Mathlified: snippet generation error`));
 				return reject(err);
 			}
-			console.log(`Mathlified: output/tex/${file.slice(0, -1)}.tex created/updated`);
+			console.log(
+				`Mathlified: output/snippets/${file.slice(0, -1)}.snippet.tex created/updated`,
+			);
 			return resolve();
 		});
 	});
@@ -142,10 +159,20 @@ async function texFactory(
 	);
 	// check for // %preambleArgs=...%
 	const data = await read();
-	const dataMatch = data.match(/\/\/ %preambleArgs=(.+?)%/);
-	let preambleArgs: string | undefined;
-	if (dataMatch) {
-		preambleArgs = data[1];
+	const preambleMatch = data.match(/\/\/ %preambleArg=(.+?)%/);
+	let preambleArg: string | undefined;
+	if (preambleMatch) {
+		preambleArg = preambleMatch[1];
+	}
+	const preContentMatch = data.match(/\/\/ %preContentArg=(.+?)%/);
+	let preContentArg: string | undefined;
+	if (preContentMatch) {
+		preContentArg = preContentMatch[1];
+	}
+	const postContentMatch = data.match(/\/\/ %postContentArg=(.+?)%/);
+	let postContentArg: string | undefined;
+	if (postContentMatch) {
+		postContentArg = postContentMatch[1];
 	}
 	const generatorData = fs
 		.readFileSync('./node_modules/vite-plugin-sveltekit-tex/dist/texGenerator.ts')
@@ -154,8 +181,8 @@ async function texFactory(
 		.replaceAll('%srcLocation%', srcLocation)
 		.replaceAll('%handlerLocation%', handlerLocation)
 		.replaceAll('%fileLocation%', file.slice(0, -1))
-		.replaceAll('%preContent%', preContentTex(options, true, preambleArgs))
-		.replaceAll('%postContent%', postContentTex(options));
+		.replaceAll('%preContent%', preContentTex(options, true, preambleArg, preContentArg))
+		.replaceAll('%postContent%', postContentTex(options, true, postContentArg));
 	fs.outputFileSync(generatorPath, generatorData);
 	return generatorPath;
 }

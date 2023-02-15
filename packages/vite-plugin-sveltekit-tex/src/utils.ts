@@ -30,19 +30,19 @@ export async function writePdf(file: string, cmd: string): Promise<void> {
 export function preContentTex(
 	options: Required<LatexOptions>,
 	escapedSlash = true,
-	preambleArgs = '',
-	//preContentArgs: unknown[] = [],
+	preambleArg = '',
+	preContentArg = '',
 ): string {
 	// handling of options
 	let documentOptions = options.docOptions ? `[${options.docOptions}]` : '';
 	let cls = options.cls;
 	let preamble = options.preamble;
 	if (typeof preamble !== 'string') {
-		preamble = preamble(preambleArgs);
+		preamble = preamble(preambleArg);
 	}
 	let preContent = options.preContent;
 	if (typeof preContent !== 'string') {
-		preContent = preContent();
+		preContent = preContent(preContentArg);
 	}
 	let slash = '\\';
 	if (escapedSlash) {
@@ -64,13 +64,13 @@ export function preContentTex(
 
 export function postContentTex(
 	options: Required<LatexOptions>,
-	//postContentArgs: unknown[] = [],
 	escapedSlash = true,
+	postContentArg = '',
 ): string {
 	const slash = escapedSlash ? '\\\\' : '\\';
 	let postContent = options.postContent;
 	if (typeof postContent !== 'string') {
-		postContent = postContent();
+		postContent = postContent(postContentArg);
 	}
 	if (escapedSlash) {
 		postContent = reSlash(postContent);

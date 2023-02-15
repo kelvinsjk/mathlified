@@ -20,7 +20,6 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 		generateDefaults,
 		exts: customExts,
 		texExts,
-		tsxCmd,
 		latexCmd,
 		emitSnippets,
 		cls,
@@ -34,7 +33,6 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 		generateDefaults: true,
 		exts: {},
 		texExts: defaultTexExts,
-		tsxCmd: 'tsx',
 		latexCmd: 'xelatex',
 		emitSnippets: true,
 		cls: 'article',
@@ -80,7 +78,6 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 			});
 			handleTs(file, read, server, extList, depTree, exts, {
 				emitSnippets,
-				tsxCmd,
 				latexCmd,
 				cls,
 				docOptions,
@@ -114,7 +111,6 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 							// tex and pdf
 							const collatedOptions = {
 								emitSnippets,
-								tsxCmd,
 								latexCmd,
 								cls,
 								docOptions,
@@ -168,10 +164,31 @@ export interface ExtensionOptions {
 }
 export interface TexExtensionOptions {
 	latexOptions?: LatexOptions;
+	/**
+	 * function to convert data in tex file to html markup
+	 * @returns [markup, mathlifierFns]
+	 * where mathlifierFns is a Set<string> containing the names
+	 * of functions to be imported from mathlifier to facilitate conversion
+	 * to html.
+	 */
 	texToHtml: (x: string) => [string, Set<string>?];
+	/**
+	 * function to convert data in tex file to actual LaTeX markup
+	 * @returns markup
+	 */
 	texToTex: (x: string) => string;
+	/**
+	 * string to be inserted into the <scripts> portion of the svelte file
+	 */
 	svelteScripts?: string;
+	/**
+	 * string to be inserted before the main content
+	 */
 	sveltePreContent?: string;
+	/**
+	 * string to be inserted after the main content
+	 * useful for custom styles
+	 */
 	sveltePostContent?: string;
 }
 
@@ -183,12 +200,11 @@ export interface LatexOptions {
 	 */
 	latexCmd?: string;
 	/**
-	 * Default latex document class for "post" and custom extensions
+	 * Default latex document class
 	 * (can be overridden by custom extension options)
 	 * (default: 'article')
 	 *
 	 * Note that the "qn" and "qns" extension use the "exam" class by default
-	 * and cannot be changed unless the extension is customized
 	 */
 	cls?: string;
 	/**
@@ -199,23 +215,29 @@ export interface LatexOptions {
 	docOptions?: string;
 	/**
 	 * Default content to be placed before the `\begin{document}` command
-	 * for "post" and custom extensions
 	 * (can be overridden by custom extension options)
 	 * (default: `\usepackage{amsmath}\n`)
 	 *
-	 * Note that the "qn" and "qns" extension use qnsPreDoc option instead
+	 * if used as a function, we will scan the source file for
+	 * `// %preambleArg=xxx%' and xxx will be passed as the function argument
 	 */
 	preamble?: string | ((x?: string) => string);
 	/**
 	 * Default content to be placed after the `\begin{document}` command
 	 * and before the content body
 	 * (default: ``)
+	 *
+	 * * if used as a function, we will scan the source file for
+	 * `// %preContentArg=xxx%' and xxx will be passed as the function argument
 	 */
 	preContent?: string | ((x?: string) => string);
 	/**
 	 * Default content to be placed after the content body
 	 * and before the `\end{document}` command
 	 * (default: ``)
+	 *
+	 * * * if used as a function, we will scan the source file for
+	 * `// %postContentArg=xxx%' and xxx will be passed as the function argument
 	 */
 	postContent?: string | ((x?: string) => string);
 }
@@ -232,15 +254,6 @@ export interface MathlifiedTsOptions extends LatexOptions {
 	 * (default: true)
 	 */
 	emitSnippets?: boolean;
-	/**
-	 * tsx command.
-	 * by default, we have tsx installed globally on the machine
-	 *
-	 * should be changed to "npx tsx" or "pnpm dlx tsx" or "pnpm tsx", etc
-	 * if tsx not installed globally
-	 * (default "pnpm dlx")
-	 */
-	tsxCmd?: string;
 }
 
 export interface MathlifiedOptions extends MathlifiedTsOptions {
@@ -273,7 +286,7 @@ export interface MathlifiedOptions extends MathlifiedTsOptions {
 	 * (default: {})
 	 *
 	 * For example, say we create a new extension 'article'
-	 * so that our plugin tracks `src/routes/[**]/+article.ts` (or js)
+	 * so that our plugin tracks `src/routes/[**]/_article.ts` (or js)
 	 *
 	 * These ts/js files (which we will call the source files)
 	 * need to export an object named "article",
@@ -308,7 +321,7 @@ export interface MathlifiedOptions extends MathlifiedTsOptions {
 	 * (default: {'mathlified': ...} inspect our source code to find out more)
 	 *
 	 * For example, say we create a new extension 'article'
-	 * so that our plugin tracks `src/routes/[**]/+article.tex`,
+	 * so that our plugin tracks `src/routes/[**]/_article.tex`,
 	 * which we will call the source file
 	 *
 	 * The texToTex function will take the source file and return
