@@ -4,7 +4,7 @@ This repo can get us started displaying math using mdsvex and SvelteKit.
 
 ## Getting started
 
-The fastest way to get started is to clone the repo with degit
+The fastest way to get started is to clone the repo with [degit](https://github.com/Rich-Harris/degit)
 
 ```bash
 npx degit https://github.com/kelvinsjk/mathlified/sites/mdsvex-math-starter myProject
