@@ -4,14 +4,15 @@ import fs from 'fs-extra';
 import latex from 'node-latex';
 import { green, red } from 'kleur';
 import os from 'os';
+import type { LatexOptions } from './';
 
 /**
  * create output/pdf/[file].pdf file
  */
 export async function writePdf(file: string, cmd: string): Promise<void> {
-	const input = fs.createReadStream(`./output/tex/${file}.tex`);
-	fs.outputFileSync(`./output/pdf/${file}.pdf`, '');
-	const output = fs.createWriteStream(`./output/pdf/${file}.pdf`);
+	const input = fs.createReadStream(`./output/tex/${file.slice(0, -1)}.tex`);
+	fs.outputFileSync(`./output/pdf/${file.slice(0, -1)}.pdf`, '');
+	const output = fs.createWriteStream(`./output/pdf/${file.slice(0, -1)}.pdf`);
 	const pdf = latex(input, { cmd });
 	pdf.pipe(output);
 	return new Promise((resolve, reject) => {
@@ -20,50 +21,60 @@ export async function writePdf(file: string, cmd: string): Promise<void> {
 			return reject(err);
 		});
 		pdf.on('finish', () => {
-			console.log(green(`Mathlified: output/pdf${file}.pdf generated!`));
+			console.log(green(`Mathlified: output/pdf/${file.slice(0, -1)}.pdf generated!`));
 			return resolve();
 		});
 	});
 }
 
 export function preContentTex(
-	options: {
-		cls: string;
-		docOptions: string;
-		preamble: string;
-		preContent: string;
-	},
+	options: Required<LatexOptions>,
 	escapedSlash = true,
+	preambleArgs = '',
+	//preContentArgs: unknown[] = [],
 ): string {
 	// handling of options
 	let documentOptions = options.docOptions ? `[${options.docOptions}]` : '';
 	let cls = options.cls;
-	let preDoc = options.preamble;
+	let preamble = options.preamble;
+	if (typeof preamble !== 'string') {
+		preamble = preamble(preambleArgs);
+	}
 	let preContent = options.preContent;
-	let slash = '\\\\';
-	if (!escapedSlash) {
-		slash = '\\';
-		documentOptions = unSlash(documentOptions);
-		cls = unSlash(cls);
-		preDoc = unSlash(preDoc);
-		preContent = unSlash(preContent);
+	if (typeof preContent !== 'string') {
+		preContent = preContent();
+	}
+	let slash = '\\';
+	if (escapedSlash) {
+		slash = '\\\\';
+		documentOptions = reSlash(documentOptions);
+		cls = reSlash(cls);
+		preamble = reSlash(preamble);
+		preContent = reSlash(preContent);
 	}
 
 	// tex data generation
 	return outdent`
 		${slash}documentclass${documentOptions}{${cls}}
-		${preDoc}
+		${preamble}
 		${slash}begin{document}
 		${preContent}
 	`;
 }
 
 export function postContentTex(
-	options: { postContent: string },
+	options: Required<LatexOptions>,
+	//postContentArgs: unknown[] = [],
 	escapedSlash = true,
 ): string {
 	const slash = escapedSlash ? '\\\\' : '\\';
-	const postContent = escapedSlash ? options.postContent : unSlash(options.postContent);
+	let postContent = options.postContent;
+	if (typeof postContent !== 'string') {
+		postContent = postContent();
+	}
+	if (escapedSlash) {
+		postContent = reSlash(postContent);
+	}
 	return outdent`
 		${postContent}
 		${slash}end{document}
@@ -81,21 +92,19 @@ function slash(p: string): string {
 	return p.replace(/\\/g, '/');
 }
 
-export function unSlash(text: string): string {
-	return text.replaceAll('\\\\', '\\');
+export function reSlash(text: string): string {
+	return text.replaceAll('\\', '\\\\');
 }
 
-export function mathlifiedDir(): string {
-	return normalizePath(path.resolve('./src/lib/mathlified'));
+export function routesDir(): string {
+	return normalizePath(path.resolve('./src/routes'));
 }
 export function matchFile(
 	file: string,
 	extList: string[],
 ): [true, string, string] | [false] {
 	for (const extName of extList) {
-		const extMatch = file.match(
-			new RegExp(`${mathlifiedDir()}(.+)\\.${extName}\\.[t|j]s`),
-		);
+		const extMatch = file.match(new RegExp(`${routesDir()}/(.+)_${extName}\\.[t|j]s`));
 		if (extMatch) {
 			return [true, extMatch[1], extName];
 		}

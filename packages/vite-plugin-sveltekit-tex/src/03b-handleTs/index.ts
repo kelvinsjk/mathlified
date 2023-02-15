@@ -1,4 +1,4 @@
-import type { ExtensionOptions } from '../';
+import type { ExtensionOptions, MathlifiedTsOptions } from '../';
 import { appendToTree, type Tree } from '../01-dependencyTracking';
 import { createPage } from './createPage';
 import { createPdf } from './createPdf';
@@ -9,27 +9,20 @@ import {
 	// red
 } from 'kleur/colors';
 import { matchFile, normalizePath } from '../utils';
+import { ViteDevServer } from 'vite';
 
 export async function handleTs(
 	file: string,
 	read: () => string | Promise<string>,
+	server: ViteDevServer,
 	extList: string[],
 	depTree: Tree,
 	exts: { [key: string]: ExtensionOptions },
-	options: {
-		tsxCmd: string;
-		latexCmd: string;
-		emitSnippets: boolean;
-		cls: string;
-		docOptions: string;
-		preamble: string;
-		preContent: string;
-		postContent: string;
-	},
+	options: Required<MathlifiedTsOptions>,
 ): Promise<void> {
 	const newFile = await updateTree(file, read, extList, depTree);
 	if (newFile) {
-		const mathlifiedDir = path.resolve('./src/lib/mathlified');
+		const mathlifiedDir = path.resolve('./src/routes');
 		console.log(
 			yellow(
 				`Mathlified HMR: Change detected for ${file.slice(mathlifiedDir.length)}.` +
@@ -42,7 +35,8 @@ export async function handleTs(
 			const [match, fileRoute, ext] = matchFile(f, extList);
 			if (match) {
 				// routes/.../+page.svelte
-				createPage(fileRoute, ext);
+				const localUrl = server.resolvedUrls?.local[0] ?? 'http://localhost:5173';
+				createPage(fileRoute, ext, localUrl);
 				// tex and pdf
 				const collatedOptions = {
 					...options,

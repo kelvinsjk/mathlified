@@ -1,4 +1,4 @@
-import type { TexExtensionOptions } from '../';
+import type { TexExtensionOptions, LatexOptions } from '../';
 import path from 'path';
 import outdent from 'outdent';
 import fs from 'fs-extra';
@@ -9,14 +9,7 @@ export async function handleTex(
 	file: string,
 	read: () => string | Promise<string>,
 	texExts: { [key: string]: TexExtensionOptions },
-	latexOptions: {
-		latexCmd: string;
-		cls: string;
-		docOptions: string;
-		preamble: string;
-		preContent: string;
-		postContent: string;
-	},
+	latexOptions: Required<LatexOptions>,
 ): Promise<void> {
 	const [isTrackedTex, texRoute, ext] = matchTex(file, Object.keys(texExts));
 	if (isTrackedTex) {
@@ -32,9 +25,9 @@ export async function handleTex(
 }
 
 function matchTex(file: string, texExts: string[]): [true, string, string] | [false] {
-	const mathlifiedDir = normalizePath(path.resolve('./src/lib/mathlified'));
+	const routesDir = normalizePath(path.resolve('./src/routes'));
 	for (const ext of texExts) {
-		const extMatch = file.match(new RegExp(`${mathlifiedDir}(.+)\\.${ext}\\.tex`));
+		const extMatch = file.match(new RegExp(`${routesDir}/(.+)_${ext}\\.tex`));
 		if (extMatch) {
 			return [true, extMatch[1], ext];
 		}
@@ -51,7 +44,7 @@ export async function createTexPage(
 	extObj: TexExtensionOptions,
 ): Promise<void> {
 	const data = await read();
-	const pathName = path.resolve(`./src/routes/${route}/+page.svelte`);
+	const pathName = path.resolve(`./src/routes/${route}+page.svelte`);
 	const [texData, envs] = extObj.texToHtml(data);
 	const importStatement =
 		envs === undefined || envs.size === 0
@@ -68,9 +61,7 @@ export async function createTexPage(
 		`\n<div>\n${texData}\n</div>\n` +
 		`${extObj.sveltePostContent ?? ''}`;
 	fs.outputFileSync(pathName, pageData);
-	console.log(
-		blue(`Mathlified: SvelteKit Route ${route} created/modified from tex file`),
-	);
+	console.log(blue(`Mathlified: src/routes/${route}+page.svelte created/updated`));
 }
 
 /**
@@ -80,16 +71,9 @@ export async function createTexPdf(
 	texRoute: string,
 	read: () => string | Promise<string>,
 	texToTex: (x: string) => string,
-	options: {
-		latexCmd: string;
-		cls: string;
-		docOptions: string;
-		preamble: string;
-		preContent: string;
-		postContent: string;
-	},
+	options: Required<LatexOptions>,
 ): Promise<void> {
-	const outputTexPath = path.resolve(`./output/tex${texRoute}.tex`);
+	const outputTexPath = path.resolve(`./output/tex/${texRoute.slice(0, -1)}.tex`);
 	const content = await read();
 	const data =
 		preContentTex(options, false) +

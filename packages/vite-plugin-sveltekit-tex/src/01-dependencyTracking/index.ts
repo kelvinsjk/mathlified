@@ -8,11 +8,12 @@ export function trackFiles(exts: { [key: string]: ExtensionOptions }): {
 	extList: string[];
 	srcFiles: string[];
 	depTree: Tree;
+	srcNo: number;
 } {
 	const extList = Object.keys(exts);
-	const srcFiles = glob.sync(`./src/lib/mathlified/**/*.{${extList}}.{js,ts}`);
+	const srcFiles = glob.sync(`./src/routes/**/_{${extList}}.{js,ts}`);
 	const depTree = createReverseDependencyTree(srcFiles);
-	return { extList, srcFiles, depTree };
+	return { extList, srcFiles, depTree, srcNo: srcFiles.length };
 }
 
 /**
@@ -25,7 +26,7 @@ function createReverseDependencyTree(files: string[]): Tree {
 		file = path.resolve(file);
 		const dependencyList = dependencyTree.toList({
 			filename: file,
-			directory: path.resolve('./src/lib/mathlified'),
+			directory: path.resolve('./src'),
 		});
 		dependencyList.forEach((dep) => {
 			addBranch(tree, dep, file);
@@ -49,7 +50,7 @@ export async function appendToTree(
 	fs.outputFileSync(duplicatePath, data);
 	const dependencyList = dependencyTree.toList({
 		filename: duplicatePath,
-		directory: path.resolve('./src/lib/mathlified'),
+		directory: path.resolve('./src'),
 	});
 	dependencyList.forEach((dep) => {
 		if (dep === duplicatePath) {

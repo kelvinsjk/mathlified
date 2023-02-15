@@ -7,4 +7,4 @@ const content = contentHandler(%ext%);
 
 const tex = content;
 
-fs.outputFileSync(path.resolve('./output/snippets%fileLocation%.snippet.tex'), tex);
+fs.outputFileSync(path.resolve('./output/snippets/%fileLocation%.snippet.tex'), tex);

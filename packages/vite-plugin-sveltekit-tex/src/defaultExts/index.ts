@@ -6,13 +6,13 @@ export const defaultExts: { [key: string]: ExtensionOptions } = {
 	qn: {
 		latexOptions: {
 			cls: 'exam',
-			preamble: '\\\\usepackage{amsmath}\n\\\\pointsinrightmargin\n\\\\bracketedpoints\n',
+			preamble: '\\usepackage{amsmath}\n\\pointsinrightmargin\n\\bracketedpoints\n',
 		},
 	},
 	qns: {
 		latexOptions: {
 			cls: 'exam',
-			preamble: '\\\\usepackage{amsmath}\n\\\\pointsinrightmargin\n\\\\bracketedpoints\n',
+			preamble: '\\usepackage{amsmath}\n\\pointsinrightmargin\n\\bracketedpoints\n',
 		},
 	},
 };

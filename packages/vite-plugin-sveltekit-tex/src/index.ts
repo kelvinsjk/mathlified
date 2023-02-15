@@ -39,7 +39,7 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 		emitSnippets: true,
 		cls: 'article',
 		docOptions: '',
-		preamble: '\\\\usepackage{amsmath}\n',
+		preamble: '\\usepackage{amsmath}\n',
 		preContent: '',
 		postContent: '',
 		generatePdfOnBuild: false,
@@ -51,7 +51,7 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 		...customExts,
 	};
 	// track files with ext
-	const { extList, srcFiles, depTree } = trackFiles(exts);
+	const { extList, srcFiles, depTree, srcNo } = trackFiles(exts);
 	// promises to be used in generateBundle
 	const promises: Promise<void>[] = [];
 
@@ -63,13 +63,13 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 			}
 			console.log(
 				yellow(
-					`Mathlified: Tracking ${
+					`Mathlified: Tracking ${srcNo} source files and their dependencies (total of ${
 						Object.keys(depTree).length
-					} files and their dependencies in src/lib/mathlified`,
+					}) in src/`,
 				),
 			);
 		},
-		async handleHotUpdate({ file, read }) {
+		async handleHotUpdate({ file, read, server }) {
 			handleTex(file, read, texExts, {
 				latexCmd,
 				cls,
@@ -78,13 +78,13 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 				preContent,
 				postContent,
 			});
-			handleTs(file, read, extList, depTree, exts, {
+			handleTs(file, read, server, extList, depTree, exts, {
 				emitSnippets,
 				tsxCmd,
 				latexCmd,
 				cls,
 				docOptions,
-				preamble: preamble,
+				preamble,
 				preContent,
 				postContent,
 			});
@@ -147,10 +147,10 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 			}
 			// clean up
 			const removePromises: Promise<void>[] = [];
-			// ./vite-plugin-sveltekit-tex folder
+			// ./vite-plugin-sveltekit-tex folder (snippet and tex generators)
 			removePromises.push(fs.remove(path.resolve('./vite-plugin-sveltekit-tex')));
 			// alternate source files (with mathlifier2)
-			const tempFiles = glob.sync(`./src/lib/mathlified/**/__*.{${extList}}-src.ts`);
+			const tempFiles = glob.sync(`./src/routes/**/__{${extList}}-duplicate.ts`);
 			tempFiles.forEach((file, i) => {
 				if (i === 0) {
 					console.log(yellow(`Mathlified: Removing Temp files...`));
@@ -176,59 +176,12 @@ export interface TexExtensionOptions {
 }
 
 export interface LatexOptions {
-	latexCmd?: string;
-	cls?: string;
-	docOptions?: string;
-	preamble?: string;
-	preContent?: string;
-	postContent?: string;
-}
-
-export interface MathlifiedOptions {
-	/**
-	 * Generates default post/qn/qns
-	 * Svelte Components and content handlers
-	 * on buildStart if they are absent
-	 * (default: true)
-	 * */
-	generateDefaults?: boolean;
-	/**
-	 * In addition to tex and pdf files, we can also emit
-	 * tex snippets of just the content (without the begin document commands, etc)
-	 * in the output/snippets folder.
-	 *
-	 * This can help facilitate combining multiple files into a larger
-	 * single document at a later date
-	 *
-	 * (default: true)
-	 */
-	emitSnippets?: boolean;
-	/**
-	 * Whether to generate pdfs on build
-	 * (default: false)
-	 */
-	generatePdfOnBuild?: boolean;
-	/**
-	 * Whether to generate pages on build
-	 * (default: false)
-	 */
-	generatePageOnBuild?: boolean;
-	/**
-	 * tsx command.
-	 * by default, we have tsx installed globally on the machine
-	 *
-	 * should be changed to "npx tsx" or "pnpm dlx tsx" or "pnpm tsx", etc
-	 * if tsx not installed globally
-	 * (default "pnpm dlx")
-	 */
-	tsxCmd?: string;
 	/**
 	 * Default command to use when running node-latex
 	 * (can be overridden by custom extension options)
 	 * (default: 'xelatex')
 	 */
 	latexCmd?: string;
-
 	/**
 	 * Default latex document class for "post" and custom extensions
 	 * (can be overridden by custom extension options)
@@ -252,19 +205,63 @@ export interface MathlifiedOptions {
 	 *
 	 * Note that the "qn" and "qns" extension use qnsPreDoc option instead
 	 */
-	preamble?: string;
+	preamble?: string | ((x?: string) => string);
 	/**
 	 * Default content to be placed after the `\begin{document}` command
 	 * and before the content body
 	 * (default: ``)
 	 */
-	preContent?: string;
+	preContent?: string | ((x?: string) => string);
 	/**
 	 * Default content to be placed after the content body
 	 * and before the `\end{document}` command
 	 * (default: ``)
 	 */
-	postContent?: string;
+	postContent?: string | ((x?: string) => string);
+}
+
+export interface MathlifiedTsOptions extends LatexOptions {
+	/**
+	 * In addition to tex and pdf files, we can also emit
+	 * tex snippets of just the content (without the begin document commands, etc)
+	 * in the output/snippets folder.
+	 *
+	 * This can help facilitate combining multiple files into a larger
+	 * single document at a later date
+	 *
+	 * (default: true)
+	 */
+	emitSnippets?: boolean;
+	/**
+	 * tsx command.
+	 * by default, we have tsx installed globally on the machine
+	 *
+	 * should be changed to "npx tsx" or "pnpm dlx tsx" or "pnpm tsx", etc
+	 * if tsx not installed globally
+	 * (default "pnpm dlx")
+	 */
+	tsxCmd?: string;
+}
+
+export interface MathlifiedOptions extends MathlifiedTsOptions {
+	/**
+	 * Generates default post/qn/qns
+	 * Svelte Components and content handlers
+	 * on buildStart if they are absent
+	 * (default: true)
+	 * */
+	generateDefaults?: boolean;
+
+	/**
+	 * Whether to generate pdfs on build
+	 * (default: false)
+	 */
+	generatePdfOnBuild?: boolean;
+	/**
+	 * Whether to generate pages on build
+	 * (default: false)
+	 */
+	generatePageOnBuild?: boolean;
 	/**
 	 * An object of the form `{
 	 * 	extName: {
@@ -276,7 +273,7 @@ export interface MathlifiedOptions {
 	 * (default: {})
 	 *
 	 * For example, say we create a new extension 'article'
-	 * so that our plugin tracks `src/lib/mathlified/[xxx].article.ts` (or js)
+	 * so that our plugin tracks `src/routes/[**]/+article.ts` (or js)
 	 *
 	 * These ts/js files (which we will call the source files)
 	 * need to export an object named "article",
@@ -311,7 +308,7 @@ export interface MathlifiedOptions {
 	 * (default: {'mathlified': ...} inspect our source code to find out more)
 	 *
 	 * For example, say we create a new extension 'article'
-	 * so that our plugin tracks `src/lib/mathlified/[xxx].article.tex`,
+	 * so that our plugin tracks `src/routes/[**]/+article.tex`,
 	 * which we will call the source file
 	 *
 	 * The texToTex function will take the source file and return

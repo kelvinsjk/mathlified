@@ -9,4 +9,4 @@ const postContent = `%postContent%`;
 
 const tex = preContent + '\n' + content + '\n' + postContent;
 
-fs.outputFileSync(path.resolve('./output/tex%fileLocation%.tex'), tex);
+fs.outputFileSync(path.resolve('./output/tex/%fileLocation%.tex'), tex);

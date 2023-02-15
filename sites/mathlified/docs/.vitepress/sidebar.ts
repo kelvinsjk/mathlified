@@ -85,7 +85,7 @@ export function sidebarGuide() {
 					link: "/extensions/js-ts",
 				},
 				{
-					text: "Custom TeX extensions",
+					text: "Custom LaTeX extensions",
 					link: "/extensions/tex",
 				},
 			],
