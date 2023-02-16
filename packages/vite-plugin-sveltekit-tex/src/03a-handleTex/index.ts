@@ -4,10 +4,12 @@ import outdent from 'outdent';
 import fs from 'fs-extra';
 import { blue } from 'kleur/colors';
 import { preContentTex, postContentTex, writePdf, normalizePath } from '../utils';
+import { ViteDevServer } from 'vite';
 
 export async function handleTex(
 	file: string,
 	read: (() => string | Promise<string>) | undefined,
+	server: ViteDevServer | undefined,
 	texExts: { [key: string]: TexExtensionOptions },
 	latexOptions: Required<LatexOptions>,
 	createPage = true,
@@ -20,7 +22,11 @@ export async function handleTex(
 		}
 		// create page
 		if (createPage) {
-			createTexPage(texRoute, read, texExts[ext]);
+			const localUrl =
+				server === undefined
+					? undefined
+					: server.resolvedUrls?.local[0] ?? 'http://localhost:5173';
+			createTexPage(texRoute, read, texExts[ext], localUrl);
 		}
 		// copy tex and create pdf
 		if (createPdf) {
@@ -51,6 +57,7 @@ export async function createTexPage(
 	route: string,
 	read: () => string | Promise<string>,
 	extObj: TexExtensionOptions,
+	localUrl?: string,
 ): Promise<void> {
 	const data = await read();
 	const pathName = path.resolve(`./src/routes/${route}+page.svelte`);
@@ -71,6 +78,9 @@ export async function createTexPage(
 		`${extObj.sveltePostContent ?? ''}`;
 	fs.outputFileSync(pathName, pageData);
 	console.log(blue(`Mathlified: src/routes/${route}+page.svelte created/updated`));
+	if (localUrl) {
+		console.log(blue(`Mathlified: current route at ${localUrl}${route}`));
+	}
 }
 
 /**

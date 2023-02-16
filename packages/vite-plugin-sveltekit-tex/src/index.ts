@@ -72,7 +72,7 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 			return null;
 		},
 		async handleHotUpdate({ file, read, server }) {
-			handleTex(file, read, texExts, {
+			handleTex(file, read, server, texExts, {
 				latexCmd,
 				cls,
 				docOptions,
@@ -150,6 +150,7 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 					promises.push(
 						handleTex(
 							filePath,
+							undefined,
 							undefined,
 							texExts,
 							{

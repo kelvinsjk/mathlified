@@ -62,13 +62,13 @@ export function texToHtml(tex: string): [string, Set<string>] {
 		.replace(/\\textbf{(.+?)}/g, (_, text) => {
 			return `<b>${text}</b>`;
 		})
-		.replace(/^### (.+)\n/gm, (_, text) => {
+		.replace(/^### (.+?)\r?\n$/gm, (_, text) => {
 			return `<h3>${text}</h3>\n`;
 		})
-		.replace(/^## (.+)\n/gm, (_, text) => {
+		.replace(/^## (.+?)\r?\n$/gm, (_, text) => {
 			return `<h2>${text}</h2>\n`;
 		})
-		.replace(/^# (.+)\n/gm, (_, text) => {
+		.replace(/^# (.+?)\r?\n$/gm, (_, text) => {
 			return `<h1>${text}</h1>\n`;
 		});
 	data = data[0] === '<' ? data : '<p>' + data;
@@ -77,13 +77,13 @@ export function texToHtml(tex: string): [string, Set<string>] {
 
 export function texToTex(tex: string): string {
 	const data = tex
-		.replace(/### (.+)\n^/gm, (_, text) => {
+		.replace(/^### (.+?)\r?\n$/gm, (_, text) => {
 			return `\\subsubsection{${text}}\n`;
 		})
-		.replace(/## (.+)\n^/gm, (_, text) => {
+		.replace(/^## (.+?)\r?\n$/gm, (_, text) => {
 			return `\\subsection{${text}}\n`;
 		})
-		.replace(/# (.+)\n^/gm, (_, text) => {
+		.replace(/^# (.+?)\r?\n$/gm, (_, text) => {
 			return `\\section{${text}}\n`;
 		});
 	return data;
