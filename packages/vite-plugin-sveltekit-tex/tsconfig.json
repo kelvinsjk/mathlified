@@ -1,5 +1,10 @@
 {
-	"exclude": ["example/**/*", "dist/**/*", "src/templates/texGenerator.ts"],
+	"exclude": [
+		"example/svelte.config.js",
+		"example/vite-plugin-sveltekit-tex/**/*",
+		"dist/**/*",
+		"src/templates/texGenerator.ts"
+	],
 	"compilerOptions": {
 		"lib": ["ES2021"],
 		"moduleResolution": "node",

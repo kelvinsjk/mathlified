@@ -15,16 +15,13 @@ export async function createPdf(
 	read: () => string | Promise<string>,
 	options: Required<MathlifiedTsOptions>,
 ): Promise<void> {
-	// create duplicate source file with mathlifier2 swapped in
-	const duplicatePromise = duplicateSrc(file, ext, read);
 	// build generator files
-	const generatorPromise = texFactory(file, ext, read, options);
 	const snippetPromise = snippetFactory(file, ext, options);
+	const generatorPromise = texFactory(file, ext, read, options);
 	// await promise to resolve
 	const [generatorPath, snippetPath] = await Promise.all([
 		generatorPromise,
 		snippetPromise,
-		duplicatePromise,
 	]);
 	// generate snippet
 	if (options.emitSnippets) {
@@ -60,12 +57,17 @@ async function execSnippet(
 	snippetPath: string,
 	//options: { tsxCmd: string },
 ): Promise<void> {
-	const snippetGenPath = path.resolve('./vite-plugin-sveltekit-tex/snippetGenerator.cjs');
+	const snippetGenPath = normalizePath(
+		path.resolve(`./vite-plugin-sveltekit-tex/${file}/snippetGenerator.cjs`),
+	);
 	await build({
 		bundle: true,
 		entryPoints: [snippetPath],
 		outfile: snippetGenPath,
 		platform: 'node',
+		alias: {
+			mathlifier: 'mathlifier2',
+		},
 	});
 	return new Promise((resolve, reject) => {
 		exec(`node ${snippetGenPath}`, (err) => {
@@ -93,43 +95,29 @@ async function generateTex(file: string, texPath: string): Promise<void> {
 }
 
 async function execTex(file: string, texPath: string): Promise<void> {
-	const texGenPath = path.resolve('./vite-plugin-sveltekit-tex/texGenerator.cjs');
+	const texGenPath = normalizePath(
+		path.resolve(`./vite-plugin-sveltekit-tex/${file}/texGenerator.cjs`),
+	);
 	await build({
 		bundle: true,
 		entryPoints: [texPath],
 		outfile: texGenPath,
 		platform: 'node',
+		alias: {
+			mathlifier: 'mathlifier2',
+		},
 	});
 	return new Promise((resolve, reject) => {
 		exec(`node ${texGenPath}`, (err) => {
 			if (err) {
 				console.log(red(`Mathlified: snippet generation error`));
 				return reject(err);
+			} else {
+				console.log(`Mathlified: output/tex/${file.slice(0, -1)}.tex created/updated`);
+				return resolve();
 			}
-			console.log(
-				`Mathlified: output/snippets/${file.slice(0, -1)}.snippet.tex created/updated`,
-			);
-			return resolve();
 		});
 	});
-}
-
-/**
- * duplicate file.ext.[t|j]s
- * to src.ts
- * with "mathlifier" replaced with "mathlifier2"
- */
-async function duplicateSrc(
-	file: string,
-	ext: string,
-	read: () => string | Promise<string>,
-): Promise<string> {
-	const duplicatePath = path.resolve(`./src/routes/${file}`, `./__${ext}-duplicate.ts`);
-	const srcData = (await read())
-		.replaceAll("'mathlifier'", "'mathlifier2'")
-		.replaceAll('"mathlifier"', "'mathlifier2'");
-	fs.outputFileSync(duplicatePath, srcData);
-	return duplicatePath;
 }
 
 /**
@@ -148,7 +136,7 @@ async function texFactory(
 	const srcLocation = normalizePath(
 		path.relative(
 			path.resolve(generatorPath, '../'),
-			path.resolve(`./src/routes/${file}`, `./__${ext}-duplicate`),
+			path.resolve(`./src/routes/${file}/_${ext}`),
 		),
 	);
 	const handlerLocation = normalizePath(
@@ -205,7 +193,7 @@ async function snippetFactory(
 		const srcLocation = normalizePath(
 			path.relative(
 				path.resolve(generatorPath, '../'),
-				path.resolve(`./src/routes/${file}`, `./__${ext}-duplicate`),
+				path.resolve(`./src/routes/${file}/_${ext}`),
 			),
 		);
 		const handlerLocation = normalizePath(

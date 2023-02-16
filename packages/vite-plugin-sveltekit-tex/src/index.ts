@@ -1,10 +1,9 @@
 import { type Plugin } from 'vite';
-import { matchFile } from './utils';
+import { matchFile, normalizePath } from './utils';
 import { createPage } from './03b-handleTs/createPage';
 import { createPdf } from './03b-handleTs/createPdf';
 import fs from 'fs-extra';
 import path from 'path';
-import glob from 'glob';
 import { yellow, red, green } from 'kleur/colors';
 import commandExists from 'command-exists';
 
@@ -13,6 +12,7 @@ import { createDefaults } from './02-buildStart';
 import { handleTex } from './03a-handleTex';
 import { handleTs } from './03b-handleTs';
 import { defaultExts, defaultTexExts } from './defaultExts';
+import { glob } from 'glob';
 
 export function mathlified(options?: MathlifiedOptions): Plugin {
 	// handle options
@@ -61,11 +61,15 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 			}
 			console.log(
 				yellow(
-					`Mathlified: Tracking ${srcNo} source files and their dependencies (total of ${
+					`Mathlified: Tracking ${srcNo} js/ts source files and their dependencies (total of ${
 						Object.keys(depTree).length
-					}) in src/`,
+					} in src/)`,
 				),
 			);
+		},
+		resolveId(source, importer) {
+			console.log('source', source, importer);
+			return null;
 		},
 		async handleHotUpdate({ file, read, server }) {
 			handleTex(file, read, texExts, {
@@ -100,8 +104,9 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 						);
 					}
 				}
+				// ts files
 				srcFiles.forEach((file) => {
-					const filePath = path.resolve(file);
+					const filePath = normalizePath(path.resolve(file));
 					const [match, fileRoute, ext] = matchFile(filePath, extList);
 					if (match) {
 						if (generatePageOnBuild) {
@@ -133,6 +138,33 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 						}
 					}
 				});
+				// tex files
+				const texExtKeys = Object.keys(texExts);
+				const texFiles = glob.sync(
+					`./src/routes/**/_${
+						texExtKeys.length === 1 ? `${texExtKeys}` : `{${texExtKeys}}`
+					}.tex`,
+				);
+				texFiles.forEach((file) => {
+					const filePath = normalizePath(path.resolve(file));
+					promises.push(
+						handleTex(
+							filePath,
+							undefined,
+							texExts,
+							{
+								latexCmd,
+								cls,
+								docOptions,
+								preamble,
+								preContent,
+								postContent,
+							},
+							generatePageOnBuild,
+							generatePdfOnBuild,
+						),
+					);
+				});
 			}
 		},
 		async closeBundle() {
@@ -145,14 +177,6 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 			const removePromises: Promise<void>[] = [];
 			// ./vite-plugin-sveltekit-tex folder (snippet and tex generators)
 			removePromises.push(fs.remove(path.resolve('./vite-plugin-sveltekit-tex')));
-			// alternate source files (with mathlifier2)
-			const tempFiles = glob.sync(`./src/routes/**/__{${extList}}-duplicate.ts`);
-			tempFiles.forEach((file, i) => {
-				if (i === 0) {
-					console.log(yellow(`Mathlified: Removing Temp files...`));
-				}
-				removePromises.push(fs.remove(path.resolve(file)));
-			});
 			await Promise.all(removePromises);
 			console.log(green('Mathlified: All temp files removed!'));
 		},

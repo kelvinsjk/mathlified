@@ -24,7 +24,7 @@ export function contentHandler(qns: Questions): string {
 	str += '\n\\end{questions}';
 	// answers
 	if (qns.ans) {
-		str += '\n\n\\newpage\n\n';
+		str += '\n\n\\newpage\n\n\\section*{Answers}';
 		str += '\\begin{enumerate}\n';
 		qns.ans.forEach((ans) => {
 			if (ans.partNo) {

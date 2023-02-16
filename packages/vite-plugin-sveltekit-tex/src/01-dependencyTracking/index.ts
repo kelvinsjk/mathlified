@@ -3,6 +3,7 @@ import glob from 'glob';
 import dependencyTree from 'dependency-tree';
 import fs from 'fs-extra';
 import path from 'path';
+import { normalizePath } from '../utils';
 
 export function trackFiles(exts: { [key: string]: ExtensionOptions }): {
 	extList: string[];
@@ -46,7 +47,7 @@ export async function appendToTree(
 	read: () => string | Promise<string>,
 ): Promise<Tree> {
 	const data = await read();
-	const duplicatePath = path.resolve(file, `../__${path.parse(file).name}-src.ts`);
+	const duplicatePath = path.resolve(file, `../_${path.parse(file).name}-duplicate.ts`);
 	fs.outputFileSync(duplicatePath, data);
 	const dependencyList = dependencyTree.toList({
 		filename: duplicatePath,
@@ -68,6 +69,8 @@ export async function appendToTree(
  * modified tree in place
  */
 function addBranch(tree: Tree, dep: string, file: string): void {
+	dep = normalizePath(dep);
+	file = normalizePath(file);
 	if (tree[dep] === undefined) {
 		tree[dep] = new Set([file]);
 	} else {

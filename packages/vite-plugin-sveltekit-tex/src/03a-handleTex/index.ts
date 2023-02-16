@@ -7,20 +7,29 @@ import { preContentTex, postContentTex, writePdf, normalizePath } from '../utils
 
 export async function handleTex(
 	file: string,
-	read: () => string | Promise<string>,
+	read: (() => string | Promise<string>) | undefined,
 	texExts: { [key: string]: TexExtensionOptions },
 	latexOptions: Required<LatexOptions>,
+	createPage = true,
+	createPdf = true,
 ): Promise<void> {
 	const [isTrackedTex, texRoute, ext] = matchTex(file, Object.keys(texExts));
 	if (isTrackedTex) {
+		if (read === undefined) {
+			read = () => fs.readFileSync(file).toString();
+		}
 		// create page
-		createTexPage(texRoute, read, texExts[ext]);
+		if (createPage) {
+			createTexPage(texRoute, read, texExts[ext]);
+		}
 		// copy tex and create pdf
-		const collatedLatexOptions = {
-			...latexOptions,
-			...texExts[ext].latexOptions,
-		};
-		createTexPdf(texRoute, read, texExts[ext].texToTex, collatedLatexOptions);
+		if (createPdf) {
+			const collatedLatexOptions = {
+				...latexOptions,
+				...texExts[ext].latexOptions,
+			};
+			return createTexPdf(texRoute, read, texExts[ext].texToTex, collatedLatexOptions);
+		}
 	}
 }
 
@@ -82,9 +91,10 @@ export async function createTexPdf(
 		'\n' +
 		postContentTex(options, false);
 	fs.outputFileSync(outputTexPath, data);
-	try {
-		await writePdf(texRoute, options.latexCmd);
-	} catch (err) {
-		console.error(err);
-	}
+	return writePdf(texRoute, options.latexCmd);
+	//try {
+	//	await writePdf(texRoute, options.latexCmd);
+	//} catch (err) {
+	//	console.error(err);
+	//}
 }
