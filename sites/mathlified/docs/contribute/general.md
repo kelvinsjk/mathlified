@@ -14,11 +14,12 @@ discuss it on GitHub.
 
 ## Feature request
 
-Feature requests are also welcome on GitHub.
+Feature requests are also welcome on GitHub issues.
 
-## Others
+## Contribute extensions
 
-The next two sections concern areas that I'm actively looking for contributions
+We hope you will show off your
+customizations on GitHub discussions.
 
-- Working around the use of global `tsx`
-- Extensions for commonly used content types
+For commonly used content types, we hope to arrive at a "canonical"
+structure and implement it as a default extension.

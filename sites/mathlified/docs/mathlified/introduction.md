@@ -44,7 +44,9 @@ over the years, and would urge you to give that a go if you haven't already. The
 ### The power of JS
 
 Working in JavaScript/TypeScript means having the full power of the language at your disposal. In the past, when working in LaTeX, I've often had to work out calculations either mentally or on scratch paper before typing out the results. This often makes maintenance tough as a mistake
-could be due to a typo or a calculation error, which could appear at any line. Working those out in the language before [interpolating the results](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) has become one of my favorite tools.
+could be due to a typo or a calculation error, which could appear at any line.
+
+Working those out in the language before [interpolating the results](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) has become one of my favorite tools.
 
 We can even get fancy and use it to [generate random values for questions](https://math-pro.vercel.app/questions/12/1201a)!
 

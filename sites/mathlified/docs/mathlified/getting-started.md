@@ -7,7 +7,6 @@ We need the following dependencies to use Mathlified:
 - SvelteKit
 - LaTeX
 - Mathlifier, Mathlifier2
-- tsx
 - fs-extra
 
 ### SvelteKit
@@ -65,8 +64,8 @@ but I'm not familiar with that. PRs will be more than welcome on this issue.
 
 ### fs-extra
 
-Similar to tsx, fs-extra is used in the texGenerator.ts file. Installing it
-a dev dependency will suffice.
+Currently, fs-extra is used to generate tex files for compilation. We will need
+to install it as a dev dependency.
 
 ```sh
 npm install --save-dev fs-extra

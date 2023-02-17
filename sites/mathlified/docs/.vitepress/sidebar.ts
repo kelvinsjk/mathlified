@@ -99,10 +99,6 @@ export function sidebarGuide() {
 					link: "/contribute/general",
 				},
 				{
-					text: "Possible areas of improvement",
-					link: "/contribute/custom-extensions",
-				},
-				{
 					text: "Contributing extensions",
 					link: "/contribute/extensions",
 				},
