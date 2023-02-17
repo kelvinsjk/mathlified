@@ -12,7 +12,9 @@ export function trackFiles(exts: { [key: string]: ExtensionOptions }): {
 	srcNo: number;
 } {
 	const extList = Object.keys(exts);
-	const srcFiles = glob.sync(`./src/routes/**/_{${extList}}.{js,ts}`);
+	const srcFiles = glob.sync(`./src/routes/**/_{${extList}}.{js,ts}`, {
+		ignore: `./src/routes/_{${extList}}.{js,ts}`,
+	});
 	const depTree = createReverseDependencyTree(srcFiles);
 	return { extList, srcFiles, depTree, srcNo: srcFiles.length };
 }
@@ -59,6 +61,7 @@ export async function appendToTree(
 		}
 		addBranch(tree, dep, file);
 	});
+	fs.remove(path.resolve(duplicatePath));
 	return tree;
 }
 

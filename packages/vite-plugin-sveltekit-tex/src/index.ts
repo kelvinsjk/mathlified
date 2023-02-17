@@ -175,6 +175,7 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 				console.log(yellow('Mathlified: All pdfs generated.\n'));
 			}
 			// clean up
+			console.log(yellow(`Mathlified: Removing Temp files...`));
 			const removePromises: Promise<void>[] = [];
 			// ./vite-plugin-sveltekit-tex folder (snippet and tex generators)
 			removePromises.push(fs.remove(path.resolve('./vite-plugin-sveltekit-tex')));

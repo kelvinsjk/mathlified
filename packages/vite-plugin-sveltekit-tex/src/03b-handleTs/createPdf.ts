@@ -68,6 +68,7 @@ async function execSnippet(
 		alias: {
 			mathlifier: 'mathlifier2',
 		},
+		external: ['fs'],
 	});
 	return new Promise((resolve, reject) => {
 		exec(`node ${snippetGenPath}`, (err) => {
@@ -106,6 +107,7 @@ async function execTex(file: string, texPath: string): Promise<void> {
 		alias: {
 			mathlifier: 'mathlifier2',
 		},
+		external: ['fs'],
 	});
 	return new Promise((resolve, reject) => {
 		exec(`node ${texGenPath}`, (err) => {
