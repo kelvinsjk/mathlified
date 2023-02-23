@@ -6,8 +6,8 @@ We need the following dependencies to use Mathlified:
 
 - SvelteKit
 - LaTeX
-- Mathlifier, Mathlifier2
 - fs-extra
+- Mathlifier, Mathlifier2
 
 ### SvelteKit
 
@@ -22,6 +22,14 @@ npm create svelte@latest my-app
 
 You will also need LaTeX installed on your machine. [Get a TeX distribution here.](https://www.latex-project.org/get/)
 
+### fs-extra
+
+fs-extra is used to generate tex files for compilation.
+
+```sh
+npm install --save-dev fs-extra
+```
+
 ### Mathlifier, Mathlifier2
 
 For anything more complicated than simple text-based blurbs, you will
@@ -34,41 +42,6 @@ to see them in action.
 
 ```sh
 npm install mathlifier mathlifier2
-```
-
-### tsx
-
-Mathlified currently produces a texGenerator.ts file which is written to
-disk. To generate the TeX file for compilation, we then have to run this
-file. By default, we will use [tsx](https://www.npmjs.com/package/tsx),
-so this will ideally be installed globally on your machine.
-
-```sh
-npm install --global tsx
-```
-
-Alternatively, you can also change the config option `tsxCmd`
-to commands like `npx tsx` or `pnpm dlx` to avoid global installation.
-
-<details>
-  <summary>Developer commentary: avoiding tsx?</summary>
-
-To facilitate changing a JS/TS source code to TeX, we swap out the
-HTML focused `mathlifier` library with the TeX focused `mathlifier2`.
-
-I used this texGenerator approach to work around having to execute
-the modified source code. A better solution might lie in virtual modules,
-but I'm not familiar with that. PRs will be more than welcome on this issue.
-
-</details>
-
-### fs-extra
-
-Currently, fs-extra is used to generate tex files for compilation. We will need
-to install it as a dev dependency.
-
-```sh
-npm install --save-dev fs-extra
 ```
 
 ## `vite-plugin-sveltekit-tex`

@@ -21,14 +21,14 @@ export function texToHtml(tex: string): [string, Set<string>] {
 			environments.add('alignStar');
 			return `<div>{@html alignStar(\`${env.replaceAll('\\', '\\\\')}\`)}\n</div>\n\n<p>`;
 		})
-		.replace(/\\begin{alignat}{(.+?)}(.+)\\end{alignat}{(.+)}/gs, (_, no, env) => {
+		.replace(/\\begin{alignat}{(.+?)}(.+?)\\end{alignat}{(.+)}/gs, (_, no, env) => {
 			environments.add('alignat');
 			return `<div>{@html alignat(\`${env.replaceAll(
 				'\\',
 				'\\\\',
 			)}\`, ${no})\n</div>\n\n<p>`;
 		})
-		.replace(/\\begin{alignat\*}{(.+?)}(.+)\\end{alignat\*}/gs, (_, no, env) => {
+		.replace(/\\begin{alignat\*}{(.+?)}(.+?)\\end{alignat\*}/gs, (_, no, env) => {
 			environments.add('alignatStar');
 			return `<div>{@html alignatStar(\`${env.replaceAll(
 				'\\',

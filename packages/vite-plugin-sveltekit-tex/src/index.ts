@@ -67,10 +67,10 @@ export function mathlified(options?: MathlifiedOptions): Plugin {
 				),
 			);
 		},
-		resolveId(source, importer) {
-			console.log('source', source, importer);
-			return null;
-		},
+		//resolveId(source, importer) {
+		//	console.log('source', source, importer);
+		//	return null;
+		//},
 		async handleHotUpdate({ file, read, server }) {
 			handleTex(file, read, server, texExts, {
 				latexCmd,
