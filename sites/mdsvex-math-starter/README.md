@@ -32,7 +32,7 @@ npm init @svelte-add/kit@latest
 cd myProject
 npm i
 # install remark and rehype plugin
-npm i -D remark-math@2
+npm i -D remark-math@3.0.0
 npm i -D rehype-katex-svelte
 ```
 
@@ -56,8 +56,8 @@ the following into the head element.
 <!--in the head element of app.html-->
 <link
 	rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
-	integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"
+	href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+	integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
 	crossorigin="anonymous"
 />
 ```
