@@ -8,6 +8,12 @@ mathematical content.
 
 ### Print vs web
 
+$x$
+
+$$
+x
+$$
+
 Digitizing mathematical writing is already a non-trivial
 pursuit. Increasingly we also have to decide
 which medium to work in/optimize for: print or the web.
