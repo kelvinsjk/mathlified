@@ -10,12 +10,18 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./Katex.svelte": "./Katex.svelte",
-    ".": "./Katex.svelte"
+    ".": {
+      "svelte": "./index.js",
+      "types": "./index.d.ts"
+    },
+    "./Katex.svelte": {
+      "svelte": "./Katex.svelte",
+      "types": "./Katex.svelte.d.ts"
+    }
   },
   "main": "./index.js",
   "module": "./index.js",
-  "types": "./Katex.d.ts",
+  "types": "./index.d.ts",
   "type": "module",
   "svelte": "./Katex.svelte",
   "repository": {
