@@ -36,14 +36,15 @@ const modules: Modules = {
  *
  * math: starts with ${}, terminates with \n,
  * display: starts with $${}, terminates with \n\n,
- * text: starts with @${}, terminates with \n
+ * display env: starts with $${'align'}, etc.
+ * text: starts with @${}, terminates immediately
  */
 export function mathlify(strings: TemplateStringsArray, ...values: unknown[]): string {
 	return mathlifyGen(modules)(strings, ...values);
 }
 
 function insertEnv(env: string, content: string, args = ''): string {
-	return `\\begin{${env}}${args}${content}\n\\end{${env}}`;
+	return `\\begin{${env}}${args}\n\t${content}\n\\end{${env}}`;
 }
 
 function display(x: string, options?: Options): string {
