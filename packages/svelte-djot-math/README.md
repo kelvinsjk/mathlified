@@ -18,7 +18,7 @@ npm i -D svelte-djot-math
 
 ```svelte
 <script>
-  import { DjotMath } from 'svelte-djot-math';
+	import { Djot } from 'svelte-djot-math';
 </script>
 ```
 
@@ -32,8 +32,8 @@ For the best math rendering, include a temml css and font file when using the co
 
 ```svelte
 <Djot>
-  We can use *slots*. Inline math in Djot has the $`x` syntax. We only recommend this for short
-  strings due to how whitespace is handled in HTML.
+	We can use *slots*. Inline math in Djot has the $`x` syntax. We only recommend this for short
+	strings due to how whitespace is handled in HTML.
 </Djot>
 ```
 
@@ -41,7 +41,7 @@ For the best math rendering, include a temml css and font file when using the co
 
 ```svelte
 <script>
-  const djot = 'We can use *props* too. Display math syntax: $$`y`.';
+	const djot = 'We can use *props* too. Display math syntax: $$`y`.';
 </script>
 
 <Djot {djot} />
@@ -60,7 +60,7 @@ You can pass options for the djot parser, the djot renderer (and overrides), and
 Consult the [djot](https://github.com/jgm/djot.js/) and [temml](https://temml.org/docs/en/administration#options) documentations for more details.
 
 ```svelte
-<Djot 
+<Djot
   {djotParseOptions}
   {djotHTMLRenderOptions}
   {overrides}
