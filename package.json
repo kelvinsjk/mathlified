@@ -1,5 +1,19 @@
 {
-	"devDependencies": {
-		"@changesets/cli": "^2.27.7"
-	}
+  "name": "mathlified-monorepo",
+  "version": "0.0.1",
+  "description": "monorepo for mathlified",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "packageManager": "pnpm@9.9.0",
+  "engines": {
+    "pnpm": "^9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kelvinsjk/mathlified.git"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.7"
+  }
 }

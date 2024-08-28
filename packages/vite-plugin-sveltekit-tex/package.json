@@ -2,6 +2,7 @@
 	"name": "vite-plugin-sveltekit-tex",
 	"version": "0.0.12",
 	"license": "MIT",
+	"private": true,
 	"author": "Kelvin Soh",
 	"main": "dist/index.js",
 	"module": "dist/index.mjs",
