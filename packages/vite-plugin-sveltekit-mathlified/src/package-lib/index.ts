@@ -28,12 +28,12 @@ export function mathlified(options?: Options): Plugin {
     async configureServer(server) {
       // TODO: remove for production
       //removeSync('./src/routes');
-      removeSync('./src/lib/components/Content.svelte');
+      //removeSync('./src/lib/components/Content.svelte');
       //removeSync('./src/lib/components/Header.svelte');
       //removeSync('./src/lib/components/MobileNav.svelte');
       //removeSync('./src/lib/components/Nav.svelte');
       //removeSync('./src/lib/components/SequentialNav.svelte');
-      removeSync('./src/lib/components/ToC.svelte');
+      //removeSync('./src/lib/components/ToC.svelte');
 
       // only run during dev
       if (!dev) return;

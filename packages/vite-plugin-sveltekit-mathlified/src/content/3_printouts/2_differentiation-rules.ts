@@ -14,6 +14,16 @@ const exercises = [
 export const content = md`
 # Differentiation Rules
 
+## Getting pdfs with Mathlified
+
+For ts files, the way to tell Mathlified to generate pdfs is to have export the following:
+
+\`\`\`js
+export const pdf = true;
+\`\`\`
+
+## Learning Objectives
+
 - 3.3.1 State the constant, constant multiple, and power rules.
 - 3.3.2 Apply the sum and difference rules to combine derivatives.
 - 3.3.3 Use the product rule for finding the derivative of a product of functions.
@@ -21,8 +31,6 @@ export const content = md`
 - 3.3.5 Extend the power rule to functions with negative exponents.
 - 3.3.6 Combine the differentiation rules to find the derivative of a polynomial or rational
   function.
-
-## Learning Objectives
 
 Finding derivatives of functions by using the definition of the derivative can be a lengthy and, for
 certain functions, a rather challenging process. For example, previously we found that

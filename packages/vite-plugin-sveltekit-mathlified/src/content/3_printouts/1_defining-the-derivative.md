@@ -4,6 +4,20 @@ pdf: true
 
 # Defining the derivative
 
+## Getting pdfs with Mathlified
+
+For md files, we set up front matter like follows:
+
+```md
+---
+pdf: true
+---
+```
+
+Make sure your dev server is running (with `pnpm run dev` or `npm run dev`) and save this current md
+file. Mathlified will convert this to a pdf to be found in the `mathlified` folder at the project
+root, with a success/failure message printed on the terminal.
+
 ## Learning objectives
 
 - 3.1.1 Recognize the meaning of the tangent to a curve at a point.

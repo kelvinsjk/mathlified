@@ -10,6 +10,7 @@ import { directory } from '../directory';
 
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import { normalizePath } from 'vite';
 
 export const prerender = true;
 
@@ -29,14 +30,14 @@ export const load: PageServerLoad = async ({ params, depends }) => {
       title = metadata.title;
       content = `# ${metadata.title}\n\n${body}`;
     } else {
-      title = params.path.split('/').pop();
+      title = params.path.split(path.sep).pop();
       content = body;
     }
   } else {
     // ts file
     const modules = import.meta.glob('/src/content/%collection-filename%/**/*.ts');
     const keys = Object.keys(modules);
-    filePath = path.join('/', filePath + '.ts');
+    filePath = normalizePath(path.join('/', filePath + '.ts'));
     if (!keys.includes(filePath)) throw error(404, 'Not Found');
     const module = await modules[filePath]();
     if (
@@ -55,7 +56,7 @@ export const load: PageServerLoad = async ({ params, depends }) => {
       title = moduleTitle;
       content = `# ${moduleTitle}\n\n${content}`;
     } else {
-      title = params.path.split('/').pop()?.replaceAll('-', ' ');
+      title = params.path.split(path.sep).pop()?.replaceAll('-', ' ');
     }
   }
   title = title ? title[0].toLocaleUpperCase() + title.slice(1) : undefined;

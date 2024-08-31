@@ -45,11 +45,11 @@ export async function updateNav(autoNav: boolean): Promise<void> {
   return;
 }
 
-function crawlCollection(collection: Collection, slug = '/', fileSlug = '/') {
+function crawlCollection(collection: Collection, slug = '/', fileSlug: string = path.sep) {
   const result: NavNode = {
     name: capFirst(collection.name).replaceAll('-', ' '),
     slug: `${slug}${collection.name}`,
-    fileSlug: `${fileSlug}${collection.filename}`
+    fileSlug: path.join(fileSlug, collection.filename)
   };
   const children: NavNode[] = [];
   // Read the contents of the directory
@@ -61,7 +61,7 @@ function crawlCollection(collection: Collection, slug = '/', fileSlug = '/') {
         ...crawlCollection(
           { name: fileToName(file.name), filename: file.name },
           `${slug}${collection.name}/`,
-          `${fileSlug}${collection.filename}/`
+          path.join(fileSlug, collection.filename)
         )
       });
     } else if (
@@ -86,7 +86,7 @@ function crawlCollection(collection: Collection, slug = '/', fileSlug = '/') {
       children.push({
         name: capFirst(name ?? canonicalFileName.replaceAll('-', ' ')),
         slug: `${slug}${collection.name}/${canonicalFileName}`,
-        fileSlug: `${fileSlug}${collection.filename}/${file.name.slice(0, -3)}`
+        fileSlug: path.join(fileSlug, collection.filename, file.name.slice(0, -3))
       });
     }
   }
@@ -112,7 +112,7 @@ function buildDirectory(
       buildDirectory(child, result);
     });
   } else {
-    const cleanSlug = node.slug.slice(1);
+    const cleanSlug = path.join(node.slug.slice(1));
     const cleanFileSlug = node.fileSlug.slice(1);
     result.directory[cleanSlug] = cleanFileSlug;
     result.directoryList.push({ name: node.name, slug: node.slug });
