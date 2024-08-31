@@ -1,0 +1,57 @@
+/**
+ * Mathlified Index Page Server version %version%
+ * generated on %date%
+ */
+//@ts-expect-error (this line will be removed during injection)
+import type { PageServerLoad } from './$types';
+
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+
+export const prerender = true;
+
+//@ts-expect-error (this line will be removed during injection)
+export const load: PageServerLoad = async ({ depends }) => {
+  depends('md');
+  const filePath = path.join('./src/content/index.md');
+  const { metadata, body } = extractFrontmatter(readFileSync(filePath, 'utf-8'));
+  let title: string;
+  // go from tex $x$ to $`x` djot syntax
+  // put punctuation in math inline to prevent awkward line breaks
+  let content = body
+    .replace(/(?<!\\)\$\$(?!`)([^]+?)\$\$/g, (_, match) => `$$\`${match}\``)
+    .replace(/(?<!\\)\$(?!`)(.+?)(?<!\\)\$/g, (_, match) => `$\`${match}\``)
+    .replace(/(?<!\$)(\$`)([^`]+)`([.,])/g, '$1$2$3`')
+    .replace(/ ?(\|) (-+|:-+|-+:|:-+:) (\|) ?/g, '$1$2$3')
+    .replaceAll('&dollar;', '$');
+  if (metadata.title) {
+    title = metadata.title;
+    content = `# ${metadata.title}\n\n${content}`;
+  } else {
+    title = '%siteName%';
+  }
+  title = title[0].toLocaleUpperCase() + title.slice(1);
+  return {
+    title,
+    content
+  };
+};
+
+// adapted from https://github.com/sveltejs/site-kit/blob/master/packages/site-kit/src/lib/markdown/utils.js
+function extractFrontmatter(markdown: string) {
+  const match = /^---\r?\n([\s\S]+?)\r?\n---/.exec(markdown);
+  if (!match) return { metadata: {}, body: markdown };
+  const frontmatter = match[1];
+  const body = markdown.slice(match[0].length);
+
+  const metadata: Record<string, string> = {};
+  frontmatter.split('\n').forEach((pair) => {
+    const i = pair.indexOf(':');
+    metadata[pair.slice(0, i).trim()] = removeQuotes(pair.slice(i + 1).trim());
+  });
+
+  return { metadata, body };
+}
+function removeQuotes(str: string) {
+  return str.replace(/(^["']|["']$)/g, '');
+}
