@@ -20,7 +20,6 @@ export const load: PageServerLoad = async ({ params, depends }) => {
   let filePath = path.join('src/content', directory[slugPath]);
   let content: string;
   let title: string | undefined;
-  //TODO: TOC
   if (existsSync(`${filePath}.md`)) {
     // md file
     depends('md');

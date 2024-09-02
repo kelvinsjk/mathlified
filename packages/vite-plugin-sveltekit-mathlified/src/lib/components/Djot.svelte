@@ -3,7 +3,7 @@
    * Standalone package available on https://www.npmjs.com/package/svelte-djot-math
    */
   import { parse, renderHTML, type HTMLRenderer, type Visitor } from '@djot/djot';
-  import { djotMathOverride } from './Content.svelte';
+  import { djotMathOverride } from './mathlified/Content.svelte';
   import type { Options as TemmlOptions } from 'temml';
   export function djotToHtml(
     markup: string,

@@ -4,7 +4,7 @@
    * generated on %date%
    */
   import { invalidate } from '$app/navigation';
-  import Content from '$lib/components/Content.svelte';
+  import Content from '$lib/components/mathlified/Content.svelte';
 
   const { data } = $props();
 

@@ -61,10 +61,11 @@ export function mathlified(options?: Options): Plugin {
 
       // watch: update nav, md hmr and generate new pdf
       server.watcher.on('all', async (change, filePath) => {
-        if (filePath.startsWith(path.resolve('src/content'))) {
-          if (change !== 'change') {
-            updateNav(autoNav);
-          }
+        if (
+          filePath.startsWith(path.resolve('src/content')) &&
+          (filePath.endsWith('.md') || filePath.endsWith('.ts'))
+        ) {
+          updateNav(autoNav);
           if (change === 'add' || change === 'change') {
             if (filePath.endsWith('.md')) {
               server.ws.send({ type: 'custom', event: 'md-update' });

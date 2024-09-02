@@ -5,7 +5,7 @@
    */
   import { page } from '$app/stores';
   //@ts-expect-error (this line will be removed during injection)
-  import { sequentialNav } from './nav.js';
+  import { sequentialNav } from '../nav';
   //@ts-expect-error (this line will be removed during injection)
   const index = $derived(sequentialNav.findIndex((x) => x.slug === $page.url.pathname));
   let prev = $derived(sequentialNav[index - 1]);
@@ -51,7 +51,7 @@
     width: 100%;
     padding: 1rem;
     border-radius: 0.5rem;
-    border: 1px solid var(--primary, has(240, 63%, 47%));
+    border: 1px solid var(--primary, hsl(240, 63%, 47%));
     text-decoration: none;
     color: var(--content, black);
   }

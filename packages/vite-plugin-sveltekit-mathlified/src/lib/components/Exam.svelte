@@ -1,6 +1,6 @@
 <script lang="ts">
   import Djot from './Djot.svelte';
-  import Content from './Content.svelte';
+  import Content from './mathlified/Content.svelte';
   import type { Exam } from '$lib/server/exam';
   let {
     data

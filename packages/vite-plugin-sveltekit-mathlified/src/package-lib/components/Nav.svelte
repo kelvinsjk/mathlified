@@ -4,7 +4,7 @@
    * generated on %date%
    */
   //@ts-expect-error (this line will be removed during injection)
-  import { nav as baseNav, type NavNode } from './nav';
+  import { nav as baseNav, type NavNode } from '../nav';
   let { nested, nav: propNav }: { nested?: boolean; nav?: NavNode[] } = $props();
 
   const nav = propNav ?? baseNav ?? [];

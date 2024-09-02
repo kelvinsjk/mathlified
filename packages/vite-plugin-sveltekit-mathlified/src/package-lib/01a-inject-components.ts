@@ -7,7 +7,7 @@ export async function injectComponents(
   options: InternalOptions
 ): Promise<readonly [string[], ...Promise<void>[]]> {
   const inputPath = path.join('src/package-lib/components');
-  const outputPath = path.join('src/lib/components');
+  const outputPath = path.join('src/lib/components/mathlified');
   const components = readdirSync(inputPath);
   const promises: Promise<void>[] = [];
   const componentsNotReplaced: string[] = [];

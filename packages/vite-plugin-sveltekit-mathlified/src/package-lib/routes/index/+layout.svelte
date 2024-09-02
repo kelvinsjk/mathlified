@@ -7,8 +7,8 @@
    * 60rem breakpoint in Content.svelte to get TOC on the right ("desktop")
    */
   import type { Snippet } from 'svelte';
-  import Header from '$lib/components/Header.svelte';
-  import Nav from '$lib/components/Nav.svelte';
+  import Header from '$lib/components/mathlified/Header.svelte';
+  import Nav from '$lib/components/mathlified/Nav.svelte';
 
   const name = '%siteName%';
 
