@@ -34,7 +34,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"mathlifier": "workspace:^1.2.1"
+		"mathlifier": "^1.2.1"
 	},
 	"license": "MIT"
 }

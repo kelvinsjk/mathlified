@@ -44,7 +44,7 @@
 	"type": "module",
 	"dependencies": {
 		"katex": "^0.16.9",
-		"mathlifier": "workspace:^1.2.1"
+		"mathlifier": "^1.2.1"
 	},
 	"license": "MIT"
 }
