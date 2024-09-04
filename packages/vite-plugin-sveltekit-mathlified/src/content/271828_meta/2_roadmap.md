@@ -63,6 +63,15 @@ components out to a separate library (eg the Svelte SiteKit library).
 Our scroll position in the `Content` component is discarded when moving from one page to another. We
 can use [SvelteKit snapshot](https://kit.svelte.dev/docs/snapshots) to restore this on navigation.
 
+### Typst
+
+Typst seems like a really promising project. I sometimes wonder how things will be if it was
+released a few years ago. It has enough of an overlap of the features that I want that I may orient
+what has now become Mathlified to work from it as a base. In particular, the scripting feature of
+typst overlaps quite a bit of what we have tried here with Mathlified. Nevertheless, we believe the
+JS-focused slant of Mathlified lends itself well to developing web applications. We believe
+integrating that with typst is too complex at the moment.
+
 ## Known bugs
 
 ### ToC links
