@@ -43,13 +43,20 @@ export const load: PageServerLoad = async ({ params, depends }) => {
       content = body;
     }
     title = title = title ? title[0].toLocaleUpperCase() + title.slice(1) : undefined;
-    // go from tex $x$ to $`x` djot syntax
-    // put punctuation in math inline to prevent awkward line breaks
-    // table alignment: prettier-markdown to djot syntax
-    // change &dollar;
+    // 1,2a) prettier workaround: _{} gets converted to \_{}, so we have to change it back in math
+    // 1,2b) go from tex $x$ to $`x` djot syntax
+    // 3) put punctuation in math inline to prevent awkward line breaks
+    // 4) table alignment: prettier-markdown to djot syntax
+    // 5) change &dollar;
     content = content
-      .replace(/(?<!\\)\$\$(?!`)([^]+?)\$\$/g, (_, match) => `$$\`${match}\``)
-      .replace(/(?<!\\)\$(?!`)(.+?)(?<!\\)\$/g, (_, match) => `$\`${match}\``)
+      .replace(
+        /(?<!\\)\$\$(?!`)([^]+?)\$\$/g,
+        (_, match) => `$$\`${match.replaceAll('\\_', '_')}\``
+      )
+      .replace(
+        /(?<!\\)\$(?!`)(.+?)(?<!\\)\$/g,
+        (_, match) => `$\`${match.replaceAll('\\_', '_')}\``
+      )
       .replace(/(?<!\$)(\$`)([^`]+)`([.,])/g, '$1$2$3`')
       .replace(/ ?(\|) (-+|:-+|-+:|:-+:) (\|) ?/g, '$1$2$3')
       .replaceAll('&dollar;', '$');
@@ -91,9 +98,14 @@ export const load: PageServerLoad = async ({ params, depends }) => {
     }
   }
   title = title = title ? title[0].toLocaleUpperCase() + title.slice(1) : undefined;
+  // 1,2a) prettier workaround: _{} gets converted to \_{}, so we have to change it back in math
+  // 1,2b) go from tex $x$ to $`x` djot syntax
+  // 3) put punctuation in math inline to prevent awkward line breaks
+  // 4) table alignment: prettier-markdown to djot syntax
+  // 5) change &dollar;
   content = content
-    .replace(/(?<!\\)\$\$(?!`)([^]+?)\$\$/g, (_, match) => `$$\`${match}\``)
-    .replace(/(?<!\\)\$(?!`)(.+?)(?<!\\)\$/g, (_, match) => `$\`${match}\``)
+    .replace(/(?<!\\)\$\$(?!`)([^]+?)\$\$/g, (_, match) => `$$\`${match.replaceAll('\\_', '_')}\``)
+    .replace(/(?<!\\)\$(?!`)(.+?)(?<!\\)\$/g, (_, match) => `$\`${match.replaceAll('\\_', '_')}\``)
     .replace(/(?<!\$)(\$`)([^`]+)`([.,])/g, '$1$2$3`')
     .replace(/ ?(\|) (-+|:-+|-+:|:-+:) (\|) ?/g, '$1$2$3')
     .replaceAll('&dollar;', '$');

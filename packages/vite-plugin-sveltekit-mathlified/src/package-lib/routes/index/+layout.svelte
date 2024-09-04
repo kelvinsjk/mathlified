@@ -9,6 +9,7 @@
   import type { Snippet } from 'svelte';
   import Header from '$lib/components/mathlified/Header.svelte';
   import Nav from '$lib/components/mathlified/Nav.svelte';
+  import type { Snapshot } from '@sveltejs/kit';
 
   const name = '%siteName%';
 

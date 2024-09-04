@@ -16,11 +16,14 @@ export const load: PageServerLoad = async ({ depends }) => {
   const filePath = path.join('./src/content/index.md');
   const { metadata, body } = extractFrontmatter(readFileSync(filePath, 'utf-8'));
   let title: string;
-  // go from tex $x$ to $`x` djot syntax
-  // put punctuation in math inline to prevent awkward line breaks
+  // 1,2a) prettier workaround: _{} gets converted to \_{}, so we have to change it back in math
+  // 1,2b) go from tex $x$ to $`x` djot syntax
+  // 3) put punctuation in math inline to prevent awkward line breaks
+  // 4) table alignment: prettier-markdown to djot syntax
+  // 5) change &dollar;
   let content = body
-    .replace(/(?<!\\)\$\$(?!`)([^]+?)\$\$/g, (_, match) => `$$\`${match}\``)
-    .replace(/(?<!\\)\$(?!`)(.+?)(?<!\\)\$/g, (_, match) => `$\`${match}\``)
+    .replace(/(?<!\\)\$\$(?!`)([^]+?)\$\$/g, (_, match) => `$$\`${match.replaceAll('\\_', '_')}\``)
+    .replace(/(?<!\\)\$(?!`)(.+?)(?<!\\)\$/g, (_, match) => `$\`${match.replaceAll('\\_', '_')}\``)
     .replace(/(?<!\$)(\$`)([^`]+)`([.,])/g, '$1$2$3`')
     .replace(/ ?(\|) (-+|:-+|-+:|:-+:) (\|) ?/g, '$1$2$3')
     .replaceAll('&dollar;', '$');

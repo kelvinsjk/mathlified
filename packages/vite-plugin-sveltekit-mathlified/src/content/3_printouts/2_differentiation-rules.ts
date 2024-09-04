@@ -53,7 +53,15 @@ We first apply the limit definition of the derivative to find the derivative of 
 function, $f(x)=c$. For this function, both $f(x)=c$ and $f(x+h)=c$, so we obtain the following
 result:
 
-TODO: align
+$$
+\\begin{align*}
+f'(x) &= \\lim_{h \\to 0} \\frac{ f(x+h) - f(x) }{h}
+\\\\ &= \\lim_{h \\to 0} \\frac{c-c}{h}
+\\\\ &= \\lim_{h \\to 0} \\frac{0}{h}
+\\\\ &= \\lim_{h \\to 0} 0
+\\\\ &= 0.
+\\end{align*}
+$$
 
 The rule for differentiating constant functions is called the **constant rule**. It states that the
 derivative of a constant function is zero; that is, since a constant function is a horizontal line,

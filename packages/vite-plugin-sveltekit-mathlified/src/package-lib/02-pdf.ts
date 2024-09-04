@@ -69,7 +69,8 @@ export async function generatePdfFromTs(
 async function generatePdf(body: string, filePath: string): Promise<void> {
   if (!commandExists.sync('pandoc')) warning('pandoc not installed on system to generate pdf');
   if (!commandExists.sync('lualatex')) warning('lualatex not installed on system to generate pdf');
-  // 1,2: convert math to djot math
+  // 1,2a) prettier workaround: _{} gets converted to \_{}, so we have to change it back in math
+  // 1,2b) go from tex $x$ to $`x` djot syntax
   // 3: prettier-md table to djot table alignment
   // 4: &dollar; for code
   // 5: change images url to absolute paths in static folder
@@ -77,8 +78,14 @@ async function generatePdf(body: string, filePath: string): Promise<void> {
   const json = toPandoc(
     parse(
       body
-        .replace(/(?<!\\)\$\$(?!`)([^]+?)\$\$/g, (_, match) => `$$\`${match}\``)
-        .replace(/(?<!\\)\$(?!`)(.+?)(?<!\\)\$/g, (_, match) => `$\`${match}\``)
+        .replace(
+          /(?<!\\)\$\$(?!`)([^]+?)\$\$/g,
+          (_, match) => `$$\`${match.replaceAll('\\_', '_')}\``
+        )
+        .replace(
+          /(?<!\\)\$(?!`)(.+?)(?<!\\)\$/g,
+          (_, match) => `$\`${match.replaceAll('\\_', '_')}\``
+        )
         .replace(/ ?(\|) (-+|:-+|-+:|:-+:) (\|) ?/g, '$1$2$3')
         .replaceAll('&dollar;', '$')
         .replace(/!\[([^\]]+)\]\(([^)]+)\)/g, (_, alt, url) => {

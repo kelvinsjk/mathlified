@@ -20,21 +20,28 @@ const typeString = readFileSync(path.join('src/package-lib/00-types.ts'), {
 const outputPath = path.join('src/lib/components/nav.ts');
 
 export async function updateNav(autoNav: boolean): Promise<void> {
-  const navNodes: NavNode[] = [];
   const collections = getCollections();
-  const sequentialNavArray: { name: string; slug: string }[] = [];
+  let navString = '';
+  let sequentialNavString = '';
   for (const collection of collections) {
     const navNode = crawlCollection(collection);
-    navNodes.push(navNode);
+    navString += `export const ${collection.name}Nav: NavNode = ${JSON.stringify(navNode)};`;
+    //navNodes.push(navNode);
     // output directory file
     const directory = buildDirectory(navNode);
     outputDirectory(collection.name, directory.directory);
-    sequentialNavArray.push(...directory.directoryList);
+    //sequentialNavArray.push(...directory.directoryList);
+    sequentialNavString +=
+      `export const ${collection.name}Sequential: { name: string; slug: string }[]` +
+      `=${JSON.stringify(directory.directoryList)};`;
   }
-  const navString = `export const nav = ${JSON.stringify(navNodes)};`;
-  const sequentialNavString = `export const sequentialNav = ${JSON.stringify(sequentialNavArray)};`;
+  //const navString = `export const nav = ${JSON.stringify(navNodes)};`;
+  //const sequentialNavString = `export const sequentialNav = ${JSON.stringify(sequentialNavArray)};`;
+  const finalExports =
+    `export const nav = [${collections.map((c) => c.name + 'Nav').join(',')}];` +
+    `export const sequentialNav = [${collections.map((c) => `...${c.name}Sequential`)}];`;
   const file = await prettier.format(
-    generateString + typeString + navString + sequentialNavString,
+    generateString + typeString + navString + sequentialNavString + finalExports,
     {
       parser: 'typescript'
     }

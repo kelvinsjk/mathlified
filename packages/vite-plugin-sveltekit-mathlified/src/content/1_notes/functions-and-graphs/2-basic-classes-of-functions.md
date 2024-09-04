@@ -23,7 +23,7 @@ $x$ increases. In other words, $f(x)=ax+b$ is increasing on $(-\infty, \infty)$.
 of the line falls as $x$ increases. In this case, $f(x)=ax+b$ is decreasing on $(-\infty, \infty)$.
 If $a=0$, the line is horizontal.
 
-![figure](/openstax-calculus-figure-1-15.jpg)
+![Linear functions](/openstax-calculus-figure-1-15.jpg)
 
 ## Transformations of functions
 

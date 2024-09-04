@@ -41,7 +41,7 @@ controversy erupted over whose work took precedence. Although it seems likely th
 indeed, arrive at the ideas behind calculus first, we are indebted to Leibniz for the notation that
 we commonly use today.
 
-TODO: image
+![Newton and Leibniz](/openstax-calculus-figure-3-2.jpg)
 
 ## Tangent lines
 
@@ -65,15 +65,13 @@ $$ m\_{\text{sec}} = \frac{f(a+h)-f(a)}{a+h-a} = \frac{f(a+h)-f(a)}{h}. $$
 
 Let $f$ be a function defined on an interval $I$ containing $a$. If $x\neq a$ is in $I$, then
 
-TODO: equation
-
-$$ Q = \frac{f(x)-f(x)}{x-a} $$
+$$ \begin{equation} Q = \frac{f(x)-f(a)}{x-a} \tag{3.1} \end{equation} $$
 
 is a **difference quotient**.
 
 Also, if $h \neq 0$ is chosen so that $a+h$ is in $I$, then
 
-$$ Q = \frac{f(a+h)-f(a)}{h} $$
+$$ \begin{equation} Q = \frac{f(a+h)-f(a)}{h} \tag{3.2} \end{equation} $$
 
 is a difference quotient with increment $h$.
 

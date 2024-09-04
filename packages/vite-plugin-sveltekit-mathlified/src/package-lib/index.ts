@@ -4,9 +4,6 @@ import { updateNav } from './00-update-nav.js';
 import { injectFiles } from './01-inject-files.js';
 import { possiblyGeneratePdfFromMd, generatePdfFromTs } from './02-pdf.js';
 import colors from 'picocolors';
-
-// TODO: remove for production
-import { removeSync } from 'fs-extra/esm';
 import { info } from './utils.js';
 
 const version = '0.0.1';
@@ -26,15 +23,6 @@ export function mathlified(options?: Options): Plugin {
       autoNav = !options?.disable?.includes('autoNav');
     },
     async configureServer(server) {
-      // TODO: remove for production
-      //removeSync('./src/routes');
-      //removeSync('./src/lib/components/Content.svelte');
-      //removeSync('./src/lib/components/Header.svelte');
-      //removeSync('./src/lib/components/MobileNav.svelte');
-      //removeSync('./src/lib/components/Nav.svelte');
-      //removeSync('./src/lib/components/SequentialNav.svelte');
-      //removeSync('./src/lib/components/ToC.svelte');
-
       // only run during dev
       if (!dev) return;
       // set up

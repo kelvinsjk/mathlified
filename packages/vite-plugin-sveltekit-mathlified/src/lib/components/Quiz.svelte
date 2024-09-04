@@ -2,6 +2,7 @@
   import Djot from './Djot.svelte';
   import Content from './mathlified/Content.svelte';
   import { afterNavigate } from '$app/navigation';
+  import SequentialNav from './mathlified/SequentialNav.svelte';
 
   let {
     data,
@@ -60,6 +61,7 @@
           <Djot djot={ans} />
         {/await}
       </div>
+      <SequentialNav />
     </div>
   </div>
 {/if}
@@ -68,14 +70,17 @@
   .prose-container {
     width: 100%;
     height: 100%;
+    overflow-y: auto;
   }
   .prose {
     max-width: 65ch;
     line-height: 1.75;
   }
+  div.content.prose {
+    margin-inline: auto;
+  }
   .content {
     height: 100%;
-    overflow-y: auto;
     padding-inline: 1rem;
     padding-block-start: 1rem;
   }

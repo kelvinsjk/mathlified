@@ -58,6 +58,11 @@ for people who are new to this area, allowing them to inspect the code to modify
 However, this could pose problems with keeping things up to date. We may want to move all the
 components out to a separate library (eg the Svelte SiteKit library).
 
+### Scroll position
+
+Our scroll position in the `Content` component is discarded when moving from one page to another. We
+can use [SvelteKit snapshot](https://kit.svelte.dev/docs/snapshots) to restore this on navigation.
+
 ## Known bugs
 
 ### ToC links
@@ -85,3 +90,6 @@ Our `Content.svelte` has the following css
 
 to center images (vs the default inline behavior by the Djot renderer). This causes difference in
 the web output vs the PDF one. We should standardize the behavior in the future.
+
+Image captions is also something [Djot doesn't support yet](https://github.com/jgm/djot/issues/28).
+This will be a useful addition in the future.

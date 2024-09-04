@@ -1,73 +1,74 @@
 {
-	"name": "mathlify",
-	"type": "module",
-	"version": "0.4.0",
-	"description": "A computer algebra system with a focus on presentation",
-	"author": "Kelvin Soh",
-	"license": "MIT",
-	"source": "./src/index.js",
-	"main": "./src/index.js",
-	"module": "./src/index.js",
-	"exports": {
-		".": {
-			"default": "./src/index.js",
-			"types": "./types/index.d.ts"
-		},
-		"./fns": {
-			"default": "./src/fns/index.js",
-			"types": "./types/fns/index.d.ts"
-		},
-		"./algebra": {
-			"default": "./src/algebra/index.js",
-			"types": "./types/algebra/index.d.ts"
-		},
-		"./trigo": {
-			"default": "./src/trigo/index.js",
-			"types": "./types/trigo/index.d.ts"
-		},
-		"./calculus": {
-			"default": "./src/calculus/index.js",
-			"types": "./types/calculus/index.d.ts"
-		},
-		"./numerical": {
-			"default": "./src/numerical/index.js",
-			"types": "./types/numerical/index.d.ts"
-		},
-		"./vectors": {
-			"default": "./src/vectors/index.js",
-			"types": "./types/vectors/index.d.ts"
-		},
-		"./complex": {
-			"default": "./src/complex/index.js",
-			"types": "./types/complex/index.d.ts"
-		},
-		"./working": {
-			"default": "./src/working/index.js",
-			"types": "./types/working/index.d.ts"
-		}
-	},
-	"scripts": {
-		"format": "prettier --write \"src/**/*.js\"",
-		"lint": "eslint -c eslint.config.js --ignore-pattern '**/*.d.ts'",
-		"dev": "vitest",
-		"test": "vitest --config ./vitest.config.ts --coverage",
-		"testLegacy": "vitest run --config ./vitest-legacy.config.ts",
-		"types": "tsc",
-		"cleanTypes": "rm -rf ./types && tsc"
-	},
-	"files": [
-		"lib/**/*"
-	],
-	"devDependencies": {
-		"@eslint/js": "^9.4.0",
-		"@types/eslint__js": "^8.42.3",
-		"@vitest/coverage-v8": "^2.0.5",
-		"eslint": "^9.4.0",
-		"prettier": "^3.3.2",
-		"temml": "^0.10.24",
-		"typescript": "^5.4.5",
-		"typescript-eslint": "^8.1.0",
-		"vite": "^5.4.1",
-		"vitest": "^2.0.5"
-	}
+  "name": "mathlify",
+  "type": "module",
+  "private": "true",
+  "version": "0.4.0",
+  "description": "A computer algebra system with a focus on presentation",
+  "author": "Kelvin Soh",
+  "license": "MIT",
+  "source": "./src/index.js",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": {
+      "default": "./src/index.js",
+      "types": "./types/index.d.ts"
+    },
+    "./fns": {
+      "default": "./src/fns/index.js",
+      "types": "./types/fns/index.d.ts"
+    },
+    "./algebra": {
+      "default": "./src/algebra/index.js",
+      "types": "./types/algebra/index.d.ts"
+    },
+    "./trigo": {
+      "default": "./src/trigo/index.js",
+      "types": "./types/trigo/index.d.ts"
+    },
+    "./calculus": {
+      "default": "./src/calculus/index.js",
+      "types": "./types/calculus/index.d.ts"
+    },
+    "./numerical": {
+      "default": "./src/numerical/index.js",
+      "types": "./types/numerical/index.d.ts"
+    },
+    "./vectors": {
+      "default": "./src/vectors/index.js",
+      "types": "./types/vectors/index.d.ts"
+    },
+    "./complex": {
+      "default": "./src/complex/index.js",
+      "types": "./types/complex/index.d.ts"
+    },
+    "./working": {
+      "default": "./src/working/index.js",
+      "types": "./types/working/index.d.ts"
+    }
+  },
+  "scripts": {
+    "format": "prettier --write \"src/**/*.js\"",
+    "lint": "eslint -c eslint.config.js --ignore-pattern '**/*.d.ts'",
+    "dev": "vitest",
+    "test": "vitest --config ./vitest.config.ts --coverage",
+    "testLegacy": "vitest run --config ./vitest-legacy.config.ts",
+    "types": "tsc",
+    "cleanTypes": "rm -rf ./types && tsc"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "devDependencies": {
+    "@eslint/js": "^9.4.0",
+    "@types/eslint__js": "^8.42.3",
+    "@vitest/coverage-v8": "^2.0.5",
+    "eslint": "^9.4.0",
+    "prettier": "^3.3.2",
+    "temml": "^0.10.24",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^8.1.0",
+    "vite": "^5.4.1",
+    "vitest": "^2.0.5"
+  }
 }

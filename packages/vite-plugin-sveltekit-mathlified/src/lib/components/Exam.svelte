@@ -2,6 +2,7 @@
   import Djot from './Djot.svelte';
   import Content from './mathlified/Content.svelte';
   import type { Exam } from '$lib/server/exam';
+  import SequentialNav from './mathlified/SequentialNav.svelte';
   let {
     data
   }: {
@@ -64,6 +65,7 @@
           {/each}
         {/each}
       </div>
+      <SequentialNav />
     </div>
   </div>
 {/if}
@@ -73,6 +75,9 @@
     width: 100%;
     height: 100%;
     overflow-y: auto;
+  }
+  div.content.prose {
+    margin-inline: auto;
   }
   .exam-grid {
     display: grid;
