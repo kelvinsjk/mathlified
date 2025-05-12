@@ -267,6 +267,9 @@
   :global(.content img) {
     margin-inline: auto;
     display: block;
+    max-width: min(100%, 100vw);
+    max-width: min(100%, 100dvw);
+    max-height: 50%;
   }
   /** selected rules from tailwind typography plugin. we remove colors/code/pre, and use block/inline instead of top/left */
   :global(.prose) {

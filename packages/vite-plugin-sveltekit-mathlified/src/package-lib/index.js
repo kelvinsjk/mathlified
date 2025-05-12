@@ -1,4 +1,3 @@
-import type { Plugin } from 'vite';
 import path from 'node:path';
 import { updateNav } from './00-update-nav.js';
 import { injectFiles } from './01-inject-files.js';
@@ -10,11 +9,14 @@ const version = '0.0.1';
 let dev = false;
 let autoNav = false;
 
-export interface Options {
-  siteName?: string;
-  disable?: ('layout' | 'autoNav')[];
-}
-export function mathlified(options?: Options): Plugin {
+/** @typedef {{siteName?: string; disable?: ('layout' | 'autoNav')[]}} Options */
+
+/**
+ *
+ * @param {Options} [options]
+ * @returns {import('vite').Plugin}
+ */
+export function mathlified(options) {
   return {
     name: 'vite-plugin-sveltekit-mathlified',
     enforce: 'pre',
@@ -26,6 +28,7 @@ export function mathlified(options?: Options): Plugin {
       // only run during dev
       if (!dev) return;
       // set up
+
       info('Starting setup...');
       if (autoNav) {
         info(`${colors.yellow('autoNav mode')} is enabled`);
@@ -51,7 +54,8 @@ export function mathlified(options?: Options): Plugin {
       server.watcher.on('all', async (change, filePath) => {
         if (
           filePath.startsWith(path.resolve('src/content')) &&
-          (filePath.endsWith('.md') || filePath.endsWith('.ts'))
+          (filePath.endsWith('.md') || filePath.endsWith('.ts')) &&
+          !filePath.split(path.sep).at(-1)?.startsWith('_')
         ) {
           updateNav(autoNav);
           if (change === 'add' || change === 'change') {

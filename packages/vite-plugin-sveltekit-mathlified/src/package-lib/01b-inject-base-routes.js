@@ -1,12 +1,19 @@
 import { outputFile } from 'fs-extra/esm';
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
-import { info, warning, date, type InternalOptions } from './utils.js';
+import { info, warning, date } from './utils.js';
+/** @typedef {import('./utils.js').InternalOptions} InternalOptions */
 
-export async function injectRoutes(options: InternalOptions): Promise<void[]> {
-  const inputPath = path.join('src/package-lib/routes');
+/**
+ *
+ * @param {InternalOptions} options
+ * @returns {Promise<void[]>}
+ */
+export async function injectRoutes(options) {
+  const inputPath = path.resolve(import.meta.dirname, 'routes');
   const outputPath = path.join('src/routes');
-  const promises: Promise<void>[] = [];
+  /** @type {Promise<void>[]} */
+  const promises = [];
   // root layout
   if (!options?.disable?.includes('layout')) {
     const layoutPath = path.join(outputPath, '+layout.svelte');

@@ -4,17 +4,17 @@ import { spawn } from 'node:child_process';
 import path from 'node:path';
 import commandExists from 'command-exists';
 import { parse, toPandoc } from '@djot/djot';
-import { extractFrontmatter, fileToName, info, warning } from './utils';
-import { type ViteDevServer } from 'vite';
+import { extractFrontmatter, fileToName, info, warning } from './utils.js';
+/** @typedef {import('vite').ViteDevServer} ViteDevServer */
 import colors from 'picocolors';
-export interface CustomTex {
-  documentclass?: string;
-  classoption?: string;
-  'header-includes'?: string;
-  content: string;
-}
+/** @typedef {{documentclass?: string; classoption?: string; 'header-includes'?: string; content: string}} CustomTex */
 
-export async function possiblyGeneratePdfFromMd(filePath: string): Promise<void> {
+/**
+ *
+ * @param {string} filePath
+ * @returns {Promise<void>}
+ */
+export async function possiblyGeneratePdfFromMd(filePath) {
   const file = readFileSync(filePath, 'utf-8');
   const { metadata, body } = extractFrontmatter(file);
   if (metadata.pdf) {
@@ -26,11 +26,14 @@ export async function possiblyGeneratePdfFromMd(filePath: string): Promise<void>
   }
 }
 
-export async function generatePdfFromTs(
-  filePath: string,
-  module: Record<string, unknown>,
-  server: ViteDevServer
-): Promise<void> {
+/**
+ *
+ * @param {string} filePath
+ * @param {Record<string,unknown>} module
+ * @param {ViteDevServer} server
+ * @returns
+ */
+export async function generatePdfFromTs(filePath, module, server) {
   // get collection to see if custom behavior needed
   const paths = path.normalize(filePath).split(path.sep);
   // TODO: handle for edge case: multiple content or src/content
@@ -66,7 +69,13 @@ export async function generatePdfFromTs(
   return;
 }
 
-async function generatePdf(body: string, filePath: string): Promise<void> {
+/**
+ *
+ * @param {string} body
+ * @param {string} filePath
+ * @returns {Promise<void>}
+ */
+async function generatePdf(body, filePath) {
   if (!commandExists.sync('pandoc')) warning('pandoc not installed on system to generate pdf');
   if (!commandExists.sync('lualatex')) warning('lualatex not installed on system to generate pdf');
   // 1,2a) prettier workaround: _{} gets converted to \_{}, so we have to change it back in math
@@ -129,7 +138,13 @@ async function generatePdf(body: string, filePath: string): Promise<void> {
   });
 }
 
-async function generatePdfFromTex(customTex: CustomTex, filePath: string): Promise<void> {
+/**
+ *
+ * @param {CustomTex} customTex
+ * @param {string} filePath
+ * @returns {Promise<void>}
+ */
+async function generatePdfFromTex(customTex, filePath) {
   if (!commandExists.sync('lualatex')) warning('lualatex not installed on system to generate pdf');
   // 1: change images url to absolute paths in static folder
   // 2: amsmath environment in display mode becomes raw latex block
@@ -139,9 +154,11 @@ async function generatePdfFromTex(customTex: CustomTex, filePath: string): Promi
       return `![${alt}](${resolvedPath})`;
     })
     .replace(
-      /\$\$`\s*\\(begin\{(align\*?|gather\*?|equation\*?|alignat\*?)\}[^]+?\\end\{\2\})\s*`/g,
-      '``` =latex\n\\$1\n```'
-    );
+      /\$\$`\s*\\(begin\{(align\*?|gather\*?|equation\*?|alignat\*?)\}[^]+?\\end\{\2\})\s*?`/g,
+      '\n\\$1\n'
+    )
+    .replace(/\$\$`([^]+?)`/g, '$$ $1 $$')
+    .replace(/\$`([^]+?)`/g, '$ $1 $');
   const tex = `\\documentclass[${customTex.classoption ?? ''}]{${customTex.documentclass ?? 'article'}}
 ${customTex['header-includes'] ?? ''}
 

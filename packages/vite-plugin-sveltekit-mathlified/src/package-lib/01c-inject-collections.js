@@ -1,15 +1,23 @@
 import { outputFile } from 'fs-extra/esm';
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
-import { warning, date, type InternalOptions, getCollections, capFirst } from './utils.js';
+import { warning, date, getCollections, capFirst } from './utils.js';
+/** @typedef {import('./utils.js').InternalOptions} InternalOptions */
 
-export async function injectRoutes(options: InternalOptions) {
-  const inputPath = path.join('src/package-lib/routes');
+/**
+ *
+ * @param {InternalOptions} options
+ * @returns {Promise<[string[], ...Promise<void>[]]>}
+ */
+export async function injectRoutes(options) {
+  const inputPath = path.resolve(import.meta.dirname, 'routes');
   const outputPath = path.join('src/routes');
-  const promises: Promise<void>[] = [];
+  /** @type {Promise<void>[]} */
+  const promises = [];
   // collections
   const collections = getCollections();
-  const existingCollections: string[] = [];
+  /** @type {string[]} */
+  const existingCollections = [];
   for (const collection of collections) {
     const pagePath = path.join(outputPath, collection.name, '[...path]', '+page.svelte');
     if (existsSync(pagePath)) {
@@ -33,19 +41,16 @@ export async function injectRoutes(options: InternalOptions) {
       injectGenericRoute({ pagePath, inputPath, outputPath, collection }, options, promises);
     }
   }
-  return [existingCollections, ...promises] as const;
+  return [existingCollections, ...promises];
 }
 
-function injectCustomRoute(
-  data: {
-    pagePath: string;
-    inputPath: string;
-    outputPath: string;
-    collection: { name: string; filename: string };
-  },
-  options: InternalOptions,
-  promises: Promise<void>[]
-): void {
+/**
+ *
+ * @param {{pagePath: string, inputPath: string, outputPath: string, collection: {name: string, filename: string}}} data
+ * @param {InternalOptions} options
+ * @param {Promise<void>[]} promises
+ */
+function injectCustomRoute(data, options, promises) {
   const { pagePath, inputPath, outputPath, collection } = data;
   promises.push(
     outputFile(
@@ -81,16 +86,13 @@ function injectCustomRoute(
   }
 }
 
-function injectGenericRoute(
-  data: {
-    pagePath: string;
-    inputPath: string;
-    outputPath: string;
-    collection: { name: string; filename: string };
-  },
-  options: InternalOptions,
-  promises: Promise<void>[]
-): void {
+/**
+ *
+ * @param {{pagePath: string, inputPath: string, outputPath: string, collection: {name: string, filename: string}}} data
+ * @param {InternalOptions} options
+ * @param {Promise<void>[]} promises
+ */
+function injectGenericRoute(data, options, promises) {
   const { pagePath, inputPath, outputPath, collection } = data;
   promises.push(
     outputFile(

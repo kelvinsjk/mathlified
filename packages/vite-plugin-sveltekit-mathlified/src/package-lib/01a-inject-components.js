@@ -1,16 +1,22 @@
 import { outputFile } from 'fs-extra/esm';
 import { readdirSync, existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
-import { date, type InternalOptions } from './utils.js';
+import { date } from './utils.js';
+/** @typedef {import('./utils.js').InternalOptions} InternalOptions */
 
-export async function injectComponents(
-  options: InternalOptions
-): Promise<readonly [string[], ...Promise<void>[]]> {
-  const inputPath = path.join('src/package-lib/components');
+/**
+ *
+ * @param {InternalOptions} options
+ * @returns {Promise<[string[], ...Promise<void>[]]>}
+ */
+export async function injectComponents(options) {
+  const inputPath = path.resolve(import.meta.dirname, 'components');
   const outputPath = path.join('src/lib/components/mathlified');
   const components = readdirSync(inputPath);
-  const promises: Promise<void>[] = [];
-  const componentsNotReplaced: string[] = [];
+  /** @type {Promise<void>[]} */
+  const promises = [];
+  /** @type {string[]} */
+  const componentsNotReplaced = [];
   for (const component of components) {
     const componentPath = path.join(outputPath, component);
     if (existsSync(componentPath)) {
@@ -29,5 +35,5 @@ export async function injectComponents(
       )
     );
   }
-  return [componentsNotReplaced, ...promises] as const;
+  return [componentsNotReplaced, ...promises];
 }

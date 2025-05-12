@@ -29,7 +29,7 @@ export const load: PageServerLoad = async ({ params, depends }) => {
     const file = readFileSync(filePath, 'utf-8');
     if (preprocess['md']) {
       return {
-        data: { ...preprocess.md(file), isMd: true },
+        data: { ...preprocess.md(file, { paramsPath: params.path, filePath }), isMd: true },
         filePath
       };
     }
@@ -73,7 +73,7 @@ export const load: PageServerLoad = async ({ params, depends }) => {
     const module = await modules[filePath]();
     if (preprocess['module']) {
       return {
-        data: { ...preprocess.module(module), isMd: false },
+        data: { ...preprocess.module(module, { paramsPath: params.path, filePath }), isMd: false },
         filePath
       };
     }

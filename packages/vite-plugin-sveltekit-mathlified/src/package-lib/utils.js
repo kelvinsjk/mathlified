@@ -2,26 +2,36 @@ import { createLogger } from 'vite';
 import { parse as parseYaml } from 'yaml';
 import { z } from 'zod';
 import path from 'node:path';
-import { readdirSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 
-export function info(x: string) {
+/**
+ * @param {string} x
+ * @returns {void}
+ */
+export function info(x) {
   const logger = createLogger('info', { prefix: '[mathlified]' });
   logger.info(x, { timestamp: true });
 }
-export function warning(x: string) {
+
+/**
+ * @param {string} x
+ * @returns {void}
+ */
+export function warning(x) {
   const logger = createLogger('warn', { prefix: '[mathlified]' });
   logger.warn(x, { timestamp: true });
 }
 
 export const date = new Date().toLocaleString();
 
-export interface InternalOptions {
-  siteName: string;
-  version: string;
-  disable?: ('layout' | 'autoNav')[];
-}
+/** @typedef {{siteName: string; version: string; disable?: ('layout' | 'autoNav')[]}} InternalOptions */
 
-export function capFirst(x: string) {
+/**
+ *
+ * @param {string} x
+ * @returns {string}
+ */
+export function capFirst(x) {
   return x.charAt(0).toUpperCase() + x.slice(1);
 }
 
@@ -31,12 +41,14 @@ const metaSchema = z
     pdf: z.boolean().optional()
   })
   .catchall(z.unknown());
-export type Metadata = z.infer<typeof metaSchema>;
+/** @typedef {z.infer<typeof metaSchema>} MetaData */
 
-export function extractFrontmatter(markdown: string): {
-  metadata: Metadata;
-  body: string;
-} {
+/**
+ *
+ * @param {string} markdown
+ * @returns {{metadata: MetaData; body: string}}
+ */
+export function extractFrontmatter(markdown) {
   const match = /^---\r?\n([\s\S]+?)\r?\n---/.exec(markdown);
   if (!match) return { metadata: {}, body: markdown };
   const frontmatter = match[1];
@@ -45,21 +57,8 @@ export function extractFrontmatter(markdown: string): {
   return { metadata, body };
 }
 
-// const configSchema = z.object({ order: z.record(z.string(), z.number()).optional() });
-// export type Config = z.infer<typeof configSchema>;
+/** @typedef {{name: string; filename: string}} Collection */
 
-// export function getYamlConfig(): Config {
-// 	const configPath = path.join('src/content/config.yaml');
-// 	if (existsSync(configPath)) {
-// 		return configSchema.parse(parseYaml(readFileSync(configPath, 'utf-8')));
-// 	}
-// 	return {};
-// }
-
-export interface Collection {
-  name: string;
-  filename: string;
-}
 // to mimic VS Code:
 // https://github.com/microsoft/vscode/blob/main/src/vs/base/common/comparers.ts
 export const fileCompareFunction = new Intl.Collator(undefined, {
@@ -67,8 +66,14 @@ export const fileCompareFunction = new Intl.Collator(undefined, {
   sensitivity: 'base'
 }).compare;
 
-export function getCollections(): Collection[] {
-  const c = readdirSync(path.join('src/content'), { withFileTypes: true })
+/**
+ *
+ * @returns {Collection[]}
+ */
+export function getCollections() {
+  const contentFolder = path.resolve('src/content');
+  if (!existsSync(contentFolder)) return [];
+  const c = readdirSync(path.resolve('src/content'), { withFileTypes: true })
     .filter((x) => x.isDirectory() && !x.name.startsWith('_'))
     .map((x) => {
       return { name: fileToName(x.name), filename: x.name };
@@ -77,7 +82,12 @@ export function getCollections(): Collection[] {
   return c;
 }
 
-export function fileToName(file: string): string {
+/**
+ *
+ * @param {string} file
+ * @returns {string}
+ */
+export function fileToName(file) {
   const i = file.indexOf('_');
   return i === -1 ? file : file.slice(i + 1);
 }

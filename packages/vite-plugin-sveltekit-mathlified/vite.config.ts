@@ -6,5 +6,11 @@ export default defineConfig({
   plugins: [mathlified(), sveltekit()],
   test: {
     include: ['src/**/*.{test,spec}.{js,ts}']
+  },
+  build: {
+    lib: {
+      entry: './src/package-lib/index.ts',
+      formats: ['es']
+    }
   }
 });

@@ -1,12 +1,10 @@
 {
   "name": "vite-plugin-sveltekit-mathlified",
-  "version": "0.0.1",
+  "version": "0.0.8",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build && pnpm run package",
+    "build": "vite build",
     "preview": "vite preview",
-    "package": "svelte-kit sync && svelte-package -i src/package-lib && publint",
-    "prepublishOnly": "pnpm run package",
     "test": "pnpm run test:integration && pnpm run test:unit",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -17,23 +15,21 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "types": "./src/package-lib/index.d.ts",
+      "default": "./src/package-lib/index.js"
     }
   },
   "files": [
-    "dist",
+    "src/package-lib",
     "!dist/**/*.test.*",
     "!dist/**/*.spec.*"
   ],
   "peerDependencies": {
-    "@djot/djot": "^0.3.1",
     "@sveltejs/kit": "^2.5.25",
     "svelte": "^5.0.0-next.243",
-    "temml": "^0.10.29"
+    "vite": "^5.4.3"
   },
   "devDependencies": {
-    "@djot/djot": "^0.3.1",
     "@playwright/test": "^1.28.1",
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/kit": "^2.5.25",
@@ -42,14 +38,12 @@
     "@types/command-exists": "^1.2.0",
     "@types/eslint": "^9.6.0",
     "@types/fs-extra": "^11.0.1",
-    "command-exists": "^1.2.9",
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-svelte": "^2.36.0",
-    "fs-extra": "^11.1.0",
     "globals": "^15.0.0",
-    "picocolors": "^1.1.0",
-    "prettier": "^3.1.1",
+    "mathlifier": "^2.0.1",
+    "mathlify": "workspace:*",
     "prettier-plugin-svelte": "^3.1.2",
     "publint": "^0.2.0",
     "svelte": "^5.0.0-next.243",
@@ -57,16 +51,20 @@
     "typescript": "^5.0.0",
     "typescript-eslint": "^8.4.0",
     "vite": "^5.4.3",
-    "vitest": "^2.0.0",
+    "vitest": "^2.0.0"
+  },
+  "dependencies": {
+    "@djot/djot": "^0.3.1",
+    "command-exists": "^1.2.9",
+    "fs-extra": "^11.1.0",
+    "math-erfinv": "^1.0.0",
+    "picocolors": "^1.1.0",
+    "prettier": "^3.1.1",
+    "simple-statistics": "^7.8.7",
+    "temml": "^0.10.29",
     "yaml": "^2.5.1",
     "zod": "^3.23.8"
   },
-  "dependencies": {
-    "mathlifier": "^2.0.1",
-    "mathlify": "workspace:*",
-    "temml": "^0.10.29"
-  },
-  "svelte": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "./src/package-lib/index.d.ts",
   "type": "module"
 }

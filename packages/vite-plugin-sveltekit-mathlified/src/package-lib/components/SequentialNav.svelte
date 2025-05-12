@@ -8,8 +8,14 @@
   import { sequentialNav } from '../nav';
   //@ts-expect-error (this line will be removed during injection)
   const index = $derived(sequentialNav.findIndex((x) => x.slug === $page.url.pathname));
-  let prev = $derived(sequentialNav[index - 1]);
-  let next = $derived(sequentialNav[index + 1]);
+  let {
+    sequential
+  }: {
+    sequential?: { prev?: { name: string; slug: string }; next?: { name: string; slug: string } };
+  } = $props();
+  let { prev, next } = $derived(
+    sequential ? sequential : { prev: sequentialNav[index - 1], next: sequentialNav[index + 1] }
+  );
 </script>
 
 {#if prev || next}
