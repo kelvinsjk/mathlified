@@ -15,5 +15,10 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.7"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
