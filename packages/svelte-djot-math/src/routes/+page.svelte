@@ -104,6 +104,19 @@ Display math: $\{display\}
 	{#await code3 then code}
 		{@html code}
 	{/await}
+
+	<h3>$ delimiters</h3>
+	<Djot
+		djot={`We also support the "\\$" delimiters commonly used in LaTeX.
+Markup like \\$x\\$ and \\$\\$x\\$\\$ will be transformed into Djot syntax and
+rendered into HTML accordingly. This also means that you will need to
+_escape_ regular dollar signs in your markup.
+
+This behavior is provided by the \`transform\` function, which can be customized by passing
+your own transform function as a prop. $x$
+
+$$ x $$`}
+	/>
 </main>
 
 <style>
