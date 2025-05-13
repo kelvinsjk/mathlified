@@ -12,27 +12,28 @@ const overrides = {
 }
 
 /** 
- * @type {(markup: string) => string} 
  * converts Markdown/Djot string into HTML
  * 
- * Steps: 
  * 1) transform: convert $$x$$ and $x$ notation to $$`x` and $`x` djot notation
  * 2) parse djot string into djotAST
  * 3) renderHTML from djotAST with math overrides provided by temml
+ * 
+ * @type {(markup: string) => string} 
  * */
-export function render(markup) {
+export const render = (markup) => {
   return renderHTML(parse(transform(markup)), { overrides })
 }
 
 
 /** 
- * @type {(markup: string) => string} 
- * Transforms Markdown/Djot string
+ * Transforms Markdown/Djot string before djot parsing
  * 
  * 1,2a) go from tex $x$ to $`x` djot syntax
  * 1,2b) prettier workaround: _{} gets converted to \_{}, so we have to change it back in math
  * 3) put punctuation in math inline to prevent awkward line breaks
  * 4) &dollar; converted to $ for source code workaround
+ * 
+ * @type {(markup: string) => string} 
  * */
 function transform(markup) {
   return markup

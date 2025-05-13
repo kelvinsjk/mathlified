@@ -2,7 +2,11 @@
 
 import {render} from './render.js';
 
-/** @type {(options?: { jsExtensions?: string[], mdExtensions?: string[] }) => import('svelte/compiler').PreprocessorGroup} */
+/** 
+ * Svelte preprocessor to transform '.md', 'math.js' and 'math.ts' files
+ * 
+ * @type {(options?: { jsExtensions?: string[], mdExtensions?: string[] }) => import('svelte/compiler').PreprocessorGroup} 
+ * */
 const mathsvex = (options) => {
   const { jsExtensions = ['.math.js', '.math.ts'], mdExtensions = ['.md'] } = options ?? {};
   return {

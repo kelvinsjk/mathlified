@@ -15,6 +15,7 @@
 		//"verbatimModuleSyntax": false,
 		//"isolatedModules": false,
 		//"outFile": "types/index.d.ts",
+		"removeComments": false,
 		"emitDeclarationOnly": true,
 	},
 	"include": ["src/lib"]
