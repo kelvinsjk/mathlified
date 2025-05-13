@@ -12,4 +12,8 @@
 		display: flex;
 		gap: 1em;
 	}
+	:global(blockquote) {
+		background-color: lightgrey;
+		padding: 0.25em 1em;
+	}
 </style>

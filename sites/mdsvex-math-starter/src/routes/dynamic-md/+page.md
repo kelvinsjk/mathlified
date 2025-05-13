@@ -41,13 +41,20 @@ Reload the page to see new values.
 
 [Truly reactive content are probably better served in a svelte file instead.](./dynamic-svelte)
 
-## KaTeX and mathlifier
+## The mathlifier library
 
-[Mathlifier](https://www.npmjs.com/package/mathlifier) is my custom wrapper around the [KaTeX](https://katex.org/) library.
-If you prefer to use the $KaTeX$ library instead, install `katex` and modify the source code above with
+[Mathlifier](https://www.npmjs.com/package/mathlifier) is my custom library that uses [temml](https://temml.org/) to generate MathML.
+
+If you prefer to use the $\KaTeX$ or `temml` libraries instead, install `katex` and modify the source code above with
 
 ```js
-import katex from 'katex'
+import katex from 'katex';
 const inlineMath = katex.renderToString(`x=${x}`);
-const displayedMath = katex.renderToString(`x^2 = ${x*x}`, {displayMode: true});
+const displayedMath = katex.renderToString(`x^2 = ${x * x}`, { displayMode: true });
+```
+
+```js
+import temml from 'temml';
+const inlineMath = temml.renderToString(`x=${x}`);
+const displayedMath = temml.renderToString(`x^2 = ${x * x}`, { displayMode: true });
 ```

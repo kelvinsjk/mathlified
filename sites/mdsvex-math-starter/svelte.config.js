@@ -1,15 +1,23 @@
 import { mdsvex } from 'mdsvex';
-import mdsvexConfig from './mdsvex.config.js';
 import adapter from '@sveltejs/adapter-vercel';
-import preprocess from 'svelte-preprocess';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	extensions: ['.svelte', ...mdsvexConfig.extensions],
+	extensions: ['.svelte', '.md', '.svx',],
 
 	// Consult https://github.com/sveltejs/svelte-preprocess
 	// for more information about pre processors
-	preprocess: [preprocess(), mdsvex(mdsvexConfig)],
+	preprocess: [mdsvex(
+		{ extensions: ['.md', '.svx'],
+
+	smartypants: {
+		dashes: 'oldschool'
+	},
+
+	remarkPlugins: [remarkMath],
+	rehypePlugins: [rehypeKatex]})],
 
 	kit: {
 		adapter: adapter()
