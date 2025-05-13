@@ -56,7 +56,7 @@ Make sure you include mdsvex!
 
 ```bash
 # run the Svelte CLI and follow the prompts
-npx sv
+npx sv create
 # enter and install the plugins
 cd myProject
 npm i -D remark-math@3

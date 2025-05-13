@@ -6,7 +6,7 @@ let r = $state(3);
 const step = 1;
 let quantity: 'area' | 'circumference' | 'diameter' = $state('area');
 
-let formula = $derived.by(() => {
+const formula = $derived.by(() => {
 	if (quantity === 'area') {
 		return 'A=\\pi r^2';
 	} else if (quantity === 'circumference') {
@@ -16,7 +16,7 @@ let formula = $derived.by(() => {
 	}
 });
 
-let val = $derived.by(() => {
+const val = $derived.by(() => {
 	if (quantity === 'area') {
 		const coeff = r === 1 ? '' : r * r;
 		return `${coeff}\\pi \\text{ cm}^2`;
@@ -27,7 +27,7 @@ let val = $derived.by(() => {
 	}
 });
 
-let intro = $derived(
+const intro = $derived(
 `# Working in Svelte
 
 The \`render\` function can be imported from mathsvex to convert Markdown
@@ -46,7 +46,7 @@ $$ ${formula} $$
 `
 );
 
-let result = $derived(
+const result = $derived(
 	`If the radius is $ r=${r} \\text{ cm},$
 	then the ${quantity} is $ ${val}. $ `
 );
@@ -67,5 +67,5 @@ let result = $derived(
 
 {@html render(`## Source Code
 
-View the source code on [GitHub]()
+View the source code on [GitHub](https://github.com/kelvinsjk/mathlified/blob/main/sites/mathsvex-starter/src/routes/dynamic-svelte/%2Bpage.svelte)
 `)}
