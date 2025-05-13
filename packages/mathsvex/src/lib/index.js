@@ -11,7 +11,8 @@ const mathsvex = (options) => {
       if (hasExtension(filename, jsExtensions)) {
         return { code: contentToSvelte(content) };
       } else if (hasExtension(filename, mdExtensions)) {
-        return { code: render(content) };
+        // any {} left gets converted to text and should not be templated by Svelte
+        return { code: render(content).replaceAll("{", "{'{'}").replace(/(?<!\{'\{')\}/g, "{'}'}") }
       }
     }
   }
