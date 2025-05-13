@@ -18,7 +18,7 @@ npm i -D svelte-math
 
 ```svelte
 <script>
-  import { Math } from 'svelte-djot-math';
+	import { Math } from 'svelte-math';
 </script>
 ```
 
@@ -38,7 +38,7 @@ For the best math rendering, include a temml css and font file when using the co
 
 ```svelte
 <script>
-  const latex = '\\frac{x}{3}';
+	const latex = '\\frac{x}{3}';
 </script>
 
 <Math latex="y" />
@@ -60,9 +60,9 @@ Consult the [temml](https://temml.org/docs/en/administration#options) documentat
 
 ```svelte
 <script>
-  const latex = 'x \\in \\R';
-  const macros = { '\\R': '\\mathbb{R}' };
-  const options = { macros, leqno: true };
+	const latex = 'x \\in \\R';
+	const macros = { '\\R': '\\mathbb{R}' };
+	const options = { macros, leqno: true };
 </script>
 
 <Math {latex} {options} displayMode />
