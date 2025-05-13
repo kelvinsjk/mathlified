@@ -56,7 +56,7 @@ For the best math rendering, include a temml css and font file when using the co
 ### $ delimeters
 
 We also support the "$" delimiters commonly used in LaTeX.
-Markup like $x$ and $$x$$ will be transformed into Djot syntax and
+Markup like \$x\$ and \$\$x\$\$ will be transformed into Djot syntax and
 rendered into HTML accordingly. This also means that you will need to
 _escape_ regular dollar signs in your markup.
 
