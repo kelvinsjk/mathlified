@@ -1,0 +1,5 @@
+---
+"mathsvex": patch
+---
+
+fix types

@@ -1,6 +1,8 @@
 {
 	"name": "mathsvex",
 	"version": "0.0.2",
+	"license": "MIT",
+	"author": "Kelvin Soh",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run prepack",
@@ -19,17 +21,18 @@
 		"dist",
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*",
-		"lib/**/*"
+		"src/lib/**/*",
+		"types/**/*"
 	],
 	"sideEffects": [
 		"**/*.css"
 	],
-	"types": "./types/index.d.ts",
+	"types": "./dist/index.d.ts",
 	"type": "module",
 	"exports": {
 		".": {
-			"types": "./types/index.d.ts",
-			"default": "./src/lib/index.js"
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
 		}
 	},
 	"peerDependencies": {
