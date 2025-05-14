@@ -1,49 +1,50 @@
 {
-  "name": "svelte-katex",
-  "version": "0.2.0",
-  "license": "MIT",
-  "devDependencies": {
-    "svelte": "^4.2.19"
-  },
-  "dependencies": {
-    "katex": "^0.16.22"
-  },
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "svelte": "./index.js",
-      "types": "./index.d.ts"
-    },
-    "./Katex.svelte": {
-      "svelte": "./Katex.svelte",
-      "types": "./Katex.svelte.d.ts"
-    }
-  },
-  "main": "./index.js",
-  "module": "./index.js",
-  "types": "./index.d.ts",
-  "type": "module",
-  "svelte": "./Katex.svelte",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kelvinsjk/mathlified.git",
-    "directory": "sites/svelte-math/package"
-  },
-  "keywords": [
-    "math",
-    "maths",
-    "mathematics",
-    "Svelte",
-    "SvelteKit",
-    "LaTeX",
-    "KaTeX",
-    "mathlify",
-    "mathlifier",
-    "mathlified"
-  ],
-  "author": "Kelvin Soh",
-  "bugs": {
-    "url": "https://github.com/kelvinsjk/mathlified/issues"
-  },
-  "homepage": "https://svelte-math.vercel.app"
+	"name": "svelte-katex",
+	"version": "0.3.0",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build && npm run prepack",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"prepack": "svelte-kit sync && svelte-package && publint",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+	},
+	"files": [
+		"dist",
+		"!dist/**/*.test.*",
+		"!dist/**/*.spec.*"
+	],
+	"sideEffects": [
+		"**/*.css"
+	],
+	"svelte": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"svelte": "./dist/index.js"
+		}
+	},
+	"peerDependencies": {
+		"svelte": "^5.0.0"
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^6.0.0",
+		"@sveltejs/kit": "^2.16.0",
+		"@sveltejs/package": "^2.0.0",
+		"@sveltejs/vite-plugin-svelte": "^5.0.0",
+		"publint": "^0.3.2",
+		"svelte": "^5.0.0",
+		"svelte-check": "^4.0.0",
+		"typescript": "^5.0.0",
+		"vite": "^6.2.6"
+	},
+	"keywords": [
+		"svelte"
+	],
+	"dependencies": {
+		"katex": "^0.16.22"
+	}
 }
