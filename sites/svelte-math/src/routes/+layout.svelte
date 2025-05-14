@@ -1,36 +1,25 @@
-<script>
-	import '../app.css';
-	import Nav from './_Nav/Nav2.svelte';
-	import { page } from '$app/stores';
+<script lang="ts">
+  import Nav from '$lib/Nav.svelte';
+  import Footer from '$lib/Footer.svelte';
 
-	const pages = {
-		'/': 'home',
-		'/auto-render': 'auto',
-		'/component-based': 'component',
-		'/function-based': 'function'
-	};
-	const titles = {
-		home: 'Svelte Math',
-		auto: 'KaTeX auto-render extension',
-		component: 'Svelte KaTeX component',
-		function: 'Function-based approach'
-	};
-
-	$: current = pages[$page.url.pathname];
+  import type { Snippet } from 'svelte';
+  let { children }: { children: Snippet } = $props();
 </script>
 
-<svelte:head>
-	<title>{titles[current]}</title>
-</svelte:head>
-
-<header>
-	<Nav {current} />
-</header>
-<main class="prose max-w-full m-2">
-	<slot />
+<Nav />
+<main>
+  {@render children()}
 </main>
-<footer class="pl-2 py-4 mt-4 bg-zinc-100">
-	<a class="text-blue-500 underline" rel="external" href="https://github.com/kelvinsjk/mathlified"
-		>Mathlified Github</a
-	>
-</footer>
+<Footer />
+
+<style>
+  main {
+    padding: 1rem;
+    font-size: 1.25rem;
+    min-height: calc(100vh - 9.5rem);
+  }
+  :global(h1){
+    margin-top: 0rem;
+    font-size: 1.75em;
+  }
+</style>
