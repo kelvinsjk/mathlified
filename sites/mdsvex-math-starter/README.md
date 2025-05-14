@@ -36,15 +36,23 @@ npm i -D remark-math@3.0.0
 npm i -D rehype-katex-svelte
 ```
 
-### Dynamic/reactive math?
+### Add plugins to mdsvex config
 
-If you need dynamic and/or reactive mathematical content, install
-[KaTeX](https://katex.org) or [mathlifier](https://github.com/kelvinsjk/mathlified/tree/main/packages/mathlifier)
-(my custom wrapper around KaTeX)
+Add the following into your `svelte.config.js` file.
 
-```bash
-# install either KaTeX (npm i katex) or mathlifier
-npm i mathlifier
+```js
+// svelte.config.js
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex-svelte';
+export default {
+	preprocess: [
+		mdsvex({
+			extensions: ['.md', '.svx'],
+			remarkPlugins: [remarkMath],
+			rehypePlugins: [rehypeKatex]
+		})
+	]
+};
 ```
 
 ### Add KaTeX stylesheet

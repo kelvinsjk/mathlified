@@ -23,7 +23,7 @@
 		"eslint-config-prettier": "^10.0.1",
 		"eslint-plugin-svelte": "^3.0.0",
 		"globals": "^16.0.0",
-		"mathsvex": "^0.0.3",
+		"mathsvex": "^0.0.4",
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.3",
 		"shiki": "^3.4.0",

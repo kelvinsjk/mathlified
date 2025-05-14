@@ -65,9 +65,10 @@ npm run dev
 ## Credits
 
 - [SvelteKit](https://kit.svelte.dev/)
-- [mdsvex](https://github.com/pngwn/MDsveX)
-- [rehype-katex-svelte](https://github.com/kwshi/rehype-katex-svelte)
-- [katex](https://katex.org/)
+- [djot](https://djot.net/)
+- [temml](https://temml.org/)
+
+Inspired by [mdsvex](https://github.com/pngwn/MDsveX)
 
 ### Shameless plugs
 
