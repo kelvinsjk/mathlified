@@ -38,6 +38,10 @@ function contentToSvelte(content) {
   import { render as ${renderName}} from 'mathsvex';
 </script>
 
+<svelte:head>
+  {#if typeof title === 'string'}<title>{title}</title>{/if}
+</svelte:head>
+
 <svelte:boundary>
 	{@const contentsArray = Array.isArray(contents) ? contents : [contents] }
 	{#each contentsArray as content}
