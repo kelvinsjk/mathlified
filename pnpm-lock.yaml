@@ -378,9 +378,6 @@ importers:
       mathlifier:
         specifier: ^2.0.3
         version: 2.0.3
-      mathsvex:
-        specifier: workspace:*
-        version: link:../../packages/mathsvex
     devDependencies:
       '@eslint/compat':
         specifier: ^1.2.5
@@ -409,6 +406,9 @@ importers:
       globals:
         specifier: ^16.0.0
         version: 16.1.0
+      mathsvex:
+        specifier: ^0.0.3
+        version: 0.0.3(svelte@5.28.6)
       prettier:
         specifier: ^3.4.2
         version: 3.5.3
@@ -3239,6 +3239,11 @@ packages:
 
   mathlifier@2.0.3:
     resolution: {integrity: sha512-4LaHXf9r4C8Q/V4XrjYc9JZ6S/aJyW+Vi0anxHigdNMblhp+jRThBvDAlHORX59I9yMXurYvLG4BRREMGNx2BA==}
+
+  mathsvex@0.0.3:
+    resolution: {integrity: sha512-B7kdVzNbSW+ie/GNRnFFVk+Yr9NctbcxODiHGXnS9kwXak5OG9hwkTNx6jLAK4L7K4/yyZ3ubzh7VrMQw0LRKg==}
+    peerDependencies:
+      svelte: ^5.0.0
 
   mdast-util-to-hast@13.2.0:
     resolution: {integrity: sha512-QGYKEuUsYT9ykKBCMOEDLsU5JRObWQusAolFMeko/tYPufNkRffBAQjIE+99jbA87xv6FgmjLtwjh9wBWajwAA==}
@@ -7666,6 +7671,10 @@ snapshots:
     dependencies:
       '@djot/djot': 0.3.2
       temml: 0.10.34
+
+  mathsvex@0.0.3(svelte@5.28.6):
+    dependencies:
+      svelte: 5.28.6
 
   mdast-util-to-hast@13.2.0:
     dependencies:
