@@ -41,8 +41,8 @@ Example starter repo to get started working with mathsvex.
 
 ### Mathlifier
 
-The mathlifier library, along with source code for the Svelte Math website, has
-been moved to [its own monorepo](https://github.com/kelvinsjk/mathlifier).
+The mathlifier library has been moved to
+[its own monorepo](https://github.com/kelvinsjk/mathlifier).
 
 ## Under reconsideration
 
