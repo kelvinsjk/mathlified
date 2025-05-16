@@ -1,0 +1,30 @@
+[
+  [
+    "",
+    "introduction/getting-started",
+    "introduction/project-structure",
+    "markdown/content-to-page",
+    "markdown/generating-pdf",
+    "markdown/pdf-options",
+    "markdown/images",
+    "markdown/djot",
+    "custom-pages/using-SvelteKit",
+    "custom-pages/pages-from-JavaScript",
+    "misc/table-of-contents",
+    "misc/publishing"
+  ],
+  [
+    "index.md",
+    "01-introduction/01-getting-started.md",
+    "01-introduction/02-project-structure.md",
+    "02-markdown/01-content-to-page.md",
+    "02-markdown/02-generating-pdf.md",
+    "02-markdown/03-pdf-options.md",
+    "02-markdown/04-images.md",
+    "02-markdown/05-djot.md",
+    "03-custom-pages/01-using-SvelteKit.md",
+    "03-custom-pages/02-pages-from-JavaScript.md",
+    "05-misc/01-table-of-contents.md",
+    "05-misc/02-publishing.md"
+  ]
+]

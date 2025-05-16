@@ -64,7 +64,7 @@ This svelte component will take 2 props
 1. `data` is the output of the preprocessor, with an additional `isMd` property
 2. `module` represents the `quiz/xxx.ts` module, which will be `null` if `isMD` is true
 
-The default behavior if either a `md` or `module` preprocessor is not specified is tot output a
+The default behavior if either a `md` or `module` preprocessor is not specified is to output a
 `data` object with `title` and `content`.
 
 For our example, the custom component is `Quiz.svelte`. Take a look at this file.
