@@ -13,8 +13,8 @@ demo and tutorial on how to use Mathlified.
 
 ## What knowledge do I need?
 
-> LaTeX, MarkDown, JavaScript, GitHub, npm, Svelte
+> LaTeX, MarkDown, JavaScript, GitHub, npm, HTML, Svelte
 
 If you are familiar with some of the words above, then we think you can get up and running in no time.
 
-Even if not, we think it's possible to learn what you need with a bit of elbow grease. Throughout this website tutorial we will pepper in the basics of some required concepts and provide links to resources to learn more.
+Even if not, we think it's possible to learn what you need with a bit of elbow grease. Throughout this tutorial we will pepper in the basics of some required concepts and provide links to resources to learn more.
