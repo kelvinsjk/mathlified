@@ -1,12 +1,12 @@
-[
-  [
-    "custom-pages/simple-example-1",
-    "custom-pages/simple-example-2",
-    "custom-pdf/js-to-pdf"
+{
+  "urls": [
+    "/custom-pages/simple-example-1",
+    "/custom-pages/simple-example-2",
+    "/custom-pdf/js-to-pdf"
   ],
-  [
-    "03-custom-pages/02a-simple-example-1.simple.js",
-    "03-custom-pages/02b-simple-example-2.simple.ts",
-    "04-custom-pdf/01-js-to-pdf.simple.ts"
+  "files": [
+    "/03-custom-pages/02a-simple-example-1.simple.js",
+    "/03-custom-pages/02b-simple-example-2.simple.ts",
+    "/04-custom-pdf/01-js-to-pdf.simple.ts"
   ]
-]
+}

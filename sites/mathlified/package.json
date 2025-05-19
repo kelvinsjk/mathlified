@@ -36,6 +36,7 @@
 		"picocolors": "^1.1.1",
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.3",
+		"shiki": "^3.4.0",
 		"slugify": "^1.6.6",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",

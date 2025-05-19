@@ -454,6 +454,9 @@ importers:
       prettier-plugin-svelte:
         specifier: ^3.3.3
         version: 3.3.3(prettier@3.5.3)(svelte@5.28.6)
+      shiki:
+        specifier: ^3.4.0
+        version: 3.4.0
       slugify:
         specifier: ^1.6.6
         version: 1.6.6

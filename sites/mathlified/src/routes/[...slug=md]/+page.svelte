@@ -3,10 +3,9 @@
   // TODO: sidebar-toc
   let { data }: { data: {djot: string} } = $props();
   import {Djot} from 'svelte-djot-math';
-  const djot = $derived(data.djot);
-
   if (import.meta.hot) {
     import.meta.hot.on('md-update', () => {
+      console.log('hot');
       invalidate('md:reload');
     });
   }
@@ -14,7 +13,7 @@
 
 <div class="body-container">
   <div class="prose-container scrollable">
-    <Djot {djot} />
+    <Djot djot={data.djot} />
   </div>
 </div>
 
