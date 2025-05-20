@@ -1,30 +1,44 @@
 {
   "urls": [
     "/introduction/getting-started",
-    "/introduction/project-structure",
+    "/introduction/content-folder",
     "/markdown/content-to-page",
     "/markdown/generating-pdf",
     "/markdown/pdf-options",
     "/markdown/images",
     "/markdown/djot",
     "/custom-pages/using-SvelteKit",
-    "/custom-pages/pages-from-JavaScript",
+    "/custom-pages/pages-from-JS",
     "/misc/publishing",
     "/misc/table-of-contents",
     "/"
   ],
   "files": [
     "/01-introduction/01-getting-started.md",
-    "/01-introduction/02-project-structure.md",
+    "/01-introduction/02-content-folder.md",
     "/02-markdown/01-content-to-page.md",
     "/02-markdown/02-generating-pdf.md",
     "/02-markdown/03-pdf-options.md",
     "/02-markdown/04-images.md",
     "/02-markdown/05-djot.md",
     "/03-custom-pages/01-using-SvelteKit.md",
-    "/03-custom-pages/02-pages-from-JavaScript.md",
+    "/03-custom-pages/02-pages-from-JS.md",
     "/05-misc/01-publishing.md",
     "/05-misc/02-table-of-contents.md",
     "/index.md"
+  ],
+  "titles": [
+    "Getting started",
+    "Content folder",
+    "Content to page",
+    "Generating pdf",
+    "Pdf options",
+    "Images",
+    "Djot",
+    "Using SvelteKit",
+    "Pages from JS",
+    "Publishing",
+    "Table of contents",
+    "Mathlified"
   ]
 }

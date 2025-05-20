@@ -12,8 +12,11 @@ export const load: PageServerLoad = async ({ params, depends }) => {
 		import: 'default'
 	});
 	const md = (await allMd[file]()) as string;
-	const { body: djot } = fm(md);
+	const { attributes, body } = fm<{ title?: string }>(md);
+	const title = attributes?.title ?? mdFiles.titles[index];
+	const djot = attributes?.title ? `# ${attributes.title}\n\n${body}` : body;
 	return {
-		djot
+		djot,
+		title
 	};
 };

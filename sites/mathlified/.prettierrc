@@ -2,7 +2,7 @@
 	"useTabs": true,
 	"singleQuote": true,
 	"trailingComma": "none",
-	"printWidth": 100,
+	"printWidth": 70,
 	"plugins": ["prettier-plugin-svelte"],
 	"overrides": [
 		{
@@ -11,5 +11,6 @@
 				"parser": "svelte"
 			}
 		}
-	]
+	],
+	"proseWrap": "always"
 }

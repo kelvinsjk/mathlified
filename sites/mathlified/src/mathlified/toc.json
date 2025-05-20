@@ -1,39 +1,45 @@
 {
   "name": "base-contents-folder",
+  "title": "Mathlified",
   "slug": "",
   "directoryPath": "",
   "url": "",
   "contents": [
     {
       "name": "introduction",
+      "title": "Introduction",
       "slug": "introduction",
       "url": "/introduction",
       "directoryPath": "/01-introduction",
       "contents": [
         {
           "name": "getting-started",
+          "title": "Getting started",
           "slug": "getting-started",
           "filePath": "/01-introduction/01-getting-started.md",
           "url": "/introduction/getting-started",
           "ext": "md"
         },
         {
-          "name": "project-structure",
-          "slug": "project-structure",
-          "filePath": "/01-introduction/02-project-structure.md",
-          "url": "/introduction/project-structure",
+          "name": "content-folder",
+          "title": "Content folder",
+          "slug": "content-folder",
+          "filePath": "/01-introduction/02-content-folder.md",
+          "url": "/introduction/content-folder",
           "ext": "md"
         }
       ]
     },
     {
       "name": "markdown",
+      "title": "Markdown",
       "slug": "markdown",
       "url": "/markdown",
       "directoryPath": "/02-markdown",
       "contents": [
         {
           "name": "content-to-page",
+          "title": "Content to page",
           "slug": "content-to-page",
           "filePath": "/02-markdown/01-content-to-page.md",
           "url": "/markdown/content-to-page",
@@ -41,6 +47,7 @@
         },
         {
           "name": "generating-pdf",
+          "title": "Generating pdf",
           "slug": "generating-pdf",
           "filePath": "/02-markdown/02-generating-pdf.md",
           "url": "/markdown/generating-pdf",
@@ -48,6 +55,7 @@
         },
         {
           "name": "pdf-options",
+          "title": "Pdf options",
           "slug": "pdf-options",
           "filePath": "/02-markdown/03-pdf-options.md",
           "url": "/markdown/pdf-options",
@@ -55,6 +63,7 @@
         },
         {
           "name": "images",
+          "title": "Images",
           "slug": "images",
           "filePath": "/02-markdown/04-images.md",
           "url": "/markdown/images",
@@ -62,6 +71,7 @@
         },
         {
           "name": "djot",
+          "title": "Djot",
           "slug": "djot",
           "filePath": "/02-markdown/05-djot.md",
           "url": "/markdown/djot",
@@ -71,26 +81,30 @@
     },
     {
       "name": "custom-pages",
+      "title": "Custom pages",
       "slug": "custom-pages",
       "url": "/custom-pages",
       "directoryPath": "/03-custom-pages",
       "contents": [
         {
           "name": "using-SvelteKit",
+          "title": "Using SvelteKit",
           "slug": "using-SvelteKit",
           "filePath": "/03-custom-pages/01-using-SvelteKit.md",
           "url": "/custom-pages/using-SvelteKit",
           "ext": "md"
         },
         {
-          "name": "pages-from-JavaScript",
-          "slug": "pages-from-JavaScript",
-          "filePath": "/03-custom-pages/02-pages-from-JavaScript.md",
-          "url": "/custom-pages/pages-from-JavaScript",
+          "name": "pages-from-JS",
+          "title": "Pages from JS",
+          "slug": "pages-from-JS",
+          "filePath": "/03-custom-pages/02-pages-from-JS.md",
+          "url": "/custom-pages/pages-from-JS",
           "ext": "md"
         },
         {
           "name": "simple-example-1",
+          "title": "Simple example 1",
           "slug": "simple-example-1",
           "filePath": "/03-custom-pages/02a-simple-example-1.simple.js",
           "url": "/custom-pages/simple-example-1",
@@ -98,6 +112,7 @@
         },
         {
           "name": "simple-example-2",
+          "title": "Simple example 2",
           "slug": "simple-example-2",
           "filePath": "/03-custom-pages/02b-simple-example-2.simple.ts",
           "url": "/custom-pages/simple-example-2",
@@ -107,12 +122,14 @@
     },
     {
       "name": "custom-pdf",
+      "title": "Custom pdf",
       "slug": "custom-pdf",
       "url": "/custom-pdf",
       "directoryPath": "/04-custom-pdf",
       "contents": [
         {
           "name": "js-to-pdf",
+          "title": "Js to pdf",
           "slug": "js-to-pdf",
           "filePath": "/04-custom-pdf/01-js-to-pdf.simple.ts",
           "url": "/custom-pdf/js-to-pdf",
@@ -122,12 +139,14 @@
     },
     {
       "name": "misc",
+      "title": "Misc",
       "slug": "misc",
       "url": "/misc",
       "directoryPath": "/05-misc",
       "contents": [
         {
           "name": "publishing",
+          "title": "Publishing",
           "slug": "publishing",
           "filePath": "/05-misc/01-publishing.md",
           "url": "/misc/publishing",
@@ -135,6 +154,7 @@
         },
         {
           "name": "table-of-contents",
+          "title": "Table of contents",
           "slug": "table-of-contents",
           "filePath": "/05-misc/02-table-of-contents.md",
           "url": "/misc/table-of-contents",
@@ -144,6 +164,7 @@
     },
     {
       "name": "index",
+      "title": "Mathlified",
       "slug": "",
       "filePath": "/index.md",
       "url": "/",

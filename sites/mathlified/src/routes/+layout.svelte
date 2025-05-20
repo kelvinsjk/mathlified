@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import type { Section } from '../../mathlified';
-  let { children, data }: { children: Snippet, data: {toc: Section[]} } = $props();
+  import type { Folder } from '../../mathlified';
+  let { children, data }: { children: Snippet, data: {toc: Folder} } = $props();
   const {toc} = data;
   import Nav from '$lib/components/Nav.svelte';
   import Toc from '$lib/components/Toc.svelte';
@@ -44,6 +44,6 @@
   }
   .toc-container {
     max-width: max(25vw, 10rem);
-    background-color: #f9f9f9;
+    background-color: #eff1f5;
   }
 </style>

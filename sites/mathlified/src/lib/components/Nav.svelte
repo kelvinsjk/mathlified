@@ -1,6 +1,10 @@
+<script lang="ts">
+  import { page } from '$app/state';
+</script>
+
 <div class="navbar">
   <nav>
-    <a href='/'>Mathlified</a>
+    <a href='/' class:active={page.params.slug === ''}>Mathlified</a>
     <a href='https://github.com/kelvinsjk/mathlified'>Github</a>
   </nav>
 </div>
@@ -25,7 +29,7 @@
     text-decoration: none;
     color: white;
   }
-  a:hover{
+  a:hover, a.active {
     color: goldenrod;
   }
 </style>

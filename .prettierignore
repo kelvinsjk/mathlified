@@ -1,0 +1,5 @@
+**/package-lock.json
+
+# specific file
+sites/mathlified/src/content/01-introduction/02-content-folder.md
+sites/mathlified/src/content/02-markdown/03-pdf-options.md
