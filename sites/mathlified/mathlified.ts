@@ -197,6 +197,7 @@ function addFolderToDirectory(
 	});
 	for (const doc of docs) {
 		if (doc.isDirectory()) {
+			if (doc.name.startsWith('_')) continue;
 			const contents: (Folder | Page)[] = [];
 			const directoryPath = `${path || '/'}${doc.name}`;
 			const name = replaceLeadingDigitsDash(doc.name);
@@ -212,6 +213,7 @@ function addFolderToDirectory(
 			parentFolder.contents.push(folder);
 			addFolderToDirectory(directoryPath, folder, url);
 		} else {
+			if (doc.name.startsWith('_')) continue;
 			addFileToFolder(doc.name, parentFolder, parentUrl);
 		}
 	}

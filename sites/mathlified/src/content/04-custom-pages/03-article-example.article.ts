@@ -28,7 +28,8 @@ for extra expressive power.
 
 We generate the random numbers ${a}, ${b}
 and ${c}
-in JavaScript to produce $${expression}
+in JavaScript to produce
+$${expression}
 
 The \`x\` function in Mathlifier allows for cross compatible
 amsmath environments like the following:
