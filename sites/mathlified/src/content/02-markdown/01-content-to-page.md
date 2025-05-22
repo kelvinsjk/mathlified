@@ -7,8 +7,8 @@ folder.
 
 ## Math notation
 
-Write math notation with LaTeX and surround them with `$` signs. For
-example, the inline $x$ is generated using `$x$`.
+Write math notation with $\LaTeX$ and surround them with `$` signs.
+For example, the inline $x$ is generated using `$x$`.
 
 Meanwhile, the displayed $$ax^2 + bx + c = 0$$ is generated using
 `$$ax^2 + bx + c = 0$$`.

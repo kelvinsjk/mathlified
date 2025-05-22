@@ -1,14 +1,13 @@
 ---
 pdf: true
+tex: true
 pdfEngine: lualatex
-documentclass: beamer
-fontsize: 12pt
-papersize: a4
-classoption:
-- b
-- utf8x
+documentclass: book
+fontsize: 11pt
+papersize: a3
+classoption: draft, twocolumn
 includeInHeader: src/lib/pdf/fancyhdr.tex
-includeBeforeBody: \fancyhead{Hello}
+includeBeforeBody: \fancyhead[C]{Mathlified}
 includeAfterBody: src/lib/pdf/footer.tex
 ---
 
@@ -22,22 +21,40 @@ Use the `options` object for app-wide pdf options in
 
 ```ts
 interface Options {
-  pdf?: {
-    engine?:
-      | 'pdflatex'
-      | 'xelatex'
-      | 'lualatex'
-      | 'tectonic'
-      | 'latexmk';
-    documentClass?: string;
-    fontSize?: string;
-    paperSize?: string;
-    classOption?: string;
-    includeIn?: {
-      header?: string;
-      beforeBody?: string;
-      afterBody?: string;
-    };
-  };
+  pdf?: PdfOptions
+}
+
+interface PdfOptions {
+  // whether to generate a .tex file first
+  tex?: boolean;
+  engine?:
+    | 'pdflatex'
+    | 'xelatex'
+    | 'lualatex'
+    | 'tectonic'
+    | 'latexmk';
+  documentclass?: string;
+  fontsize?: string;
+  papersize?: string;
+  classoption?: string;
+  includeInHeader?: string;
+  includeBeforeBody?: string;
+  includeAfterBody?: string;
 }
 ```
+
+## File-specific options
+
+We can override app-wide options for specific files by adding the relevant option to the front matter, like we did in this file.
+
+## Note about include files
+
+The options `includeInHeader`, `includeBeforeBody`, and `includeAfterBody` can either be a file path to a TeX file or a string.
+
+Note that the file path should be **relative to the root** of  the project, not from this current file within the content folder.
+
+Mathlified will check if the string provided is a valid file path. If not, it will be treated as a TeX string to be included in the document.
+
+## Exercise
+
+Play around with both app-wide and file-specific pdf options.

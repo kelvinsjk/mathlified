@@ -40,3 +40,5 @@ These leading numbers can help you organize your content folder.
 
 Customizing the page title is covered in a
 [later section](/markdown/generating-pdf#More-about-Mathlified:-page-titles).
+
+Files and folders starting with and underscore `_` will also be ignored. This is covered more [here](/under-the-hood/hiding-files).

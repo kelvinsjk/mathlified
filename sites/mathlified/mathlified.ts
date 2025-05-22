@@ -1,10 +1,39 @@
 let webExtensions: string[] = [];
 let pdfExtensions: string[] = [];
-let pdfOptions: Options = {};
+let pdfOptions: PdfOptions = {
+	//tex: true,
+	//engine: 'lualatex',
+	//documentclass: 'book',
+	//fontsize: '10pt',
+	//papersize: 'a3',
+	//classoption: 'draft, twocolumn'
+};
 const matches: Record<
 	string,
 	{ urls: string[]; files: string[]; titles: string[] }
 > = {};
+let pdfRunning = false;
+
+interface Options {
+	pdf?: PdfOptions;
+}
+interface PdfOptions {
+	tex?: boolean;
+	engine?:
+		| 'pdflatex'
+		| 'xelatex'
+		| 'lualatex'
+		| 'tectonic'
+		| 'latexmk';
+	documentclass?: string;
+	fontsize?: string;
+	papersize?: string;
+	classoption?: string;
+	includeInHeader?: string;
+	includeBeforeBody?: string;
+	includeAfterBody?: string;
+}
+
 import { exec } from 'node:child_process';
 import { createLogger } from 'vite';
 import colors from 'picocolors';
@@ -25,8 +54,13 @@ type Page = {
 	ext: string;
 };
 import slugify from 'slugify';
-import { readdirSync } from 'node:fs';
-import { outputFile, outputFileSync, remove } from 'fs-extra/esm';
+import { existsSync, readdirSync } from 'node:fs';
+import {
+	copySync,
+	outputFile,
+	outputFileSync,
+	remove
+} from 'fs-extra/esm';
 import { format } from 'prettier';
 import { cwd } from 'node:process';
 import fm from 'front-matter';
@@ -37,26 +71,6 @@ const error = (x: string) => logger.error(x, { timestamp: true });
 const success = (x: string, file: string) =>
 	logger.info(colors.green(x) + ' ' + file, { timestamp: true });
 
-interface Options {
-	pdf?: {
-		engine?:
-			| 'pdflatex'
-			| 'xelatex'
-			| 'lualatex'
-			| 'tectonic'
-			| 'latexmk';
-		documentClass?: string;
-		fontSize?: string;
-		paperSize?: string;
-		classOption?: string;
-		includeIn?: {
-			header?: string;
-			beforeBody?: string;
-			afterBody?: string;
-		};
-	};
-}
-
 export function mathlified(options?: Options): import('vite').Plugin {
 	return {
 		name: 'mathlified',
@@ -65,7 +79,7 @@ export function mathlified(options?: Options): import('vite').Plugin {
 				await getTemplates();
 				generateTOC();
 
-				if (options) pdfOptions = options;
+				if (options?.pdf) pdfOptions = options.pdf;
 			}
 		},
 
@@ -103,7 +117,14 @@ export function mathlified(options?: Options): import('vite').Plugin {
 							'title' in attributes
 								? `# ${attributes.title}\n\n${body}`
 								: body;
-						generatePdfFromDjot(newBody, fileName);
+						if (!pdfRunning) {
+							pdfRunning = true;
+							generatePdfFromDjot(
+								newBody,
+								fileName,
+								attributes as PdfOptions
+							);
+						}
 					}
 				}
 			}
@@ -118,7 +139,7 @@ async function getTemplates() {
 	});
 	for (const doc of docs) {
 		if (!doc.isDirectory()) {
-			if (doc.name.endsWith('.svelte')) {
+			if (doc.name.endsWith('.svelte') && !doc.name.startsWith('_')) {
 				const fileName = doc.name.slice(0, doc.name.length - 7);
 				const lowerCased =
 					fileName[0].toLowerCase() + fileName.slice(1);
@@ -219,25 +240,121 @@ function addFileToFolder(
 	addToParamMatcher(path, url, filePath, title);
 }
 
-async function generatePdfFromDjot(body: string, fileName: string) {
-	// TODO: options
+async function generatePdfFromDjot(
+	body: string,
+	fileName: string,
+	options?: PdfOptions
+) {
+	const pathToFile = `./output/${fileName}`;
 	info('Generating pdf...');
-	outputFileSync('./.mathlified/temp.dj', transformMath(body));
-	outputFileSync(`./output/${fileName}.pdf`, '');
+	outputFileSync('./.mathlified/temp.dj', transform(body));
+	outputFileSync(`${pathToFile}.pdf`, '');
+	const optionsString = buildOptionsString(options);
+	const resourcePath = '.:static';
+	const promises: Promise<void>[] = [];
+	// tex
+	const tex = options?.tex ?? pdfOptions.tex;
+	// TODO: windows use ";"
+	if (tex) {
+		outputFileSync(`${pathToFile}.tex`, '');
+		promises.push(
+			execPromise(
+				`djot -t pandoc ./.mathlified/temp.dj | pandoc -f json -s -t latex --resource-path ${resourcePath} ${optionsString} -o ${pathToFile}.tex`,
+				'generating latex',
+				['Tex generated', `${pathToFile}.tex`]
+			)
+		);
+	}
+	// generate pdf
+	outputFileSync(`${pathToFile}.pdf`, '');
+	promises.push(
+		execPromise(
+			`djot -t pandoc ./.mathlified/temp.dj | pandoc -f json -s -t pdf --resource-path ${resourcePath} ${optionsString} -o ${pathToFile}.pdf`,
+			'generating pdf',
+			['PDF generated', `${pathToFile}.pdf`]
+		)
+	);
+	Promise.all(promises).then(() => {
+		remove('./.mathlified/');
+	});
+}
+
+async function generatePdfFromTex(
+	pathToFile: string,
+	pdfEngine: string
+) {
+	copySync(pathToFile + '.tex', `./.mathlified/temp.tex`);
+	console.log('in tex');
+	console.log(
+		`${pdfEngine} -output-directory=./.mathlified ./.mathlified/temp.tex -halt-on-error -interaction=nonstopmode`
+	);
 	exec(
-		`djot -t pandoc ./.mathlified/temp.dj | pandoc -f json -s -t pdf -o ./output/${fileName}.pdf`,
-		//`djot -t pandoc ./.mathlified/temp.dj | pandoc -f json -s -t latex -o ./output/${fileName}.tex`,
+		`${pdfEngine} -halt-on-error -interaction=nonstopmode -output-directory=./.mathlified ./.mathlified/temp.tex`,
 		(err, _, stderr) => {
+			console.log('in callback');
+			pdfRunning = false;
+			console.log(err, stderr);
 			if (err) {
 				error(`Error generating pdf!\n${err.message}`);
 			} else if (stderr) {
 				error(`Error generating pdf! stderr: ${stderr}`);
 			} else {
-				success(`PDF generated`, `output/${fileName}.pdf`);
-				remove('./.mathlified');
+				copySync(`./.mathlified/temp.pdf`, pathToFile + '.pdf');
+				success(`Pdf generated`, `${pathToFile}.pdf`);
 			}
 		}
 	);
+}
+
+function buildOptionsString(options?: PdfOptions): string {
+	// resolve options
+	const resolvedOptions = { ...pdfOptions, ...options };
+	// build string
+	let str = '';
+	if (resolvedOptions.engine)
+		str += ` --pdf-engine=${resolvedOptions.engine}`;
+	if (resolvedOptions.documentclass)
+		str += ` -V documentclass=${resolvedOptions.documentclass}`;
+	if (resolvedOptions.fontsize)
+		str += ` -V fontsize=${resolvedOptions.fontsize}`;
+	if (resolvedOptions.papersize)
+		str += ` -V papersize=${resolvedOptions.papersize}`;
+	if (resolvedOptions.classoption)
+		str += ` -V classoption="${resolvedOptions.classoption}"`;
+	if (resolvedOptions.includeInHeader) {
+		if (existsSync(resolvedOptions.includeInHeader)) {
+			str += ` --include-in-header=${resolvedOptions.includeInHeader}`;
+		} else {
+			outputFileSync(
+				'./.mathlified/header.tex',
+				resolvedOptions.includeInHeader
+			);
+			str += ` --include-in-header=./.mathlified/header.tex`;
+		}
+	}
+	if (resolvedOptions.includeBeforeBody) {
+		if (existsSync(resolvedOptions.includeBeforeBody)) {
+			str += ` --include-before-body=${resolvedOptions.includeBeforeBody}`;
+		} else {
+			outputFileSync(
+				'./.mathlified/before.tex',
+				resolvedOptions.includeBeforeBody
+			);
+			str += ` --include-before-body=./.mathlified/before.tex`;
+		}
+	}
+	if (resolvedOptions.includeAfterBody) {
+		if (existsSync(resolvedOptions.includeAfterBody)) {
+			str += ` --include-after-body=${resolvedOptions.includeAfterBody}`;
+		} else {
+			outputFileSync(
+				'./.mathlified/after.tex',
+				resolvedOptions.includeAfterBody
+			);
+			str += ` --include-after-body=./.mathlified/after.tex`;
+		}
+	}
+	return str;
 }
 
 function replaceLeadingDigitsDash(str: string) {
@@ -283,6 +400,10 @@ function makeTitle(string: string) {
 	).replaceAll('-', ' ');
 }
 
+function transform(x: string): string {
+	return transformImg(transformMath(x));
+}
+
 function transformMath(x: string): string {
 	return x
 		.replace(
@@ -293,4 +414,28 @@ function transformMath(x: string): string {
 			/(?<![\\`$])\$(?![`$])([^]+?)(?<!\\)\$(?![`$])/g,
 			(_, match) => `$\`${match.replaceAll('\\_', '_')}\``
 		);
+}
+
+function transformImg(x: string): string {
+	return x.replace(/(!\[.*?\])\((\/.*?)\)/g, '$1(.$2)');
+}
+
+function execPromise(
+	command: string,
+	errorText: string,
+	successText: [string, string]
+): Promise<void> {
+	const txt = ' ' + errorText + '!';
+	return new Promise((resolve) => {
+		exec(command, (err, _, stderr) => {
+			if (err) {
+				error(`Error${txt}!\n${err.message}`);
+			} else if (stderr) {
+				error(`Error${txt}!\n${stderr}`);
+			} else {
+				success(successText[0], successText[1]);
+				resolve();
+			}
+		});
+	});
 }

@@ -80,17 +80,42 @@
       ]
     },
     {
+      "name": "publishing",
+      "title": "Publishing",
+      "slug": "publishing",
+      "url": "/publishing",
+      "directoryPath": "/03-publishing",
+      "contents": [
+        {
+          "name": "taking-stock",
+          "title": "Taking stock",
+          "slug": "taking-stock",
+          "filePath": "/03-publishing/01-taking-stock.md",
+          "url": "/publishing/taking-stock",
+          "ext": "md"
+        },
+        {
+          "name": "publishing",
+          "title": "Publishing",
+          "slug": "publishing",
+          "filePath": "/03-publishing/02-publishing.md",
+          "url": "/publishing/publishing",
+          "ext": "md"
+        }
+      ]
+    },
+    {
       "name": "custom-pages",
       "title": "Custom pages",
       "slug": "custom-pages",
       "url": "/custom-pages",
-      "directoryPath": "/03-custom-pages",
+      "directoryPath": "/04-custom-pages",
       "contents": [
         {
           "name": "using-SvelteKit",
           "title": "Using SvelteKit",
           "slug": "using-SvelteKit",
-          "filePath": "/03-custom-pages/01-using-SvelteKit.md",
+          "filePath": "/04-custom-pages/01-using-SvelteKit.md",
           "url": "/custom-pages/using-SvelteKit",
           "ext": "md"
         },
@@ -98,7 +123,7 @@
           "name": "pages-from-JS",
           "title": "Pages from JS",
           "slug": "pages-from-JS",
-          "filePath": "/03-custom-pages/02-pages-from-JS.md",
+          "filePath": "/04-custom-pages/02-pages-from-JS.md",
           "url": "/custom-pages/pages-from-JS",
           "ext": "md"
         },
@@ -106,7 +131,7 @@
           "name": "simple-example-1",
           "title": "Simple example 1",
           "slug": "simple-example-1",
-          "filePath": "/03-custom-pages/02a-simple-example-1.simple.js",
+          "filePath": "/04-custom-pages/02a-simple-example-1.simple.js",
           "url": "/custom-pages/simple-example-1",
           "ext": "simple.js"
         },
@@ -114,7 +139,7 @@
           "name": "simple-example-2",
           "title": "Simple example 2",
           "slug": "simple-example-2",
-          "filePath": "/03-custom-pages/02b-simple-example-2.simple.ts",
+          "filePath": "/04-custom-pages/02b-simple-example-2.simple.ts",
           "url": "/custom-pages/simple-example-2",
           "ext": "simple.ts"
         }
@@ -138,17 +163,42 @@
       ]
     },
     {
+      "name": "under-the-hood",
+      "title": "Under the hood",
+      "slug": "under-the-hood",
+      "url": "/under-the-hood",
+      "directoryPath": "/05-under-the-hood",
+      "contents": [
+        {
+          "name": "table-of-contents",
+          "title": "Table of contents",
+          "slug": "table-of-contents",
+          "filePath": "/05-under-the-hood/01-table-of-contents.md",
+          "url": "/under-the-hood/table-of-contents",
+          "ext": "md"
+        },
+        {
+          "name": "hiding-files",
+          "title": "Hiding files",
+          "slug": "hiding-files",
+          "filePath": "/05-under-the-hood/02-hiding-files.md",
+          "url": "/under-the-hood/hiding-files",
+          "ext": "md"
+        }
+      ]
+    },
+    {
       "name": "misc",
       "title": "Misc",
       "slug": "misc",
       "url": "/misc",
-      "directoryPath": "/05-misc",
+      "directoryPath": "/06-misc",
       "contents": [
         {
           "name": "publishing",
           "title": "Publishing",
           "slug": "publishing",
-          "filePath": "/05-misc/01-publishing.md",
+          "filePath": "/06-misc/01-publishing.md",
           "url": "/misc/publishing",
           "ext": "md"
         },
@@ -156,7 +206,7 @@
           "name": "table-of-contents",
           "title": "Table of contents",
           "slug": "table-of-contents",
-          "filePath": "/05-misc/02-table-of-contents.md",
+          "filePath": "/06-misc/02-table-of-contents.md",
           "url": "/misc/table-of-contents",
           "ext": "md"
         }

@@ -32,7 +32,8 @@
 </script>
 
 <script lang="ts">
-	import { invalidate } from '$app/navigation';
+	import { invalidate, onNavigate } from '$app/navigation';
+	import { tick } from 'svelte';
   // TODO: sidebar-toc
   let { data }: { data: {djot: string, title: string} } = $props();
   if (import.meta.hot) {
@@ -40,6 +41,13 @@
       invalidate('md:reload');
     });
   }
+
+  // Scroll back to top on navigation
+  let proseContainer: HTMLDivElement;
+  onNavigate(async ()=>{
+    await tick();
+    proseContainer.scrollTop = 0;
+  })
 </script>
 
 <svelte:head>
@@ -47,7 +55,7 @@
 </svelte:head>
 
 <div class="body-container">
-  <div class="prose-container scrollable">
+  <div class="prose-container scrollable" bind:this={proseContainer} >
     <Djot djot={data.djot} {overrides} {transform} />
   </div>
 </div>

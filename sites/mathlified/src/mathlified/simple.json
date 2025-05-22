@@ -5,8 +5,8 @@
     "/custom-pdf/js-to-pdf"
   ],
   "files": [
-    "/03-custom-pages/02a-simple-example-1.simple.js",
-    "/03-custom-pages/02b-simple-example-2.simple.ts",
+    "/04-custom-pages/02a-simple-example-1.simple.js",
+    "/04-custom-pages/02b-simple-example-2.simple.ts",
     "/04-custom-pdf/01-js-to-pdf.simple.ts"
   ],
   "titles": ["Simple example 1", "Simple example 2", "Js to pdf"]
